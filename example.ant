@@ -1,0 +1,42 @@
+class MyParser < Antelope::Parser
+  tokens do
+    token NUMBER
+    token MULTIPLY
+    token DIVIDE
+    token ADD
+    token SUBTRACT
+    token LPAREN
+    token RPAREN
+  end
+
+  presidence do
+    left MULTIPLY, DIVIDE
+    left ADD, SUBTRACT
+  end
+
+  productions do
+    expressions do
+      match NUMBER do |a| a end
+
+      match expressions ADD expressions do |a, _, b|
+        a + b
+      end
+
+      match expressions SUBTRACT expressions do |a, _, b|
+        a - b
+      end
+
+      match expressions MULTIPLY expressions do |a, _, b|
+        a * b
+      end
+
+      match expressions DIVIDE expressions do |a, _, b|
+        a / b
+      end
+
+      match LPAREN expressions RPAREN do |_, a, _|
+        a
+      end
+    end
+  end
+end
