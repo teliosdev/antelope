@@ -10,7 +10,7 @@ module Antelope
       def first(token)
         case token
         when Parser::Nonterminal
-          firstifying do
+          firstifying(token) do
             productions = parser.productions[token.value]
             productions.map { |prod|
               first(prod[:items]) }.inject(Set.new, :+)

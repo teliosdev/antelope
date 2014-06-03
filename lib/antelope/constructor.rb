@@ -14,9 +14,10 @@ module Antelope
 
     attr_reader :parser
     attr_reader :productions
+    attr_reader :states
 
-    def initialize(start, parser)
-      @start       = start
+    def initialize(states, parser)
+      @states      = states
       @parser      = parser
       @queue       = []
       @productions = []
@@ -25,21 +26,10 @@ module Antelope
     end
 
     def augment
-      @productions = []
-      add_state(@start)
-
-      while @queue.size > @position
-        augment_state(@queue[@position])
-        @position += 1
-      end
-
-      @productions
-    end
-
-    def augment_state(state)
-      state.rules.each do |rule|
-        next unless rule.position.zero?
-        trace_rule(state, rule)
+      states.each do |state|
+        state.rules.each do |rule|
+          rule.lookahead = lookahead(rule.left, rule.right)
+        end
       end
     end
 

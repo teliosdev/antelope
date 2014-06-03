@@ -2,13 +2,9 @@ module Antelope
   class Parser
     class Token
       attr_reader :value
-      attr_accessor :to
-      attr_accessor :from
 
       def initialize(value)
         @value = value
-        @to    = nil
-        @from  = nil
       end
 
       include Comparable
@@ -26,16 +22,7 @@ module Antelope
       end
 
       def to_s
-        buf = @value.to_s
-
-        if to or from
-          buf << "("
-          buf << "#{from.id}" if from
-          buf << ":#{to.id}"  if to
-          buf << ")"
-        end
-
-        buf
+        @value.to_s
       end
 
       def <=>(other)
@@ -53,7 +40,7 @@ module Antelope
       alias_method :eql?, :==
 
       def to_a
-        [@to, @from, terminal?, nonterminal?, epsilon?, value]
+        [terminal?, nonterminal?, epsilon?, value]
       end
     end
 

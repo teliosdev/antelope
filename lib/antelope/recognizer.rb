@@ -4,15 +4,17 @@ require "antelope/recognizer/state"
 module Antelope
   class Recognizer
 
+    attr_reader :states
+
     def initialize(parser)
       @parser = parser
       @states = []
     end
 
     def parse
+      @states = []
       state = compute_initial_state
       reassign_state_ids
-      state
     end
 
     def compute_initial_state
@@ -71,6 +73,8 @@ module Antelope
       @states.each_with_index do |state, i|
         state.id = i
       end
+
+      @states
     end
 
   end

@@ -9,9 +9,9 @@ module Antelope
       def nullable?(token)
         case token
         when Parser::Nonterminal
-          nullifying do
+          nullifying(token) do
             productions = parser.productions[token.value]
-            productions.any? { |prod| nullable?(prod[:items]) }
+            !!productions.any? { |prod| nullable?(prod[:items]) }
           end
         when Array
           token.delete_if { |tok|
