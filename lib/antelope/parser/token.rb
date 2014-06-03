@@ -8,15 +8,6 @@ module Antelope
 
       include Comparable
 
-      def <=>(other)
-        if other.is_a? Token
-          [terminal?, nonterminal?, value] <=> [other.terminal?,
-            other.nonterminal?, other.value]
-        else
-          super
-        end
-      end
-
       def terminal?
         false
       end
@@ -27,6 +18,24 @@ module Antelope
 
       def to_s
         @value.to_s
+      end
+
+      def <=>(other)
+        if other.is_a? Token
+          other.to_a <=> other.to_a
+        else
+          super
+        end
+      end
+
+      def hash
+        to_a.hash
+      end
+
+      alias_method :eql?, :==
+
+      def to_a
+        [terminal?, nonterminal?, value]
       end
     end
 

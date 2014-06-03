@@ -31,7 +31,12 @@ module Antelope
         transitional = find_state_for(rule.succ) do
           compute_state(rule.succ)
         end
-        state.transitions[rule.active] = transitional
+
+        if state.transitions[rule.active]
+          state.transitions[rule.active].merge!(transitional)
+        else
+          state.transitions[rule.active] = transitional
+        end
       end
 
       state

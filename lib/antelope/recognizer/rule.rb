@@ -8,15 +8,6 @@ module Antelope
 
       include Comparable
 
-      def <=>(other)
-        if other.is_a? Rule
-          [left, right, position] <=> [other.left,
-            other.right, other.position]
-        else
-          super
-        end
-      end
-
       def initialize(left, right, position)
         @left = left
         @right = right
@@ -33,6 +24,24 @@ module Antelope
 
       def succ?
         right.size > (position)
+      end
+
+      def <=>(other)
+        if other.is_a? Rule
+          to_a <=> other.to_a
+        else
+          super
+        end
+      end
+
+      def hash
+        to_a.hash
+      end
+
+      alias_method :eql?, :==
+
+      def to_a
+        [left, right, position]
       end
     end
   end

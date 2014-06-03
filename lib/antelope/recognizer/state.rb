@@ -28,6 +28,15 @@ module Antelope
         @id = self.class.bump
       end
 
+      def merge!(other)
+        raise ArgumentError, "Expected #{self.class}, " +
+          "got #{other.class}" unless other.is_a? State
+
+        self << other
+        self.transitions.merge! other.transitions
+        self
+      end
+
       def <<(rule)
         if rule.is_a? State
           rule.rules.each { |r| self << r }
