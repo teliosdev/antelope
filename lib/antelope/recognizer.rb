@@ -18,7 +18,7 @@ module Antelope
     end
 
     def compute_initial_state
-      rule = Rule.new(:"$start",
+      rule = Rule.new(Parser::Nonterminal.new(:"$start"),
         @parser.productions[:"$start"][0][:items], 0)
 
       compute_state(rule)
@@ -54,10 +54,10 @@ module Antelope
       state << for_rule
 
       productions.each do |production|
-        rule = Rule.new(for_rule.active.value, production[:items], 0)
+        rule = Rule.new(for_rule.active, production[:items], 0)
         state << rule
 
-        if rule.active.nonterminal? and rule.active.value != rule.left
+        if rule.active.nonterminal? and rule.active.value != rule.left.value
           state << compute_closure(rule)
         end
       end

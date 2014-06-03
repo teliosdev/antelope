@@ -49,7 +49,7 @@ BLOCK
       def state_transitions_output(state)
         state.transitions.map do |transition|
 <<-BLOCK.chomp
-    #{transition[0].value}: State #{transition[1].id}
+    #{transition[0]}: State #{transition[1].id}
 BLOCK
         end.join("\n")
       end

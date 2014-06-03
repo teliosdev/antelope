@@ -19,7 +19,7 @@ module Antelope
       end
 
       def succ
-        Rule.new(left, right, position + 1)
+        @_succ ||= Rule.new(left, right, position + 1)
       end
 
       def succ?
