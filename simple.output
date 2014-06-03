@@ -1,0 +1,265 @@
+State 1:
+  rules:
+    e →  • f
+    f →  • f MULTIPLY t
+    f →  • t
+    t →  • NUMBER
+    t →  • LPAREN e RPAREN
+    e →  • e ADD f
+
+  transitions:
+    f: State 4
+    f: State 11
+    t: State 16
+    NUMBER: State 21
+    LPAREN: State 31
+    e: State 41
+
+State 4:
+  rules:
+    e → e • ADD f
+
+  transitions:
+    ADD: State 5
+
+State 11:
+  rules:
+    f → f • MULTIPLY t
+
+  transitions:
+    MULTIPLY: State 12
+
+State 16:
+  rules:
+    f → f • MULTIPLY t
+
+  transitions:
+    MULTIPLY: State 17
+
+State 21:
+  rules:
+    t → LPAREN • e RPAREN
+    e → e • ADD f
+
+  transitions:
+    e: State 23
+    ADD: State 25
+
+State 31:
+  rules:
+    t → LPAREN • e RPAREN
+    e → e • ADD f
+
+  transitions:
+    e: State 33
+    ADD: State 35
+
+State 41:
+  rules:
+    e → e • ADD f
+
+  transitions:
+    ADD: State 42
+
+State 5:
+  rules:
+    e → e ADD • f
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    f: State 8
+    t: State 9
+    RPAREN: State 10
+
+State 12:
+  rules:
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    t: State 14
+    RPAREN: State 15
+
+State 17:
+  rules:
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    t: State 19
+    RPAREN: State 20
+
+State 23:
+  rules:
+    t → LPAREN e • RPAREN
+
+  transitions:
+    RPAREN: State 24
+
+State 25:
+  rules:
+    e → e ADD • f
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    f: State 28
+    t: State 29
+    RPAREN: State 30
+
+State 33:
+  rules:
+    t → LPAREN e • RPAREN
+
+  transitions:
+    RPAREN: State 34
+
+State 35:
+  rules:
+    e → e ADD • f
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    f: State 38
+    t: State 39
+    RPAREN: State 40
+
+State 42:
+  rules:
+    e → e ADD • f
+    f → f MULTIPLY • t
+    t → LPAREN e • RPAREN
+
+  transitions:
+    f: State 45
+    t: State 46
+    RPAREN: State 47
+
+State 8:
+  rules:
+
+
+  transitions:
+
+
+State 9:
+  rules:
+
+
+  transitions:
+
+
+State 10:
+  rules:
+
+
+  transitions:
+
+
+State 14:
+  rules:
+
+
+  transitions:
+
+
+State 15:
+  rules:
+
+
+  transitions:
+
+
+State 19:
+  rules:
+
+
+  transitions:
+
+
+State 20:
+  rules:
+
+
+  transitions:
+
+
+State 24:
+  rules:
+
+
+  transitions:
+
+
+State 28:
+  rules:
+
+
+  transitions:
+
+
+State 29:
+  rules:
+
+
+  transitions:
+
+
+State 30:
+  rules:
+
+
+  transitions:
+
+
+State 34:
+  rules:
+
+
+  transitions:
+
+
+State 38:
+  rules:
+
+
+  transitions:
+
+
+State 39:
+  rules:
+
+
+  transitions:
+
+
+State 40:
+  rules:
+
+
+  transitions:
+
+
+State 45:
+  rules:
+
+
+  transitions:
+
+
+State 46:
+  rules:
+
+
+  transitions:
+
+
+State 47:
+  rules:
+
+
+  transitions:
+
+

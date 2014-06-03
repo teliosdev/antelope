@@ -1,18 +1,20 @@
 class MyParser < Antelope::Parser
-  tokens do
-    token NUMBER
-    token MULTIPLY
-    token DIVIDE
-    token ADD
-    token SUBTRACT
-    token LPAREN
-    token RPAREN
+  terminals do
+    terminal NUMBER
+    terminal MULTIPLY
+    terminal DIVIDE
+    terminal ADD
+    terminal SUBTRACT
+    terminal LPAREN
+    terminal RPAREN
   end
 
   presidence do
     left MULTIPLY, DIVIDE
     left ADD, SUBTRACT
   end
+
+  start_production :expressions
 
   productions do
     expressions do
@@ -40,3 +42,7 @@ class MyParser < Antelope::Parser
     end
   end
 end
+
+require 'pp'
+
+pp Antelope::Recognizer.new(MyParser).parse

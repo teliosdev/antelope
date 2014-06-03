@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Antelope::VERSION
   spec.authors       = ["Jeremy Rodi"]
   spec.email         = ["redjazz96@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{A compiler compiler, written in ruby.}
+  spec.description   = %q{A compiler compiler, written in ruby.}
+  spec.homepage      = "https://github.com/medcat/antelope"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

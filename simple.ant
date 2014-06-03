@@ -1,0 +1,38 @@
+class MyParser < Antelope::Parser
+  terminals do
+    terminal NUMBER
+    terminal MULTIPLY
+    terminal ADD
+    terminal LPAREN
+    terminal RPAREN
+  end
+
+  start_production :e
+
+  productions do
+    e do
+      match f
+      match e ADD f
+    end
+
+    f do
+      match f MULTIPLY t
+      match t
+    end
+
+    t do
+      match NUMBER
+      match LPAREN e RPAREN
+    end
+  end
+end
+
+require 'pp'
+require 'pry'
+
+recognizer = Antelope::Recognizer.new(MyParser)
+d = recognizer.parse
+puts recognizer.output(d)
+File.open("simple.output", "w") do |f|
+  recognizer.output(d, f)
+end

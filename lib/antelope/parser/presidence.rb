@@ -14,15 +14,6 @@ module Antelope
 
       end
 
-      module InstanceMethods
-
-      end
-
-      def self.included(receiver)
-        receiver.extend         ClassMethods
-        receiver.send :include, InstanceMethods
-      end
-
       class PresidenceBuilder < Builder
 
         def left(*level)
@@ -41,6 +32,15 @@ module Antelope
           parent.presidence << [type, level]
         end
 
+      end
+
+      module InstanceMethods
+
+      end
+
+      def self.included(receiver)
+        receiver.extend         ClassMethods
+        receiver.send :include, InstanceMethods
       end
     end
   end
