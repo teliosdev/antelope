@@ -28,13 +28,11 @@ module Antelope
         @id = self.class.bump
       end
 
-
-
       def <<(rule)
         if rule.is_a? State
-          rules.concat rule.rules
+          rule.rules.each { |r| self << r }
         else
-          rules << rule
+          rules << rule unless rules.include? rule
         end
       end
 

@@ -43,6 +43,14 @@ class MyParser < Antelope::Parser
   end
 end
 
-require 'pp'
+#require 'pp'
 
-pp Antelope::Recognizer.new(MyParser).parse
+#pp Antelope::Recognizer.new(MyParser).parse
+
+recognizer = Antelope::Recognizer.new(MyParser)
+d = recognizer.parse
+puts recognizer.output(d)
+File.open("example.output", "w") do |f|
+  recognizer.output(d, f)
+end
+

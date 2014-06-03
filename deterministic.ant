@@ -1,0 +1,36 @@
+class MyParser < Antelope::Parser
+  terminals do
+    terminal NUMBER
+    terminal SEMICOLON
+    terminal ADD
+    terminal LPAREN
+    terminal RPAREN
+  end
+
+  start_production :s
+
+  productions do
+    s do
+      match e
+    end
+
+    e do
+      match t SEMICOLON
+      match t ADD e
+    end
+
+    t do
+      match NUMBER
+      match LPAREN e RPAREN
+    end
+  end
+end
+
+require 'pp'
+require 'pry'
+
+recognizer = Antelope::Recognizer.new(MyParser)
+d = recognizer.parse
+File.open("deterministic.output", "w") do |f|
+  recognizer.output(d, f)
+end

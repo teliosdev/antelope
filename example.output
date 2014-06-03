@@ -1,0 +1,198 @@
+State 1:
+  rules:
+    $start →  • expressions
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 2
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 2:
+  rules:
+    $start → expressions • 
+
+  transitions:
+
+
+State 3:
+  rules:
+    expressions → NUMBER • 
+
+  transitions:
+
+
+State 4:
+  rules:
+    expressions → expressions • ADD expressions
+
+  transitions:
+    ADD: State 5
+
+State 7:
+  rules:
+    expressions → expressions • SUBTRACT expressions
+
+  transitions:
+    SUBTRACT: State 8
+
+State 10:
+  rules:
+    expressions → expressions • MULTIPLY expressions
+
+  transitions:
+    MULTIPLY: State 11
+
+State 13:
+  rules:
+    expressions → expressions • DIVIDE expressions
+
+  transitions:
+    DIVIDE: State 14
+
+State 16:
+  rules:
+    expressions → LPAREN • expressions RPAREN
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 17
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 5:
+  rules:
+    expressions → expressions ADD • expressions
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 6
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 8:
+  rules:
+    expressions → expressions SUBTRACT • expressions
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 9
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 11:
+  rules:
+    expressions → expressions MULTIPLY • expressions
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 12
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 14:
+  rules:
+    expressions → expressions DIVIDE • expressions
+    expressions →  • NUMBER
+    expressions →  • expressions ADD expressions
+    expressions →  • expressions SUBTRACT expressions
+    expressions →  • expressions MULTIPLY expressions
+    expressions →  • expressions DIVIDE expressions
+    expressions →  • LPAREN expressions RPAREN
+
+  transitions:
+    expressions: State 15
+    NUMBER: State 3
+    expressions: State 4
+    expressions: State 7
+    expressions: State 10
+    expressions: State 13
+    LPAREN: State 16
+
+State 17:
+  rules:
+    expressions → LPAREN expressions • RPAREN
+
+  transitions:
+    RPAREN: State 18
+
+State 6:
+  rules:
+    expressions → expressions ADD expressions • 
+
+  transitions:
+
+
+State 9:
+  rules:
+    expressions → expressions SUBTRACT expressions • 
+
+  transitions:
+
+
+State 12:
+  rules:
+    expressions → expressions MULTIPLY expressions • 
+
+  transitions:
+
+
+State 15:
+  rules:
+    expressions → expressions DIVIDE expressions • 
+
+  transitions:
+
+
+State 18:
+  rules:
+    expressions → LPAREN expressions RPAREN • 
+
+  transitions:
+
+

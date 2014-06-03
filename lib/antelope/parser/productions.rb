@@ -9,6 +9,9 @@ module Antelope
             @_building_productions = true
             ProductionBuilder.new(self).run(&Proc.new)
             @_building_productions = false
+            productions[:"$start"] = {
+              :items => [Nonterminal.new(start_production)],
+              :block => nil }
           else
             @_productions
           end

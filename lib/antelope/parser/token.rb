@@ -6,6 +6,17 @@ module Antelope
         @value = value
       end
 
+      include Comparable
+
+      def <=>(other)
+        if other.is_a? Token
+          [terminal?, nonterminal?, value] <=> [other.terminal?,
+            other.nonterminal?, other.value]
+        else
+          super
+        end
+      end
+
       def terminal?
         false
       end

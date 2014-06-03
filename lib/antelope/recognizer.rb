@@ -9,38 +9,58 @@ module Antelope
     def initialize(parser)
       @parser = parser
       @automaton = Automaton.new
+      @states = []
     end
 
     def parse
-      compute_state(@parser.start_production)
+      #compute_state(@parser.start_production)
+      compute_initial_state
     end
 
-    def compute_state(production, position = 0)
-      state = compute_closure(production, position)
+    def compute_initial_state
+      rule = Rule.new(:"$start", @parser.productions[:"$start"][:items], 0)
+
+      compute_state(rule)
+    end
+
+    def compute_state(for_rule)
+      state = compute_closure(for_rule)
+      @states << state
       state.each do |rule|
-        state.transitions[rule.active] = compute_state(rule.left,
-                                          rule.position + 1)
+        next unless rule.succ?
+        transitional = find_state_for(rule.succ) do
+          compute_state(rule.succ)
+        end
+        state.transitions[rule.active] = transitional
       end
 
       state
     end
 
-    def compute_closure(left, position = 0)
+    def compute_closure(for_rule)
       state = State.new
-      productions = @parser.productions[left]
+      productions = if for_rule.active.nonterminal?
+        @parser.productions[for_rule.active.value]
+      else
+        []
+      end
+
+      state << for_rule
 
       productions.each do |production|
-        if production[:items].size > position
-          rule = Rule.new(left, production[:items], position)
-          state << rule
+        rule = Rule.new(for_rule.active.value, production[:items], 0)
+        state << rule
 
-          if rule.active.nonterminal? and rule.active.value != left
-            state << compute_closure(rule.active.value, position)
-          end
+        if rule.active.nonterminal? and rule.active.value != rule.left
+          state << compute_closure(rule)
         end
       end
 
       state
+    end
+
+    def find_state_for(rule)
+      @states.select { |x| x.member?(rule) }.last or yield
     end
   end
 end
