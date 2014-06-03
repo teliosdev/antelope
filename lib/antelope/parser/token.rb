@@ -16,6 +16,10 @@ module Antelope
         false
       end
 
+      def epsilon?
+        false
+      end
+
       def to_s
         @value.to_s
       end
@@ -35,7 +39,7 @@ module Antelope
       alias_method :eql?, :==
 
       def to_a
-        [terminal?, nonterminal?, value]
+        [terminal?, nonterminal?, epsilon?, value]
       end
     end
 
@@ -46,6 +50,15 @@ module Antelope
     end
     class Terminal < Token
       def terminal?
+        true
+      end
+    end
+    class Epsilon < Token
+      def initialize
+        super :epsilon
+      end
+
+      def epsilon?
         true
       end
     end

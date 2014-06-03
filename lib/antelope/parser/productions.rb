@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Antelope
   class Parser
     module Productions
@@ -9,9 +11,9 @@ module Antelope
             @_building_productions = true
             ProductionBuilder.new(self).run(&Proc.new)
             @_building_productions = false
-            productions[:"$start"] = {
-              :items => [Nonterminal.new(start_production)],
-              :block => nil }
+            productions[:"$start"] = [{
+              :items => [Nonterminal.new(start_production), Terminal.new(:"$")],
+              :block => nil }]
           else
             @_productions
           end
@@ -56,6 +58,12 @@ module Antelope
         def match(items, &block)
           @matches << { :items => [items].flatten, :block => block }
         end
+
+        def ε
+          Epsilon.new
+        end
+
+        alias_method :nothing, :ε
 
         def method_missing(method, *args)
           # It's a terminal!

@@ -8,17 +8,18 @@ module Antelope
     include Output
     def initialize(parser)
       @parser = parser
-      @automaton = Automaton.new
       @states = []
     end
 
     def parse
-      #compute_state(@parser.start_production)
-      compute_initial_state
+      state = compute_initial_state
+      reassign_state_ids
+      state
     end
 
     def compute_initial_state
-      rule = Rule.new(:"$start", @parser.productions[:"$start"][:items], 0)
+      rule = Rule.new(:"$start",
+        @parser.productions[:"$start"][0][:items], 0)
 
       compute_state(rule)
     end
@@ -67,5 +68,12 @@ module Antelope
     def find_state_for(rule)
       @states.select { |x| x.member?(rule) }.last or yield
     end
+
+    def reassign_state_ids
+      @states.each_with_index do |state, i|
+        state.id = i
+      end
+    end
+
   end
 end

@@ -1,4 +1,5 @@
-require 'forwardable'
+require "forwardable"
+require "securerandom"
 
 module Antelope
   class Recognizer
@@ -6,26 +7,17 @@ module Antelope
 
       attr_reader :rules
       attr_reader :transitions
-      attr_reader :id
+      attr_accessor :id
 
       include Enumerable
       extend Forwardable
 
       def_delegator :@rules, :each
 
-      def self.id
-        @_id ||= 0
-      end
-
-      def self.bump
-        id
-        @_id += 1
-      end
-
       def initialize
         @rules = []
         @transitions = {}
-        @id = self.class.bump
+        @id = SecureRandom.hex
       end
 
       def merge!(other)

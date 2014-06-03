@@ -1,6 +1,6 @@
-State 1:
+State 0:
   rules:
-    $start →  • s
+    $start →  • s $
     s →  • e
     e →  • t SEMICOLON
     t →  • NUMBER
@@ -8,43 +8,43 @@ State 1:
     e →  • t ADD e
 
   transitions:
-    s: State 5
-    e: State 6
-    t: State 7
-    NUMBER: State 9
-    LPAREN: State 10
+    s: State 1
+    e: State 3
+    t: State 4
+    NUMBER: State 6
+    LPAREN: State 7
 
-State 5:
+State 1:
   rules:
-    $start → s • 
+    $start → s • $
 
   transitions:
+    $: State 2
 
-
-State 6:
+State 3:
   rules:
     s → e • 
 
   transitions:
 
 
-State 7:
+State 4:
   rules:
     e → t • SEMICOLON
     e → t • ADD e
 
   transitions:
-    SEMICOLON: State 8
-    ADD: State 16
+    SEMICOLON: State 5
+    ADD: State 11
 
-State 9:
+State 6:
   rules:
     t → NUMBER • 
 
   transitions:
 
 
-State 10:
+State 7:
   rules:
     t → LPAREN • e RPAREN
     e →  • t SEMICOLON
@@ -53,19 +53,26 @@ State 10:
     e →  • t ADD e
 
   transitions:
-    e: State 13
-    t: State 7
-    NUMBER: State 9
-    LPAREN: State 10
+    e: State 8
+    t: State 4
+    NUMBER: State 6
+    LPAREN: State 7
 
-State 8:
+State 2:
+  rules:
+    $start → s $ • 
+
+  transitions:
+
+
+State 5:
   rules:
     e → t SEMICOLON • 
 
   transitions:
 
 
-State 16:
+State 11:
   rules:
     e → t ADD • e
     e →  • t SEMICOLON
@@ -74,26 +81,26 @@ State 16:
     e →  • t ADD e
 
   transitions:
-    e: State 19
-    t: State 7
-    NUMBER: State 9
-    LPAREN: State 10
+    e: State 12
+    t: State 4
+    NUMBER: State 6
+    LPAREN: State 7
 
-State 13:
+State 8:
   rules:
     t → LPAREN e • RPAREN
 
   transitions:
-    RPAREN: State 14
+    RPAREN: State 9
 
-State 19:
+State 12:
   rules:
     e → t ADD e • 
 
   transitions:
 
 
-State 14:
+State 9:
   rules:
     t → LPAREN e RPAREN • 
 
