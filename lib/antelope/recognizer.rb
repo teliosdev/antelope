@@ -1,11 +1,9 @@
-require "antelope/recognizer/output"
 require "antelope/recognizer/rule"
 require "antelope/recognizer/state"
 
 module Antelope
   class Recognizer
 
-    include Output
     def initialize(parser)
       @parser = parser
       @states = []
@@ -33,10 +31,10 @@ module Antelope
           compute_state(rule.succ)
         end
 
-        if state.transitions[rule.active]
-          state.transitions[rule.active].merge!(transitional)
+        if state.transitions[rule.active.value]
+          state.transitions[rule.active.value].merge!(transitional)
         else
-          state.transitions[rule.active] = transitional
+          state.transitions[rule.active.value] = transitional
         end
       end
 
@@ -57,7 +55,7 @@ module Antelope
         rule = Rule.new(for_rule.active, production[:items], 0)
         state << rule
 
-        if rule.active.nonterminal? and rule.active.value != rule.left.value
+        if rule.active.nonterminal? and rule.active != rule.left
           state << compute_closure(rule)
         end
       end

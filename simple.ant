@@ -1,38 +1,34 @@
 class MyParser < Antelope::Parser
   terminals do
-    terminal NUMBER
-    terminal MULTIPLY
-    terminal ADD
-    terminal LPAREN
-    terminal RPAREN
+    terminal IDENT
+    terminal STAR
+    terminal EQUALS
   end
 
   start_production :e
 
   productions do
+
     e do
-      match f
-      match e ADD f
+      match l EQUALS r
+      match r
     end
 
-    f do
-      match f MULTIPLY t
-      match t
+    l do
+      match IDENT
+      match STAR r
     end
 
-    t do
-      match NUMBER
-      match LPAREN e RPAREN
+    r do
+      match l
     end
   end
 end
 
-require 'pp'
-require 'pry'
-
 recognizer = Antelope::Recognizer.new(MyParser)
 d = recognizer.parse
-puts recognizer.output(d)
+p = Antelope::Constructor.new(d, MyParser).augment
 File.open("simple.output", "w") do |f|
-  recognizer.output(d, f)
+  Antelope::Output.output(p, f)
+  Antelope::Output.output(d, f)
 end

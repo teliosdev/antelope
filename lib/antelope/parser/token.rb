@@ -4,6 +4,7 @@ module Antelope
       attr_reader :value
       attr_accessor :to
       attr_accessor :from
+
       def initialize(value)
         @value = value
         @to    = nil
@@ -27,8 +28,11 @@ module Antelope
       def to_s
         buf = @value.to_s
 
-        if @to and @from
-          buf << "_#{@from.id}-#{@to.id}"
+        if to or from
+          buf << "("
+          buf << "#{from.id}" if from
+          buf << ":#{to.id}"  if to
+          buf << ")"
         end
 
         buf
@@ -36,7 +40,7 @@ module Antelope
 
       def <=>(other)
         if other.is_a? Token
-          other.to_a <=> other.to_a
+          to_a <=> other.to_a
         else
           super
         end

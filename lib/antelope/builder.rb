@@ -8,7 +8,7 @@ module Antelope
     end
 
     def run(&block)
-      instance_exec &block
+      instance_exec(&block)
     end
 
   end

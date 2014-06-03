@@ -18,7 +18,7 @@ module Antelope
               items = production[:items]
               parts = items.each_with_index.
                 find_all { |t, i| t == token }
-              parts.each do |(tok, i)|
+              parts.each do |(_, i)|
                 set = set + items.slice(i + 1).
                   map { |item| first(item) }
               end

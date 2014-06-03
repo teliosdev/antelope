@@ -5,13 +5,19 @@ module Antelope
       attr_accessor :left
       attr_accessor :right
       attr_accessor :position
+      attr_accessor :lookahead
 
       include Comparable
 
-      def initialize(left, right, position)
-        @left = left
-        @right = right
-        @position = position
+      def initialize(left, right, position = 0)
+        @left      = left
+        @right     = right
+        @position  = position
+        @lookahead = nil
+      end
+
+      def inspect
+        "#<#{self.class} left=#{left.value} right=[#{right.map(&:value).join(" ")}] position=#{position}>"
       end
 
       def active

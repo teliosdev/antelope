@@ -20,7 +20,7 @@ module Antelope
         end
 
         def const_missing(name)
-          if @_building_productions
+          if @_building_productions ||= false
             Terminal.new(name)
           else
             super

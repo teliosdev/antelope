@@ -13,37 +13,62 @@ module Antelope
     include Lookahead
 
     attr_reader :parser
+    attr_reader :productions
 
     def initialize(start, parser)
       @start       = start
       @parser      = parser
-      @augmented   = {}
+      @queue       = []
+      @productions = []
+      @position    = 0
       super()
     end
 
     def augment
-      augment_state(@start)
+      @productions = []
+      add_state(@start)
+
+      while @queue.size > @position
+        augment_state(@queue[@position])
+        @position += 1
+      end
+
+      @productions
     end
 
     def augment_state(state)
-      @augmented.fetch(state) do
-        @augmented[state] = true
-        state.each do |rule|
-          next unless rule.active.nonterminal?
-
-          rule.active.from = state
-          rule.active.to   = state.transitions[rule.active]
-
-          rule.left.from = state
-          rule.left.to   = state.transitions[rule.left]
-
-        end
-
-        state.transitions.values.each { |st| augment_state(st) }
+      state.rules.each do |rule|
+        next unless rule.position.zero?
+        trace_rule(state, rule)
       end
     end
 
     private
+
+    def trace_rule(state, rule)
+      states = [state]
+
+      rule.right.each do |token|
+        transition = states.last.transitions[token.value]
+        if token.nonterminal?
+          token.from = states.last
+          token.to   = transition
+        end
+
+        raise unless transition
+        add_state(transition)
+        states << transition
+      end
+
+      rule.left.from = state
+      rule.left.to   = state.transitions[rule.left.value]
+
+      @productions << Recognizer::Rule.new(rule.left, rule.right)
+    end
+
+    def add_state(state)
+      @queue << state unless @queue.include?(state)
+    end
 
     def incorrect_argument!(arg, *types)
       raise ArgumentError, "Expected one of #{types.join(", ")}, got #{arg.class}"
