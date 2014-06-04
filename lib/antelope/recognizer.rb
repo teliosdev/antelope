@@ -5,6 +5,7 @@ module Antelope
   class Recognizer
 
     attr_reader :states
+    attr_reader :start
 
     def initialize(parser)
       @parser = parser
@@ -13,7 +14,7 @@ module Antelope
 
     def parse
       @states = []
-      state = compute_initial_state
+      @start  = compute_initial_state
       reassign_state_ids
     end
 
@@ -54,7 +55,7 @@ module Antelope
       state << for_rule
 
       productions.each do |production|
-        rule = Rule.new(for_rule.active, production[:items], 0)
+        rule = Rule.new(for_rule.active, production[:items].map(&:dup), 0)
         state << rule
 
         if rule.active.nonterminal? and rule.active != rule.left
@@ -71,7 +72,7 @@ module Antelope
 
     def reassign_state_ids
       @states.each_with_index do |state, i|
-        state.id = i
+        state.id = i + 1
       end
 
       @states

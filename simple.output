@@ -1,112 +1,168 @@
 productions:
-  $start(0) → e(0:1) $
-  e(0:1) → l(0:3) EQUALS r(4:5)
-  l(0:3) → IDENT
-  l(0:3) → STAR r(8:9)
-  e(0:1) → r(0:10)
-  r(0:10) → l(8:6)
-  r(4:5) → l(8:6)
-  l(8:6) → IDENT
-  l(8:6) → STAR r(8:9)
-  r(8:9) → l(8:6)
-  l(8:6) → IDENT
-  l(8:6) → STAR r(8:9)
+    $start_[1] →  • e_[1:2] $
+      {}
+    e_[1:2] →  • l_[1:4] EQUALS r_[5:6]
+      {}
+    l_[1:4] →  • IDENT
+      {}
+    l_[1:4] →  • STAR r_[9:10]
+      {}
+    e_[1:2] →  • r_[1:11]
+      {}
+    r_[1:11] →  • l_[1:4]
+      {}
+    r_[5:6] →  • l_[5:7]
+      {}
+    l_[5:7] →  • IDENT
+      {}
+    l_[5:7] →  • STAR r_[9:10]
+      {}
+    r_[9:10] →  • l_[9:7]
+      {}
+    l_[9:7] →  • IDENT
+      {}
+    l_[9:7] →  • STAR r_[9:10]
+      {}
 
-State 0:
-  rules:
-    $start(0) →  • e(0:1) $
-    e(0:1) →  • l(0:3) EQUALS r(4:5)
-    l(0:3) →  • IDENT
-    l(0:3) →  • STAR r(8:9)
-    e(0:1) →  • r(0:10)
-    r(0:10) →  • l(8:6)
-
-  transitions:
-    e: State 1
-    l: State 3
-    IDENT: State 7
-    STAR: State 8
-    r: State 10
+follow():
+  $start_[1]: 
+  e_[1:2]: $
+  l_[1:4]: EQUALS $
+  r_[1:11]: $
+  r_[5:6]: $
+  l_[5:7]: EQUALS $
+  r_[9:10]: $
+  l_[9:7]: EQUALS $
 
 State 1:
   rules:
-    $start(0) → e(0:1) • $
+    $start_[1] →  • e_[1:2] $
+      {}
+    e_[1:2] →  • l_[1:4] EQUALS r_[5:6]
+      {}
+    l_[1:4] →  • IDENT
+      {}
+    l_[1:4] →  • STAR r_[9:10]
+      {}
+    e_[1:2] →  • r_[1:11]
+      {}
+    r_[1:11] →  • l_[1:4]
+      {}
+
 
   transitions:
-    $: State 2
-
-State 3:
-  rules:
-    e(0:1) → l(0:3) • EQUALS r(4:5)
-    r(4:5) → l(8:6) • 
-
-  transitions:
-    EQUALS: State 4
-
-State 7:
-  rules:
-    l(8:6) → IDENT • 
-
-  transitions:
-
-
-State 8:
-  rules:
-    l(8:6) → STAR • r(8:9)
-    r(8:9) →  • l(8:6)
-    l(8:6) →  • IDENT
-    l(8:6) →  • STAR r(8:9)
-
-  transitions:
-    r: State 9
-    l: State 6
-    IDENT: State 7
-    STAR: State 8
-
-State 10:
-  rules:
-    e(0:1) → r(0:10) • 
-
-  transitions:
-
+    e: State 2
+    l: State 4
+    IDENT: State 8
+    STAR: State 9
+    r: State 11
 
 State 2:
   rules:
-    $start(0) → e(0:1) $ • 
+    $start_[1] → e_[1:2] • $
+      {}
+
 
   transitions:
-
+    $: State 3
 
 State 4:
   rules:
-    e(0:1) → l(0:3) EQUALS • r(4:5)
-    r(4:5) →  • l(8:6)
-    l(8:6) →  • IDENT
-    l(8:6) →  • STAR r(8:9)
+    e_[1:2] → l_[1:4] • EQUALS r_[5:6]
+      {}
+    r_[5:6] → l_[5:7] • 
+      {$}
+
 
   transitions:
-    r: State 5
-    l: State 6
-    IDENT: State 7
-    STAR: State 8
+    EQUALS: State 5
+
+State 8:
+  rules:
+    l_[5:7] → IDENT • 
+      {EQUALS, $}
+
+
+  transitions:
+
 
 State 9:
   rules:
-    l(8:6) → STAR r(8:9) • 
+    l_[5:7] → STAR • r_[9:10]
+      {}
+    r_[9:10] →  • l_[9:7]
+      {}
+    l_[9:7] →  • IDENT
+      {}
+    l_[9:7] →  • STAR r_[9:10]
+      {}
+
+
+  transitions:
+    r: State 10
+    l: State 7
+    IDENT: State 8
+    STAR: State 9
+
+State 11:
+  rules:
+    e_[1:2] → r_[1:11] • 
+      {$}
+
 
   transitions:
 
 
-State 6:
+State 3:
   rules:
-    r(4:5) → l(8:6) • 
+    $start_[1] → e_[1:2] $ • 
+      {}
+
 
   transitions:
 
 
 State 5:
   rules:
-    e(0:1) → l(0:3) EQUALS r(4:5) • 
+    e_[1:2] → l_[1:4] EQUALS • r_[5:6]
+      {}
+    r_[5:6] →  • l_[5:7]
+      {}
+    l_[5:7] →  • IDENT
+      {}
+    l_[5:7] →  • STAR r_[9:10]
+      {}
+
+
+  transitions:
+    r: State 6
+    l: State 7
+    IDENT: State 8
+    STAR: State 9
+
+State 10:
+  rules:
+    l_[5:7] → STAR r_[9:10] • 
+      {EQUALS, $}
+
+
+  transitions:
+
+
+State 7:
+  rules:
+    r_[5:6] → l_[5:7] • 
+      {$}
+
+
+  transitions:
+
+
+State 6:
+  rules:
+    e_[1:2] → l_[1:4] EQUALS r_[5:6] • 
+      {$}
+
 
   transitions:
 

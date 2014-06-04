@@ -20,6 +20,10 @@ module Antelope
         @id = SecureRandom.hex
       end
 
+      def inspect
+        "#<#{self.class} id=#{id} transitions=[#{transitions.keys.join(", ")}] rules=[#{rules.map(&:left).join(", ")}]>"
+      end
+
       def merge!(other)
         raise ArgumentError, "Expected #{self.class}, " +
           "got #{other.class}" unless other.is_a? State
@@ -27,6 +31,10 @@ module Antelope
         self << other
         self.transitions.merge! other.transitions
         self
+      end
+
+      def rule_for(production)
+        rules.find { |rule| production === rule }
       end
 
       def <<(rule)

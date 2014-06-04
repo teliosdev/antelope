@@ -8,23 +8,35 @@ module Antelope
       end
 
       def follow(token)
-        return Set.new unless token.nonterminal?
+
+        if token.nonterminal?
+          token = token.value
+        elsif token.is_a? Symbol
+        else
+          incorrect_argument! token, Parser::Nonterminal, Symbol
+        end
 
         @follows.fetch(token) do
           @follows[token] = Set.new
           set = Set.new
+
           parser.productions.each do |key, value|
             value.each do |production|
               items = production[:items]
-              parts = items.each_with_index.
-                find_all { |t, i| t == token }
-              parts.each do |(_, i)|
-                set = set + items.slice(i + 1).
-                  map { |item| first(item) }
+              positions = items.each_with_index.
+                find_all { |t, _| t.value == token }.
+                map(&:last).map(&:succ)
+              positions.map { |pos| first(items[pos..-1]) }.
+                inject(set, :merge)
+              positions.each do |pos|
+                if pos == items.size || nullable?(items[pos..-1])
+                  set.merge follow(Parser::Nonterminal.new(key))
+                end
               end
             end
           end
 
+          set
           @follows[token] = set
         end
       end

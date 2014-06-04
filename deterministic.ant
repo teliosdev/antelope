@@ -29,7 +29,18 @@ end
 
 recognizer = Antelope::Recognizer.new(MyParser)
 d = recognizer.parse
-Antelope::Constructor.new(d, MyParser).augment
+c = Antelope::Constructor.new(d, MyParser)
+c.augment
 File.open("deterministic.output", "w") do |f|
-  recognizer.output(d, f)
+  f << "lookahead():\n"
+  c.productions.each do |rule|
+    f << "  #{Antelope::Output.output(rule)}: #{rule.lookahead.to_a.join(" ")}\n"
+  end
+  f << "follow():\n"
+  c.productions.each do |rule|
+    f << "  #{rule.left}: #{c.follow(rule.left).to_a.join(" ")}\n"
+  end
+
+  f << "\n"
+  Antelope::Output.output(recognizer.start, f)
 end

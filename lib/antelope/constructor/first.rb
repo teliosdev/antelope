@@ -30,14 +30,14 @@ module Antelope
       private
 
       def first_array(token)
-        token.delete_if { |tok| @firstifying.include?(tok) }.
+        token.dup.delete_if { |tok| @firstifying.include?(tok) }.
         each_with_index.take_while do |tok, i|
           if i.zero?
             true
           else
             nullable?(token[i - 1])
           end
-        end.map { |tok| first(tok) }.inject(Set.new, :+)
+        end.map(&:first).map { |tok| first(tok) }.inject(Set.new, :+)
       end
 
       def firstifying(tok)

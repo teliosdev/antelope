@@ -28,7 +28,8 @@ module Antelope
         state_output to_out
       elsif to_out.is_a? Recognizer::Rule
         rule_output to_out
-      elsif to_out.is_a? Array
+      elsif to_out.is_a?(Array)
+        p to_out
         production_output to_out
       end
     end
@@ -37,7 +38,7 @@ module Antelope
 <<-BLOCK
 State #{state.id}:
   rules:
-#{state.rules.map { |r| rule_output(r)} }.join("\n")}
+#{state.rules.map { |r| rule_output(r) }.join("")}
 
   transitions:
 #{state_transitions_output(state)}
@@ -46,16 +47,16 @@ BLOCK
     end
 
     def rule_output(rule)
+      p rule
 <<-RULE
-    #{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}"
-      #{rule.lookahead}
+    #{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
+      {#{rule.lookahead.to_a.join(", ")}}
 RULE
     end
 
     def production_output(prods)
       buf = "productions:\n  "
       buf << prods.map do |prod|
-        p prod
         "#{prod.left} → #{prod.right.map(&:to_s).join(" ")}"
       end.join("\n  ") << "\n\n"
     end

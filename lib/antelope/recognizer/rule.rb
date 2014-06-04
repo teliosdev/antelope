@@ -2,30 +2,32 @@ module Antelope
   class Recognizer
     class Rule
 
-      attr_accessor :left
-      attr_accessor :right
-      attr_accessor :position
+      attr_reader :left
+      attr_reader :right
+      attr_reader :position
       attr_accessor :lookahead
 
       include Comparable
 
       def initialize(left, right, position = 0)
         @left      = left
-        @right     = right
+        @right     = right.freeze
         @position  = position
-        @lookahead = nil
+        @lookahead = Set.new
       end
 
       def inspect
-        "#<#{self.class} left=#{left.value} right=[#{right.map(&:value).join(" ")}] position=#{position}>"
+        "#<#{self.class} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
       end
+
+      alias_method :to_s, :inspect
 
       def active
         right[position] or Parser::Token.new(nil)
       end
 
       def succ
-        @_succ ||= Rule.new(left, right, position + 1)
+        Rule.new(left, right, position + 1)
       end
 
       def succ?
@@ -35,6 +37,20 @@ module Antelope
       def <=>(other)
         if other.is_a? Rule
           to_a <=> other.to_a
+        else
+          super
+        end
+      end
+
+      def without_transitions
+        @_without_transitions ||=
+          Rule.new(left, right.map(&:without_transitions), position)
+      end
+
+      def ===(other)
+        if other.is_a? Rule
+          left === other.left and right.each_with_index.
+            all? { |e, i| e === other.right[i] }
         else
           super
         end

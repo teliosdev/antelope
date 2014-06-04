@@ -14,7 +14,7 @@ module Antelope
             !!productions.any? { |prod| nullable?(prod[:items]) }
           end
         when Array
-          token.delete_if { |tok|
+          token.dup.delete_if { |tok|
             @nullifying.include?(tok) }.all? { |tok| nullable?(tok) }
         when Parser::Epsilon
           true

@@ -19,46 +19,57 @@ module Antelope
     def initialize(states, parser)
       @states      = states
       @parser      = parser
-      @queue       = []
       @productions = []
-      @position    = 0
       super()
     end
 
     def augment
       states.each do |state|
-        state.rules.each do |rule|
-          rule.lookahead = lookahead(rule.left, rule.right)
+        augment_state(state)
+      end.each do |state|
+        augment_rules(state)
+      end
+
+      @productions
+    end
+
+    def augment_state(state)
+      state.rules.select { |x| x.position.zero? }.each do |rule|
+        current_state = state
+
+        rule.left.from = state
+        rule.left.to   = state.transitions[rule.left.value]
+
+        rule.right.each do |part|
+          transition = current_state.transitions[part.value]
+          if part.nonterminal?
+            part.from = current_state
+            part.to   = transition
+          end
+
+          current_state = transition
         end
+
+        productions << rule unless productions.include?(rule)
+      end
+    end
+
+    def augment_rules(state)
+      state.rules.select { |x| x.position.zero? }.each do |rule|
+        current_state = state
+
+        rule.right.each do |part|
+          transition = current_state.transitions[part.value]
+          current_state = transition
+        end
+
+        final = current_state.rule_for(rule)
+
+        final.lookahead = follow(rule.left)
       end
     end
 
     private
-
-    def trace_rule(state, rule)
-      states = [state]
-
-      rule.right.each do |token|
-        transition = states.last.transitions[token.value]
-        if token.nonterminal?
-          token.from = states.last
-          token.to   = transition
-        end
-
-        raise unless transition
-        add_state(transition)
-        states << transition
-      end
-
-      rule.left.from = state
-      rule.left.to   = state.transitions[rule.left.value]
-
-      @productions << Recognizer::Rule.new(rule.left, rule.right)
-    end
-
-    def add_state(state)
-      @queue << state unless @queue.include?(state)
-    end
 
     def incorrect_argument!(arg, *types)
       raise ArgumentError, "Expected one of #{types.join(", ")}, got #{arg.class}"
