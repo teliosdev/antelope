@@ -1,3 +1,87 @@
+productions:
+    $start(0) →  • expressions(0:1) $
+      {}
+    expressions(0:1) →  • NUMBER
+      {}
+    expressions(0:1) →  • expressions(0:1) ADD expressions(9:14)
+      {}
+    expressions(0:1) →  • expressions(0:1) SUBTRACT expressions(10:15)
+      {}
+    expressions(0:1) →  • expressions(0:1) MULTIPLY expressions(11:16)
+      {}
+    expressions(0:1) →  • expressions(0:1) DIVIDE expressions(12:17)
+      {}
+    expressions(0:1) →  • LPAREN expressions(7:13) RPAREN
+      {}
+    expressions(7:13) →  • NUMBER
+      {}
+    expressions(7:13) →  • expressions(7:13) ADD expressions(9:14)
+      {}
+    expressions(7:13) →  • expressions(7:13) SUBTRACT expressions(10:15)
+      {}
+    expressions(7:13) →  • expressions(7:13) MULTIPLY expressions(11:16)
+      {}
+    expressions(7:13) →  • expressions(7:13) DIVIDE expressions(12:17)
+      {}
+    expressions(7:13) →  • LPAREN expressions(7:13) RPAREN
+      {}
+    expressions(9:14) →  • NUMBER
+      {}
+    expressions(9:14) →  • expressions(9:14) ADD expressions(9:14)
+      {}
+    expressions(9:14) →  • expressions(9:14) SUBTRACT expressions(10:15)
+      {}
+    expressions(9:14) →  • expressions(9:14) MULTIPLY expressions(11:16)
+      {}
+    expressions(9:14) →  • expressions(9:14) DIVIDE expressions(12:17)
+      {}
+    expressions(9:14) →  • LPAREN expressions(7:13) RPAREN
+      {}
+    expressions(10:15) →  • NUMBER
+      {}
+    expressions(10:15) →  • expressions(10:15) ADD expressions(9:14)
+      {}
+    expressions(10:15) →  • expressions(10:15) SUBTRACT expressions(10:15)
+      {}
+    expressions(10:15) →  • expressions(10:15) MULTIPLY expressions(11:16)
+      {}
+    expressions(10:15) →  • expressions(10:15) DIVIDE expressions(12:17)
+      {}
+    expressions(10:15) →  • LPAREN expressions(7:13) RPAREN
+      {}
+    expressions(11:16) →  • NUMBER
+      {}
+    expressions(11:16) →  • expressions(11:16) ADD expressions(9:14)
+      {}
+    expressions(11:16) →  • expressions(11:16) SUBTRACT expressions(10:15)
+      {}
+    expressions(11:16) →  • expressions(11:16) MULTIPLY expressions(11:16)
+      {}
+    expressions(11:16) →  • expressions(11:16) DIVIDE expressions(12:17)
+      {}
+    expressions(11:16) →  • LPAREN expressions(7:13) RPAREN
+      {}
+    expressions(12:17) →  • NUMBER
+      {}
+    expressions(12:17) →  • expressions(12:17) ADD expressions(9:14)
+      {}
+    expressions(12:17) →  • expressions(12:17) SUBTRACT expressions(10:15)
+      {}
+    expressions(12:17) →  • expressions(12:17) MULTIPLY expressions(11:16)
+      {}
+    expressions(12:17) →  • expressions(12:17) DIVIDE expressions(12:17)
+      {}
+    expressions(12:17) →  • LPAREN expressions(7:13) RPAREN
+      {}
+
+follow():
+  $start(0): 
+  expressions(0:1): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
+  expressions(7:13): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
+  expressions(9:14): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
+  expressions(10:15): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
+  expressions(11:16): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
+  expressions(12:17): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $
 
 State 0:
   rules:

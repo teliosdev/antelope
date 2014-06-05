@@ -49,7 +49,6 @@ c = Antelope::Constructor.new(MyParser)
 c.call
 
 File.open("example.output", "w") do |f|
-=begin
   f << "productions:\n"
   c.productions.each do |rule|
     f << "#{Antelope::Output.output(rule)}"
@@ -59,7 +58,6 @@ File.open("example.output", "w") do |f|
   c.productions.map { |x| x.left }.uniq.each do |p|
     f << "  #{p}: #{c.follow(p).to_a.join(" ")}\n"
   end
-=end
 
   f << "\n"
   Antelope::Output.output(recognizer.start, f)
