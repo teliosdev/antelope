@@ -23,7 +23,7 @@ module Antelope
 
     def compute_initial_state
       rule = Rule.new(Parser::Nonterminal.new(:"$start"),
-        parser.productions[:"$start"][0][:items], 0)
+        parser.productions[:"$start"][0][:items].map(&:dup), 0)
 
       compute_whole_state(rule)
     end
@@ -64,7 +64,7 @@ module Antelope
       fixed_point(state.rules) do
         state.rules.select { |x| x.active.nonterminal? }.each do |rule|
           parser.productions[rule.active.value].each do |prod|
-            state << Rule.new(rule.active, prod[:items], 0)
+            state << Rule.new(rule.active, prod[:items].map(&:dup), 0)
           end
         end
       end
