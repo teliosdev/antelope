@@ -16,14 +16,14 @@ module Antelope
     attr_reader :productions
     attr_reader :states
 
-    def initialize(states, parser)
-      @states      = states
+    def initialize(parser)
+      @states      = parser.states
       @parser      = parser
       @productions = []
       super()
     end
 
-    def augment
+    def call
       states.each do |state|
         augment_state(state)
       end.each do |state|
@@ -40,13 +40,24 @@ module Antelope
         rule.left.from = state
         rule.left.to   = state.transitions[rule.left.value]
 
-        rule.right.each do |part|
-          transition = current_state.transitions[part.value]
+        states = [state]
+
+        rule.right.each_with_index do |part, pos|
+          begin
+            transition = current_state.transitions[part.value]
+          rescue
+            puts "WATING TRANSITION FOR #{part.value}"
+            p states[-2]
+            p rule
+            p pos
+            raise
+          end
           if part.nonterminal?
             part.from = current_state
             part.to   = transition
           end
 
+          states.push(transition)
           current_state = transition
         end
 

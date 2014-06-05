@@ -36,7 +36,6 @@ module Antelope
             end
           end
 
-          set
           @follows[token] = set
         end
       end

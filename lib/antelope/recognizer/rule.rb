@@ -20,7 +20,9 @@ module Antelope
         "#<#{self.class} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
       end
 
-      alias_method :to_s, :inspect
+      def to_s
+        "#{left} → #{right[0, position].join(" ")} • #{right[position..-1].join(" ")}"
+      end
 
       def active
         right[position] or Parser::Token.new(nil)
@@ -44,7 +46,8 @@ module Antelope
 
       def without_transitions
         @_without_transitions ||=
-          Rule.new(left, right.map(&:without_transitions), position)
+          Rule.new(left.without_transitions,
+                   right.map(&:without_transitions), position)
       end
 
       def ===(other)

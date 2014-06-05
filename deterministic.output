@@ -1,132 +1,128 @@
-lookahead():
-      $start →  • s $
-: NUMBER LPAREN
-      s →  • e
-: NUMBER LPAREN
-      e →  • t SEMICOLON
-: NUMBER LPAREN
-      t →  • NUMBER
-: NUMBER
-      t →  • LPAREN e RPAREN
-: LPAREN
-      e →  • t ADD e
-: NUMBER LPAREN
+productions:
+    $start_[0] →  • s_[0:1] $
+      {}
+    s_[0:1] →  • e_[0:2]
+      {}
+    e_[0:2] →  • t_[9:3] SEMICOLON
+      {}
+    e_[0:2] →  • t_[9:3] ADD e_[9:11]
+      {}
+    t_[9:3] →  • NUMBER
+      {}
+    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+      {}
+    e_[6:10] →  • t_[9:3] SEMICOLON
+      {}
+    e_[6:10] →  • t_[9:3] ADD e_[9:11]
+      {}
+    e_[9:11] →  • t_[9:3] SEMICOLON
+      {}
+    e_[9:11] →  • t_[9:3] ADD e_[9:11]
+      {}
+
 follow():
-  $start: 
-  s: $
-  e: $ RPAREN
-  t: SEMICOLON ADD
-  t: SEMICOLON ADD
-  e: $ RPAREN
+  $start_[0]: 
+  s_[0:1]: $
+  e_[0:2]: $ RPAREN
+  t_[9:3]: SEMICOLON ADD
+  e_[6:10]: $ RPAREN
+  e_[9:11]: $ RPAREN
 
 State 0:
   rules:
-    $start →  • s $
-    s →  • e
-    e →  • t SEMICOLON
-    t →  • NUMBER
-    t →  • LPAREN e RPAREN
-    e →  • t ADD e
+    $start_[0] →  • s_[0:1] $
+      {}
+    s_[0:1] →  • e_[0:2]
+      {}
+    e_[0:2] →  • t_[9:3] SEMICOLON
+      {}
+    e_[0:2] →  • t_[9:3] ADD e_[9:11]
+      {}
+    t_[9:3] →  • NUMBER
+      {}
+    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+      {}
 
 
   transitions:
     s: State 1
-    e: State 3
-    t: State 4
-    NUMBER: State 6
-    LPAREN: State 7
+    e: State 2
+    t: State 3
+    NUMBER: State 5
+    LPAREN: State 6
 
 State 1:
   rules:
-    $start → s • $
+    $start_[0] → s_[0:1] • $
+      {}
 
 
   transitions:
-    $: State 2
-
-State 3:
-  rules:
-    s → e • 
-
-
-  transitions:
-
-
-State 4:
-  rules:
-    e → t • SEMICOLON
-    e → t • ADD e
-
-
-  transitions:
-    SEMICOLON: State 5
-    ADD: State 11
-
-State 6:
-  rules:
-    t → NUMBER • 
-
-
-  transitions:
-
-
-State 7:
-  rules:
-    t → LPAREN • e RPAREN
-    e →  • t SEMICOLON
-    t →  • NUMBER
-    t →  • LPAREN e RPAREN
-    e →  • t ADD e
-
-
-  transitions:
-    e: State 8
-    t: State 4
-    NUMBER: State 6
-    LPAREN: State 7
+    $: State 7
 
 State 2:
   rules:
-    $start → s $ • 
+    s_[0:1] → e_[0:2] • 
+      {$}
 
 
   transitions:
 
+
+State 3:
+  rules:
+    e_[0:2] → t_[9:3] • SEMICOLON
+      {}
+    e_[0:2] → t_[9:3] • ADD e_[9:11]
+      {}
+
+
+  transitions:
+    SEMICOLON: State 8
+    ADD: State 9
 
 State 5:
   rules:
-    e → t SEMICOLON • 
+    t_[9:3] → NUMBER • 
+      {SEMICOLON, ADD}
 
 
   transitions:
 
 
-State 11:
+State 6:
   rules:
-    e → t ADD • e
-    e →  • t SEMICOLON
-    t →  • NUMBER
-    t →  • LPAREN e RPAREN
-    e →  • t ADD e
+    t_[9:3] → LPAREN • e_[6:10] RPAREN
+      {}
+    e_[6:10] →  • t_[9:3] SEMICOLON
+      {}
+    e_[6:10] →  • t_[9:3] ADD e_[9:11]
+      {}
+    t_[9:3] →  • NUMBER
+      {}
+    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+      {}
 
 
   transitions:
-    e: State 12
-    t: State 4
-    NUMBER: State 6
-    LPAREN: State 7
+    e: State 10
+    t: State 3
+    NUMBER: State 5
+    LPAREN: State 6
+
+State 7:
+  rules:
+    $start_[0] → s_[0:1] $ • 
+      {}
+
+
+  transitions:
+
 
 State 8:
   rules:
-    t → LPAREN e • RPAREN
-
-
-  transitions:
-    RPAREN: State 9
-
-State 12:
-  rules:
-    e → t ADD e • 
+    e_[0:2] → t_[9:3] SEMICOLON • 
+      {$, RPAREN}
 
 
   transitions:
@@ -134,7 +130,46 @@ State 12:
 
 State 9:
   rules:
-    t → LPAREN e RPAREN • 
+    e_[0:2] → t_[9:3] ADD • e_[9:11]
+      {}
+    e_[9:11] →  • t_[9:3] SEMICOLON
+      {}
+    e_[9:11] →  • t_[9:3] ADD e_[9:11]
+      {}
+    t_[9:3] →  • NUMBER
+      {}
+    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+      {}
+
+
+  transitions:
+    e: State 11
+    t: State 3
+    NUMBER: State 5
+    LPAREN: State 6
+
+State 10:
+  rules:
+    t_[9:3] → LPAREN e_[6:10] • RPAREN
+      {}
+
+
+  transitions:
+    RPAREN: State 12
+
+State 11:
+  rules:
+    e_[0:2] → t_[9:3] ADD e_[9:11] • 
+      {$, RPAREN}
+
+
+  transitions:
+
+
+State 12:
+  rules:
+    t_[9:3] → LPAREN e_[6:10] RPAREN • 
+      {SEMICOLON, ADD}
 
 
   transitions:

@@ -26,9 +26,10 @@ class MyParser < Antelope::Parser
 end
 
 recognizer = Antelope::Recognizer.new(MyParser)
-d = recognizer.parse
-c = Antelope::Constructor.new(d, MyParser)
-c.augment
+recognizer.call
+c = Antelope::Constructor.new(MyParser)
+c.call
+
 File.open("simple.output", "w") do |f|
   f << "productions:\n"
   c.productions.each do |rule|

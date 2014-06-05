@@ -77,13 +77,8 @@ module Antelope
         end
       end
 
-      module InstanceMethods
-
-      end
-
       def self.included(receiver)
-        receiver.extend         ClassMethods
-        receiver.send :include, InstanceMethods
+        receiver.extend ClassMethods
       end
     end
   end

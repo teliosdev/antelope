@@ -1,4 +1,5 @@
 require "antelope/parser/token"
+require "antelope/parser/states"
 require "antelope/parser/terminals"
 require "antelope/parser/presidence"
 require "antelope/parser/productions"
@@ -10,6 +11,7 @@ module Antelope
     include Terminals
     include Presidence
     include Productions
+    include States
 
   end
 end

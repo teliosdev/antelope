@@ -47,7 +47,6 @@ BLOCK
     end
 
     def rule_output(rule)
-      p rule
 <<-RULE
     #{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
       {#{rule.lookahead.to_a.join(", ")}}
