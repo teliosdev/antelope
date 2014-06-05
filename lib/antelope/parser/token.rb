@@ -28,10 +28,10 @@ module Antelope
       def to_s
         buf = "" << @value.to_s
         if (from or to)
-          buf << "_["
+          buf << "("
           buf << "#{from.id}" if from
           buf << ":#{to.id}"  if to
-          buf << "]"
+          buf << ")"
         end
 
         buf

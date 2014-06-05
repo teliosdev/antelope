@@ -1,46 +1,46 @@
 productions:
-    $start_[0] →  • s_[0:1] $
+    $start(0) →  • s(0:1) $
       {}
-    s_[0:1] →  • e_[0:2]
+    s(0:1) →  • e(0:2)
       {}
-    e_[0:2] →  • t_[9:3] SEMICOLON
+    e(0:2) →  • t(9:3) SEMICOLON
       {}
-    e_[0:2] →  • t_[9:3] ADD e_[9:11]
+    e(0:2) →  • t(9:3) ADD e(9:11)
       {}
-    t_[9:3] →  • NUMBER
+    t(9:3) →  • NUMBER
       {}
-    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+    t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
-    e_[6:10] →  • t_[9:3] SEMICOLON
+    e(6:10) →  • t(9:3) SEMICOLON
       {}
-    e_[6:10] →  • t_[9:3] ADD e_[9:11]
+    e(6:10) →  • t(9:3) ADD e(9:11)
       {}
-    e_[9:11] →  • t_[9:3] SEMICOLON
+    e(9:11) →  • t(9:3) SEMICOLON
       {}
-    e_[9:11] →  • t_[9:3] ADD e_[9:11]
+    e(9:11) →  • t(9:3) ADD e(9:11)
       {}
 
 follow():
-  $start_[0]: 
-  s_[0:1]: $
-  e_[0:2]: $ RPAREN
-  t_[9:3]: SEMICOLON ADD
-  e_[6:10]: $ RPAREN
-  e_[9:11]: $ RPAREN
+  $start(0): 
+  s(0:1): $
+  e(0:2): $ RPAREN
+  t(9:3): SEMICOLON ADD
+  e(6:10): $ RPAREN
+  e(9:11): $ RPAREN
 
 State 0:
   rules:
-    $start_[0] →  • s_[0:1] $
+    $start(0) →  • s(0:1) $
       {}
-    s_[0:1] →  • e_[0:2]
+    s(0:1) →  • e(0:2)
       {}
-    e_[0:2] →  • t_[9:3] SEMICOLON
+    e(0:2) →  • t(9:3) SEMICOLON
       {}
-    e_[0:2] →  • t_[9:3] ADD e_[9:11]
+    e(0:2) →  • t(9:3) ADD e(9:11)
       {}
-    t_[9:3] →  • NUMBER
+    t(9:3) →  • NUMBER
       {}
-    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+    t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
 
 
@@ -53,7 +53,7 @@ State 0:
 
 State 1:
   rules:
-    $start_[0] → s_[0:1] • $
+    $start(0) → s(0:1) • $
       {}
 
 
@@ -62,7 +62,7 @@ State 1:
 
 State 2:
   rules:
-    s_[0:1] → e_[0:2] • 
+    s(0:1) → e(0:2) • 
       {$}
 
 
@@ -71,9 +71,9 @@ State 2:
 
 State 3:
   rules:
-    e_[0:2] → t_[9:3] • SEMICOLON
+    e(0:2) → t(9:3) • SEMICOLON
       {}
-    e_[0:2] → t_[9:3] • ADD e_[9:11]
+    e(0:2) → t(9:3) • ADD e(9:11)
       {}
 
 
@@ -83,7 +83,7 @@ State 3:
 
 State 5:
   rules:
-    t_[9:3] → NUMBER • 
+    t(9:3) → NUMBER • 
       {SEMICOLON, ADD}
 
 
@@ -92,15 +92,15 @@ State 5:
 
 State 6:
   rules:
-    t_[9:3] → LPAREN • e_[6:10] RPAREN
+    t(9:3) → LPAREN • e(6:10) RPAREN
       {}
-    e_[6:10] →  • t_[9:3] SEMICOLON
+    e(6:10) →  • t(9:3) SEMICOLON
       {}
-    e_[6:10] →  • t_[9:3] ADD e_[9:11]
+    e(6:10) →  • t(9:3) ADD e(9:11)
       {}
-    t_[9:3] →  • NUMBER
+    t(9:3) →  • NUMBER
       {}
-    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+    t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
 
 
@@ -112,7 +112,7 @@ State 6:
 
 State 7:
   rules:
-    $start_[0] → s_[0:1] $ • 
+    $start(0) → s(0:1) $ • 
       {}
 
 
@@ -121,7 +121,7 @@ State 7:
 
 State 8:
   rules:
-    e_[0:2] → t_[9:3] SEMICOLON • 
+    e(0:2) → t(9:3) SEMICOLON • 
       {$, RPAREN}
 
 
@@ -130,15 +130,15 @@ State 8:
 
 State 9:
   rules:
-    e_[0:2] → t_[9:3] ADD • e_[9:11]
+    e(0:2) → t(9:3) ADD • e(9:11)
       {}
-    e_[9:11] →  • t_[9:3] SEMICOLON
+    e(9:11) →  • t(9:3) SEMICOLON
       {}
-    e_[9:11] →  • t_[9:3] ADD e_[9:11]
+    e(9:11) →  • t(9:3) ADD e(9:11)
       {}
-    t_[9:3] →  • NUMBER
+    t(9:3) →  • NUMBER
       {}
-    t_[9:3] →  • LPAREN e_[6:10] RPAREN
+    t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
 
 
@@ -150,7 +150,7 @@ State 9:
 
 State 10:
   rules:
-    t_[9:3] → LPAREN e_[6:10] • RPAREN
+    t(9:3) → LPAREN e(6:10) • RPAREN
       {}
 
 
@@ -159,7 +159,7 @@ State 10:
 
 State 11:
   rules:
-    e_[0:2] → t_[9:3] ADD e_[9:11] • 
+    e(0:2) → t(9:3) ADD e(9:11) • 
       {$, RPAREN}
 
 
@@ -168,7 +168,7 @@ State 11:
 
 State 12:
   rules:
-    t_[9:3] → LPAREN e_[6:10] RPAREN • 
+    t(9:3) → LPAREN e(6:10) RPAREN • 
       {SEMICOLON, ADD}
 
 
