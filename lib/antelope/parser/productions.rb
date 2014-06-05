@@ -55,7 +55,7 @@ module Antelope
           @matches
         end
 
-        def match(items, &block)
+        def match(*items, &block)
           @matches << { :items => [items].flatten, :block => block }
         end
 
@@ -65,15 +65,13 @@ module Antelope
 
         alias_method :nothing, :ε
 
-        def method_missing(method, *args)
+        def method_missing(method)
           # It's a terminal!
           token = if method.to_s.upcase == method.to_s
             Terminal.new(method)
           else
             Nonterminal.new(method)
           end
-
-          [token, args].flatten
         end
       end
 

@@ -15,13 +15,13 @@ class MyParser < Antelope::Parser
     end
 
     e do
-      match t SEMICOLON
-      match t ADD e
+      match t, SEMICOLON
+      match t, ADD, e
     end
 
     t do
       match NUMBER
-      match LPAREN e RPAREN
+      match LPAREN, e, RPAREN
     end
   end
 end

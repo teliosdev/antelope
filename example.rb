@@ -18,25 +18,25 @@ class MyParser < Antelope::Parser
 
   productions do
     expressions do
-      match NUMBER do |a| a end
+      match NUMBER do |a| a.to_i end
 
-      match expressions ADD expressions do |a, _, b|
+      match expressions, ADD, expressions do |a, _, b|
         a + b
       end
 
-      match expressions SUBTRACT expressions do |a, _, b|
+      match expressions, SUBTRACT, expressions do |a, _, b|
         a - b
       end
 
-      match expressions MULTIPLY expressions do |a, _, b|
+      match expressions, MULTIPLY, expressions do |a, _, b|
         a * b
       end
 
-      match expressions DIVIDE expressions do |a, _, b|
+      match expressions, DIVIDE, expressions do |a, _, b|
         a / b
       end
 
-      match LPAREN expressions RPAREN do |_, a, _|
+      match LPAREN, expressions, RPAREN do |_, a, _|
         a
       end
     end
