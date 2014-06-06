@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Antelope
   module Output
 
@@ -35,22 +36,17 @@ module Antelope
     end
 
     def state_output(state)
-<<-BLOCK
-State #{state.id}:
-  rules:
-#{state.rules.map { |r| rule_output(r) }.join("")}
+      "State #{state.id}:
+        rules:
+      #{state.rules.map { |r| rule_output(r) }.join('')}
 
-  transitions:
-#{state_transitions_output(state)}
-
-BLOCK
+        transitions:
+      #{state_transitions_output(state)}"
     end
 
     def rule_output(rule)
-<<-RULE
-    #{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
-      {#{rule.lookahead.to_a.join(", ")}}
-RULE
+      "#{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
+      {#{rule.lookahead.to_a.join(", ")}}"
     end
 
     def production_output(prods)
@@ -62,9 +58,7 @@ RULE
 
     def state_transitions_output(state)
       state.transitions.map do |transition|
-<<-BLOCK.chomp
-    #{transition[0]}: State #{transition[1].id}
-BLOCK
+        "#{transition[0]}: State #{transition[1].id}"
       end.join("\n")
     end
   end
