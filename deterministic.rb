@@ -10,16 +10,16 @@ class MyParser < Antelope::Parser
   start_production :s
 
   productions do
-    s do
+    production :s do
       match e
     end
 
-    e do
+    production :e do
       match t, SEMICOLON
       match t, ADD, e
     end
 
-    t do
+    production :t do
       match NUMBER
       match LPAREN, e, RPAREN
     end

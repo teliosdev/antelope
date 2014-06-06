@@ -38,9 +38,15 @@ module Antelope
       end
 
       class ProductionBuilder < Builder
-        def method_missing(production, &block)
-          rule = RuleBuilder.new(production).run(&block)
-          parent.productions[production] = rule
+
+        def production(name, options = {}, &block)
+          rule = RuleBuilder.new(name).run(&block)
+          parent.productions[name] = rule
+          if options[:start]
+            parent.start_production(name)
+          end
+
+          rule
         end
       end
 

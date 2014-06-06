@@ -14,29 +14,27 @@ class MyParser < Antelope::Parser
     left ADD, SUBTRACT
   end
 
-  start_production :expressions
-
   productions do
-    expressions do
+    production :expression, start: true do
       match NUMBER do |a| a.to_i end
 
-      match expressions, ADD, expressions do |a, _, b|
+      match expression, ADD, expression do |a, _, b|
         a + b
       end
 
-      match expressions, SUBTRACT, expressions do |a, _, b|
+      match expression, SUBTRACT, expression do |a, _, b|
         a - b
       end
 
-      match expressions, MULTIPLY, expressions do |a, _, b|
+      match expression, MULTIPLY, expression do |a, _, b|
         a * b
       end
 
-      match expressions, DIVIDE, expressions do |a, _, b|
+      match expression, DIVIDE, expression do |a, _, b|
         a / b
       end
 
-      match LPAREN, expressions, RPAREN do |_, a, _|
+      match LPAREN, expression, RPAREN do |_, a, _|
         a
       end
     end

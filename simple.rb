@@ -8,18 +8,17 @@ class MyParser < Antelope::Parser
   start_production :e
 
   productions do
-
-    e do
+    production :e do
       match l EQUALS r
       match r
     end
 
-    l do
+    production :l do
       match IDENT
       match STAR r
     end
 
-    r do
+    production :r do
       match l
     end
   end
