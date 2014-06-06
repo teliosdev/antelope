@@ -36,17 +36,22 @@ module Antelope
     end
 
     def state_output(state)
-      "State #{state.id}:
+      <<-BLOCK.trim_heredoc
+      State #{state.id}:
         rules:
-      #{state.rules.map { |r| rule_output(r) }.join('')}
+      #{state.rules.map { |r| rule_output(r) }.join("")}
 
         transitions:
-      #{state_transitions_output(state)}"
+      #{state_transitions_output(state)}
+
+      BLOCK
     end
 
     def rule_output(rule)
-      "#{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
-      {#{rule.lookahead.to_a.join(", ")}}"
+      <<-RULE.trim_heredoc
+          #{rule.left} → #{rule.right[0, rule.position].map(&:to_s).join(" ")} • #{rule.right[rule.position..-1].map(&:to_s).join(" ")}
+            {#{rule.lookahead.to_a.join(", ")}}
+      RULE
     end
 
     def production_output(prods)
@@ -58,7 +63,9 @@ module Antelope
 
     def state_transitions_output(state)
       state.transitions.map do |transition|
-        "#{transition[0]}: State #{transition[1].id}"
+      <<-BLOCK.chomp.trim_heredoc
+          #{transition[0]}: State #{transition[1].id}
+      BLOCK
       end.join("\n")
     end
   end

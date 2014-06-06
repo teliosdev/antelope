@@ -1,3 +1,4 @@
+require "antelope/helper"
 require "antelope/output"
 require "antelope/automaton"
 require "antelope/recognizer"
