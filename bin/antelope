@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path("../../lib", __FILE__)
+require "antelope"
+
+program = ARGV[0]
+
+def get_classes
+  Object.constants.map { |c| Object.const_get(c) }.select { |c| c.is_a? Class}
+end
+
+current_consts = get_classes
+
+$: << Dir.pwd
+require program
+
+parser = (get_classes - current_consts).select { |x| x < Antelope::Parser }.first
+
+recognizer = Antelope::Recognizer.new(parser)
+recognizer.call
+c = Antelope::Constructor.new(parser)
+c.call
+
+file_name = File.basename(program, ".rb")
+
+File.open("#{file_name}.output", "w") do |f|
+  f << "productions:\n"
+  c.productions.each do |rule|
+    f << "#{Antelope::Output.output(rule)}"
+  end
+
+  f << "\nfollow():\n"
+  c.productions.map { |x| x.left }.uniq.each do |p|
+    f << "  #{p}: #{c.follow(p).to_a.join(" ")}\n"
+  end
+
+  f << "\n"
+  Antelope::Output.output(recognizer.start, f)
+end
