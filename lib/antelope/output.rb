@@ -22,11 +22,11 @@ module Antelope
     private
 
     def out(to_out)
-      if to_out.is_a? Recognizer::State
+      if to_out.is_a? Generator::Recognizer::State
         @to_output.concat(to_out.transitions.values)
 
         state_output to_out
-      elsif to_out.is_a? Recognizer::Rule
+      elsif to_out.is_a? Generator::Recognizer::Rule
         rule_output to_out
       elsif to_out.is_a?(Array)
         p to_out

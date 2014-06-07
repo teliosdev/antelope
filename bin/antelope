@@ -16,10 +16,7 @@ require program
 
 parser = (get_classes - current_consts).select { |x| x < Antelope::Parser }.first
 
-recognizer = Antelope::Recognizer.new(parser)
-recognizer.call
-c = Antelope::Constructor.new(parser)
-c.call
+recognizer, c = parser.generate
 
 file_name = File.basename(program, ".rb")
 
