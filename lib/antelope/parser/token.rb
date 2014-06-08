@@ -25,6 +25,10 @@ module Antelope
         false
       end
 
+      def error?
+        false
+      end
+
       def to_s
         buf = "" << @value.to_s
         if (from or to)
@@ -64,7 +68,7 @@ module Antelope
       alias_method :eql?, :==
 
       def to_a
-        [to, from, terminal?, nonterminal?, epsilon?, value]
+        [to, from, terminal?, nonterminal?, epsilon?, error?, value]
       end
     end
 
@@ -84,6 +88,16 @@ module Antelope
       end
 
       def epsilon?
+        true
+      end
+    end
+
+    class Error < Terminal
+      def initialize(*)
+        super :error
+      end
+
+      def error?
         true
       end
     end

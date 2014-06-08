@@ -1,4 +1,4 @@
-class MyParser < Antelope::Parser
+class ExampleParser < Antelope::Parser
   terminals do
     terminal NUMBER
     terminal MULTIPLY
@@ -37,6 +37,8 @@ class MyParser < Antelope::Parser
       match LPAREN, expression, RPAREN do |_, a, _|
         a
       end
+
+      match LPAREN, error, RPAREN
     end
   end
 end

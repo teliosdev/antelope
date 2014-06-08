@@ -1,68 +1,64 @@
 Productions:
-    $start(0) → s(0:1) $
-    s(0:1) → e(0:2)
-    e(0:2) → t(0:3) SEMICOLON
-    e(0:2) → t(0:3) ADD e(9:11)
-    t(0:3) → NUMBER
-    t(0:3) → LPAREN e(6:10) RPAREN
-    e(6:10) → t(6:3) SEMICOLON
-    e(6:10) → t(6:3) ADD e(9:11)
-    t(6:3) → NUMBER
-    t(6:3) → LPAREN e(6:10) RPAREN
-    e(9:11) → t(9:3) SEMICOLON
-    e(9:11) → t(9:3) ADD e(9:11)
-    t(9:3) → NUMBER
-    t(9:3) → LPAREN e(6:10) RPAREN
+    0: $start(0) → s(0:1) $
+    1: s(0:1) → e(0:2)
+    2: e(0:2) → t(0:3) SEMICOLON
+    3: e(0:2) → t(0:3) ADD e(9:11)
+    4: t(0:3) → NUMBER
+    5: t(0:3) → LPAREN e(6:10) RPAREN
+    13: e(6:10) → t(6:3) SEMICOLON
+    14: e(6:10) → t(6:3) ADD e(9:11)
+    15: t(6:3) → NUMBER
+    16: t(6:3) → LPAREN e(6:10) RPAREN
+    20: e(9:11) → t(9:3) SEMICOLON
+    21: e(9:11) → t(9:3) ADD e(9:11)
+    22: t(9:3) → NUMBER
+    23: t(9:3) → LPAREN e(6:10) RPAREN
 
-original productions:
-  s -> e
-  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f630 @value=:e, @from=nil, @to=nil>], :block=>nil}
-  e -> t SEMICOLON
-  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f3b0 @value=:t, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3f388 @value=:SEMICOLON, @from=nil, @to=nil>], :block=>nil}
-  e -> t ADD e
-  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f220 @value=:t, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3f1f8 @value=:ADD, @from=nil, @to=nil>, #<Antelope::Parser::Nonterminal:0x007f32d3a3f158 @value=:e, @from=nil, @to=nil>], :block=>nil}
-  t -> NUMBER
-  {:items=>[#<Antelope::Parser::Terminal:0x007f32d3a3eed8 @value=:NUMBER, @from=nil, @to=nil>], :block=>nil}
-  t -> LPAREN e RPAREN
-  {:items=>[#<Antelope::Parser::Terminal:0x007f32d3a3ede8 @value=:LPAREN, @from=nil, @to=nil>, #<Antelope::Parser::Nonterminal:0x007f32d3a3ed20 @value=:e, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3ecf8 @value=:RPAREN, @from=nil, @to=nil>], :block=>nil}
-  $start -> s $
-  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3ec08 @value=:s, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3ebe0 @value=:"$", @from=nil, @to=nil>], :block=>nil}
+Original Productions:
+  s → e
+    proc { }
+  e → t SEMICOLON
+    proc { }
+  e → t ADD e
+    proc { }
+  t → NUMBER
+    proc { }
+  t → LPAREN e RPAREN
+    proc { }
+  $start → s $
+    proc { }
 
-follow():
-  $start(0): 
-  s(0:1): $
-  e(0:2): $ RPAREN
-  t(0:3): SEMICOLON ADD
-  e(6:10): $ RPAREN
-  t(6:3): SEMICOLON ADD
-  e(9:11): $ RPAREN
-  t(9:3): SEMICOLON ADD
+Conflicts:
+
+Presidence:
+  --- highest
+  --- lowest
 
 State 0:
   rules:
-    $start(0) →  • s(0:1) $
+    0: $start(0) →  • s(0:1) $
       {}
-    s(0:1) →  • e(0:2)
+    1: s(0:1) →  • e(0:2)
       {}
-    e(0:2) →  • t(0:3) SEMICOLON
+    2: e(0:2) →  • t(0:3) SEMICOLON
       {}
-    e(0:2) →  • t(0:3) ADD e(9:11)
+    3: e(0:2) →  • t(0:3) ADD e(9:11)
       {}
-    t(0:3) →  • NUMBER
+    4: t(0:3) →  • NUMBER
       {}
-    t(0:3) →  • LPAREN e(6:10) RPAREN
+    5: t(0:3) →  • LPAREN e(6:10) RPAREN
       {}
 
   transitions:
-    s: State 1
-    e: State 2
-    t: State 3
+    s     : State 1
+    e     : State 2
+    t     : State 3
     NUMBER: State 5
     LPAREN: State 6
 
 State 1:
   rules:
-    $start(0) → s(0:1) • $
+    6: $start(0) → s(0:1) • $
       {}
 
   transitions:
@@ -70,25 +66,25 @@ State 1:
 
 State 2:
   rules:
-    s(0:1) → e(0:2) • 
+    7: s(0:1) → e(0:2) • 
       {$}
 
   transitions:
 
 State 3:
   rules:
-    e(0:2) → t(0:3) • SEMICOLON
+    8: e(0:2) → t(0:3) • SEMICOLON
       {}
-    e(0:2) → t(0:3) • ADD e(9:11)
+    10: e(0:2) → t(0:3) • ADD e(9:11)
       {}
 
   transitions:
     SEMICOLON: State 8
-    ADD: State 9
+    ADD      : State 9
 
 State 4:
   rules:
-    e(0:2) → t(0:3) • ADD e(9:11)
+    10: e(0:2) → t(0:3) • ADD e(9:11)
       {}
 
   transitions:
@@ -96,66 +92,66 @@ State 4:
 
 State 5:
   rules:
-    t(0:3) → NUMBER • 
+    11: t(0:3) → NUMBER • 
       {SEMICOLON, ADD}
 
   transitions:
 
 State 6:
   rules:
-    t(0:3) → LPAREN • e(6:10) RPAREN
+    12: t(0:3) → LPAREN • e(6:10) RPAREN
       {}
-    e(6:10) →  • t(6:3) SEMICOLON
+    13: e(6:10) →  • t(6:3) SEMICOLON
       {}
-    e(6:10) →  • t(6:3) ADD e(9:11)
+    14: e(6:10) →  • t(6:3) ADD e(9:11)
       {}
-    t(6:3) →  • NUMBER
+    15: t(6:3) →  • NUMBER
       {}
-    t(6:3) →  • LPAREN e(6:10) RPAREN
+    16: t(6:3) →  • LPAREN e(6:10) RPAREN
       {}
 
   transitions:
-    e: State 10
-    t: State 3
+    e     : State 10
+    t     : State 3
     NUMBER: State 5
     LPAREN: State 6
 
 State 7:
   rules:
-    $start(0) → s(0:1) $ • 
+    17: $start(0) → s(0:1) $ • 
       {}
 
   transitions:
 
 State 8:
   rules:
-    e(0:2) → t(0:3) SEMICOLON • 
+    18: e(0:2) → t(0:3) SEMICOLON • 
       {$, RPAREN}
 
   transitions:
 
 State 9:
   rules:
-    e(0:2) → t(0:3) ADD • e(9:11)
+    19: e(0:2) → t(0:3) ADD • e(9:11)
       {}
-    e(9:11) →  • t(9:3) SEMICOLON
+    20: e(9:11) →  • t(9:3) SEMICOLON
       {}
-    e(9:11) →  • t(9:3) ADD e(9:11)
+    21: e(9:11) →  • t(9:3) ADD e(9:11)
       {}
-    t(9:3) →  • NUMBER
+    22: t(9:3) →  • NUMBER
       {}
-    t(9:3) →  • LPAREN e(6:10) RPAREN
+    23: t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
 
   transitions:
-    e: State 11
-    t: State 3
+    e     : State 11
+    t     : State 3
     NUMBER: State 5
     LPAREN: State 6
 
 State 10:
   rules:
-    t(0:3) → LPAREN e(6:10) • RPAREN
+    24: t(0:3) → LPAREN e(6:10) • RPAREN
       {}
 
   transitions:
@@ -163,14 +159,14 @@ State 10:
 
 State 11:
   rules:
-    e(0:2) → t(0:3) ADD e(9:11) • 
+    25: e(0:2) → t(0:3) ADD e(9:11) • 
       {$, RPAREN}
 
   transitions:
 
 State 12:
   rules:
-    t(0:3) → LPAREN e(6:10) RPAREN • 
+    26: t(0:3) → LPAREN e(6:10) RPAREN • 
       {SEMICOLON, ADD}
 
   transitions:

@@ -1,4 +1,4 @@
-class MyParser < Antelope::Parser
+class DeterministicParser < Antelope::Parser
   terminals do
     terminal NUMBER
     terminal SEMICOLON

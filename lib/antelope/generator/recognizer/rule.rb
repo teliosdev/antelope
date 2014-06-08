@@ -9,6 +9,7 @@ module Antelope
         attr_reader :right
         attr_reader :position
         attr_accessor :lookahead
+        attr_accessor :id
 
         include Comparable
 
@@ -17,14 +18,15 @@ module Antelope
           @right     = right.freeze
           @position  = position
           @lookahead = Set.new
+          @id        = SecureRandom.hex
         end
 
         def inspect
-          "#<#{self.class} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
+          "#<#{self.class} id=#{id} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
         end
 
         def to_s(dot = true)
-          "#{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
+          "#{id}: #{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
         end
 
         def active
@@ -37,6 +39,10 @@ module Antelope
 
         def succ?
           right.size > (position)
+        end
+
+        def final?
+          !succ?
         end
 
         def <=>(other)

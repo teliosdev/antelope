@@ -3,7 +3,7 @@ Productions:
     <%= production.to_s(false) %>
 % end
 
-original productions:
+Original Productions:
 % parser.productions.each do |k, v|
 %  v.each do |prod|
   <%= k %> → <%= prod[:items].join(" ") %>
@@ -11,10 +11,21 @@ original productions:
 %  end
 % end
 
-follow():
-% constructor.productions.map { |x| x.left }.uniq.each do |p|
-  <%= p %>: <%= constructor.follow(p).to_a.join(" ") %>
+Conflicts:
+% conflictor.conflicts.each do |conflict|
+  State <%= conflict.state.id %>:
+    rules : <%= conflict.rules.map(&:id).join(", ") %>
+    type  : <%= conflict.type %>
+    tokens: {<%= conflict.token.to_a.join(", ") %>}
 % end
+
+Presidence:
+  --- highest
+% parser.presidence.each do |pr|
+  <%= "%-8s" % pr.type %> <%= pr.level %>:
+    {<%= pr.tokens.join(", ") %>}
+% end
+  --- lowest
 
 % parser.states.each do |state|
 State <%= state.id %>:
@@ -25,8 +36,9 @@ State <%= state.id %>:
 %   end
 
   transitions:
+%   max = state.transitions.keys.map(&:length).max || 0
 %   state.transitions.each do |on, to|
-    <%= on %>: State <%= to.id %>
+    <%= "%-#{max}s" % on %>: State <%= to.id %>
 %   end
 
 % end

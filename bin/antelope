@@ -1,28 +1,35 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path("../../lib", __FILE__)
+$: << File.expand_path("../../lib", __FILE__) << Dir.pwd
 require "antelope"
 require "erb"
 
-program = ARGV[0]
-
 def get_classes
-  Object.constants.map { |c| Object.const_get(c) }.select { |c| c.is_a? Class}
+  Object.constants.
+    reject { |c| c == :Config        }.
+    map    { |c| Object.const_get(c) }.
+    select { |c| c.is_a? Class       }
 end
 
-current_consts = get_classes
+ARGV.each do |program|
+  current_consts = get_classes
 
-$: << Dir.pwd
-require program
+  load program
 
-parser = (get_classes - current_consts).select { |x| x < Antelope::Parser }.first
+  parser = (get_classes - current_consts).
+    select { |x| x < Antelope::Parser   }.
+    first
 
-recognizer, c = parser.generate
+  raise "No parser for #{program}!" unless parser
 
-file_name = File.basename(program, ".rb")
+  r, c, fl = parser.generate
 
-File.open("#{file_name}.output", "w") do |f|
-  f.write Antelope::Output.output(parser,
-                                  :recognizer => recognizer,
-                                  :constructor => c)
+  file_name = File.basename(program, ".rb")
+
+  File.open("#{file_name}.output", "w") do |f|
+    f.write Antelope::Output.output(parser,
+                                    :recognizer  => r,
+                                    :constructor => c,
+                                    :conflictor  => fl)
+  end
 end

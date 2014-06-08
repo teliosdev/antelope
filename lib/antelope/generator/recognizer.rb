@@ -19,6 +19,7 @@ module Antelope
         @states = Set.new
         @start  = compute_initial_state
         redefine_state_ids
+        redefine_rule_ids
         parser.states = states
       end
 
@@ -80,6 +81,17 @@ module Antelope
       def redefine_state_ids
         states.each_with_index do |state, i|
           state.id = i
+        end
+      end
+
+      def redefine_rule_ids
+        start = 0
+
+        states.each do |state|
+          state.rules.each do |rule|
+            rule.id = start
+            start  += 1
+          end
         end
       end
 

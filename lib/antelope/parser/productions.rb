@@ -40,7 +40,7 @@ module Antelope
       class ProductionBuilder < Builder
 
         def production(name, options = {}, &block)
-          rule = RuleBuilder.new(name).run(&block)
+          rule = RuleBuilder.new(name, parent).run(&block)
           parent.productions[name] = rule
           if options[:start]
             parent.start_production(name)
@@ -51,9 +51,10 @@ module Antelope
       end
 
       class RuleBuilder < Builder
-        def initialize(name)
+        def initialize(name, parent)
           @name = name
           @matches = []
+          super(parent)
         end
 
         def run
@@ -62,16 +63,32 @@ module Antelope
         end
 
         def match(*items, &block)
-          @matches << { :items => [items].flatten, :block => block || proc{} }
+          block ||= proc {}
+
+          options = if items.last.is_a? Hash
+            items.pop.dup
+          else
+            {}
+          end
+
+          items = [items].flatten
+          prec  = options[:prec] || items.last
+          options[:prec] = parent.presidence_for(prec)
+
+          @matches << options.merge(items: items, block: block)
         end
 
         def ε
           Epsilon.new
         end
 
+        def error
+          Error.new
+        end
+
         alias_method :nothing, :ε
 
-        def method_missing(method)
+        def method_missing(method, *args)
           # It's a terminal!
           token = if method.to_s.upcase == method.to_s
             Terminal.new(method)

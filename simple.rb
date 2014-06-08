@@ -1,4 +1,4 @@
-class MyParser < Antelope::Parser
+class SimpleParser < Antelope::Parser
   terminals do
     terminal IDENT
     terminal STAR

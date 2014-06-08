@@ -1,7 +1,6 @@
 require "antelope/output"
 require "antelope/automaton"
-require "antelope/generator/recognizer"
-require "antelope/generator/constructor"
+require "antelope/generator"
 require "antelope/version"
 require "antelope/builder"
 require "antelope/parser"

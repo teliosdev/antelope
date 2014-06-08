@@ -23,7 +23,7 @@ module Antelope
       end
 
       def call
-        states.each do |state|
+        parser.states.each do |state|
           augment_state(state)
         end.each do |state|
           augment_rules(state)
@@ -72,10 +72,6 @@ module Antelope
       end
 
       private
-
-      def states
-        parser.states
-      end
 
       def incorrect_argument!(arg, *types)
         raise ArgumentError, "Expected one of #{types.join(", ")}, got #{arg.class}"
