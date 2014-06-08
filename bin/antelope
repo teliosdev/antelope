@@ -2,6 +2,7 @@
 
 $: << File.expand_path("../../lib", __FILE__)
 require "antelope"
+require "erb"
 
 program = ARGV[0]
 
@@ -21,16 +22,7 @@ recognizer, c = parser.generate
 file_name = File.basename(program, ".rb")
 
 File.open("#{file_name}.output", "w") do |f|
-  f << "productions:\n"
-  c.productions.each do |rule|
-    f << "#{Antelope::Output.output(rule)}"
-  end
-
-  f << "\nfollow():\n"
-  c.productions.map { |x| x.left }.uniq.each do |p|
-    f << "  #{p}: #{c.follow(p).to_a.join(" ")}\n"
-  end
-
-  f << "\n"
-  Antelope::Output.output(recognizer.start, f)
+  f.write Antelope::Output.output(parser,
+                                  :recognizer => recognizer,
+                                  :constructor => c)
 end

@@ -1,0 +1,25 @@
+Productions:
+% constructor.productions.each do |production|
+    <%= production %>
+      {<%= production.lookahead.to_a.join(", ") %>}
+% end
+
+follow():
+% constructor.productions.map { |x| x.left }.uniq.each do |p|
+  <%= p %>: <%= constructor.follow(p).to_a.join(" ") %>
+% end
+
+% parser.states.each do |state|
+State <%= state.id %>:
+  rules:
+%   state.rules.each do |rule|
+    <%= rule %>
+      {<% rule.lookahead.to_a.join(", ") %>}
+%   end
+
+  transitions:
+%   state.transitions.each do |on, to|
+    <%= on %>: State <%= to.id %>
+%   end
+
+% end

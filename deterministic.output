@@ -1,4 +1,4 @@
-productions:
+Productions:
     $start(0) →  • s(0:1) $
       {}
     s(0:1) →  • e(0:2)
@@ -53,7 +53,6 @@ State 0:
     t(0:3) →  • LPAREN e(6:10) RPAREN
       {}
 
-
   transitions:
     s: State 1
     e: State 2
@@ -66,18 +65,15 @@ State 1:
     $start(0) → s(0:1) • $
       {}
 
-
   transitions:
     $: State 7
 
 State 2:
   rules:
     s(0:1) → e(0:2) • 
-      {$}
-
+      {}
 
   transitions:
-
 
 State 3:
   rules:
@@ -86,19 +82,24 @@ State 3:
     e(0:2) → t(0:3) • ADD e(9:11)
       {}
 
-
   transitions:
     SEMICOLON: State 8
+    ADD: State 9
+
+State 4:
+  rules:
+    e(0:2) → t(0:3) • ADD e(9:11)
+      {}
+
+  transitions:
     ADD: State 9
 
 State 5:
   rules:
     t(0:3) → NUMBER • 
-      {SEMICOLON, ADD}
-
+      {}
 
   transitions:
-
 
 State 6:
   rules:
@@ -113,7 +114,6 @@ State 6:
     t(6:3) →  • LPAREN e(6:10) RPAREN
       {}
 
-
   transitions:
     e: State 10
     t: State 3
@@ -125,18 +125,14 @@ State 7:
     $start(0) → s(0:1) $ • 
       {}
 
-
   transitions:
-
 
 State 8:
   rules:
     e(0:2) → t(0:3) SEMICOLON • 
-      {$, RPAREN}
-
+      {}
 
   transitions:
-
 
 State 9:
   rules:
@@ -151,7 +147,6 @@ State 9:
     t(9:3) →  • LPAREN e(6:10) RPAREN
       {}
 
-
   transitions:
     e: State 11
     t: State 3
@@ -163,25 +158,20 @@ State 10:
     t(0:3) → LPAREN e(6:10) • RPAREN
       {}
 
-
   transitions:
     RPAREN: State 12
 
 State 11:
   rules:
     e(0:2) → t(0:3) ADD e(9:11) • 
-      {$, RPAREN}
-
+      {}
 
   transitions:
-
 
 State 12:
   rules:
     t(0:3) → LPAREN e(6:10) RPAREN • 
-      {SEMICOLON, ADD}
-
+      {}
 
   transitions:
-
 

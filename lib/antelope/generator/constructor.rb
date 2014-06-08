@@ -42,15 +42,7 @@ module Antelope
           states = [state]
 
           rule.right.each_with_index do |part, pos|
-            begin
-              transition = current_state.transitions[part.value]
-            rescue
-              puts "WATING TRANSITION FOR #{part.value}"
-              p states[-2]
-              p rule
-              p pos
-              raise
-            end
+            transition = current_state.transitions[part.value]
             if part.nonterminal?
               part.from = current_state
               part.to   = transition
