@@ -14,6 +14,20 @@ Productions:
     t(9:3) → NUMBER
     t(9:3) → LPAREN e(6:10) RPAREN
 
+original productions:
+  s -> e
+  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f630 @value=:e, @from=nil, @to=nil>], :block=>nil}
+  e -> t SEMICOLON
+  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f3b0 @value=:t, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3f388 @value=:SEMICOLON, @from=nil, @to=nil>], :block=>nil}
+  e -> t ADD e
+  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3f220 @value=:t, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3f1f8 @value=:ADD, @from=nil, @to=nil>, #<Antelope::Parser::Nonterminal:0x007f32d3a3f158 @value=:e, @from=nil, @to=nil>], :block=>nil}
+  t -> NUMBER
+  {:items=>[#<Antelope::Parser::Terminal:0x007f32d3a3eed8 @value=:NUMBER, @from=nil, @to=nil>], :block=>nil}
+  t -> LPAREN e RPAREN
+  {:items=>[#<Antelope::Parser::Terminal:0x007f32d3a3ede8 @value=:LPAREN, @from=nil, @to=nil>, #<Antelope::Parser::Nonterminal:0x007f32d3a3ed20 @value=:e, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3ecf8 @value=:RPAREN, @from=nil, @to=nil>], :block=>nil}
+  $start -> s $
+  {:items=>[#<Antelope::Parser::Nonterminal:0x007f32d3a3ec08 @value=:s, @from=nil, @to=nil>, #<Antelope::Parser::Terminal:0x007f32d3a3ebe0 @value=:"$", @from=nil, @to=nil>], :block=>nil}
+
 follow():
   $start(0): 
   s(0:1): $

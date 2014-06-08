@@ -37,6 +37,22 @@ Productions:
     expression(12:17) → expression(12:17) DIVIDE expression(12:17)
     expression(12:17) → LPAREN expression(7:13) RPAREN
 
+original productions:
+  expression → NUMBER
+    proc { |a| a.to_i }
+  expression → expression ADD expression
+    proc { |a, _, b| (a + b) }
+  expression → expression SUBTRACT expression
+    proc { |a, _, b| (a - b) }
+  expression → expression MULTIPLY expression
+    proc { |a, _, b| (a * b) }
+  expression → expression DIVIDE expression
+    proc { |a, _, b| (a / b) }
+  expression → LPAREN expression RPAREN
+    proc { |_, a, _| a }
+  $start → expression $
+    proc { }
+
 follow():
   $start(0): 
   expression(0:1): ADD SUBTRACT MULTIPLY DIVIDE RPAREN $

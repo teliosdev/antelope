@@ -13,7 +13,7 @@ module Antelope
             @_building_productions = false
             productions[:"$start"] = [{
               :items => [Nonterminal.new(start_production), Terminal.new(:"$")],
-              :block => nil }]
+              :block => proc {} }]
           else
             @_productions
           end
@@ -62,7 +62,7 @@ module Antelope
         end
 
         def match(*items, &block)
-          @matches << { :items => [items].flatten, :block => block }
+          @matches << { :items => [items].flatten, :block => block || proc{} }
         end
 
         def ε

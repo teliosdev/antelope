@@ -3,6 +3,14 @@ Productions:
     <%= production.to_s(false) %>
 % end
 
+original productions:
+% parser.productions.each do |k, v|
+%  v.each do |prod|
+  <%= k %> → <%= prod[:items].join(" ") %>
+    <%= prod[:block].to_source if prod[:block] %>
+%  end
+% end
+
 follow():
 % constructor.productions.map { |x| x.left }.uniq.each do |p|
   <%= p %>: <%= constructor.follow(p).to_a.join(" ") %>

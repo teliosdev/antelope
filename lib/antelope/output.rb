@@ -1,4 +1,5 @@
 require "hashie/mash"
+require "sourcify"
 
 module Antelope
   module Output
