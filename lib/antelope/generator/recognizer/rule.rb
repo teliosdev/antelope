@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Antelope
   module Generator
     class Recognizer
@@ -21,8 +23,8 @@ module Antelope
           "#<#{self.class} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
         end
 
-        def to_s
-          "#{left} → #{right[0, position].join(" ")} • #{right[position..-1].join(" ")}"
+        def to_s(dot = true)
+          "#{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
         end
 
         def active

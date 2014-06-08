@@ -1,7 +1,6 @@
 Productions:
 % constructor.productions.each do |production|
-    <%= production %>
-      {<%= production.lookahead.to_a.join(", ") %>}
+    <%= production.to_s(false) %>
 % end
 
 follow():
@@ -14,7 +13,7 @@ State <%= state.id %>:
   rules:
 %   state.rules.each do |rule|
     <%= rule %>
-      {<% rule.lookahead.to_a.join(", ") %>}
+      {<%= rule.lookahead.to_a.join(", ") %>}
 %   end
 
   transitions:
