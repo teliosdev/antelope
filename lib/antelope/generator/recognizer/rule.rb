@@ -10,15 +10,19 @@ module Antelope
         attr_reader :position
         attr_accessor :lookahead
         attr_accessor :id
+        attr_accessor :presidence
+        attr_accessor :production
 
         include Comparable
 
-        def initialize(left, right, position = 0)
-          @left      = left
-          @right     = right.freeze
-          @position  = position
-          @lookahead = Set.new
-          @id        = SecureRandom.hex
+        def initialize(left, right, pres, position)
+          @left       = left
+          @right      = right.freeze
+          @position   = position
+          @lookahead  = Set.new
+          @presidence = pres
+          @production = self
+          @id         = SecureRandom.hex
         end
 
         def inspect
@@ -26,7 +30,7 @@ module Antelope
         end
 
         def to_s(dot = true)
-          "#{id}: #{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
+          "#{id}/#{presidence.type.to_s[0]}#{presidence.level}: #{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
         end
 
         def active
@@ -34,7 +38,7 @@ module Antelope
         end
 
         def succ
-          Rule.new(left, right, position + 1)
+          Rule.new(left, right, presidence, position + 1)
         end
 
         def succ?

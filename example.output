@@ -1,47 +1,47 @@
 Productions:
-    0: $start(0) → expression(0:1) $
-    1: expression(0:1) → NUMBER
-    2: expression(0:1) → expression(0:1) ADD expression(10:16)
-    3: expression(0:1) → expression(0:1) SUBTRACT expression(11:17)
-    4: expression(0:1) → expression(0:1) MULTIPLY expression(12:18)
-    5: expression(0:1) → expression(0:1) DIVIDE expression(13:19)
-    6: expression(0:1) → LPAREN expression(7:14) RPAREN
-    7: expression(0:1) → LPAREN error RPAREN
-    19: expression(7:14) → NUMBER
-    20: expression(7:14) → expression(7:14) ADD expression(10:16)
-    21: expression(7:14) → expression(7:14) SUBTRACT expression(11:17)
-    22: expression(7:14) → expression(7:14) MULTIPLY expression(12:18)
-    23: expression(7:14) → expression(7:14) DIVIDE expression(13:19)
-    24: expression(7:14) → LPAREN expression(7:14) RPAREN
-    25: expression(7:14) → LPAREN error RPAREN
-    30: expression(10:16) → NUMBER
-    31: expression(10:16) → expression(10:16) ADD expression(10:16)
-    32: expression(10:16) → expression(10:16) SUBTRACT expression(11:17)
-    33: expression(10:16) → expression(10:16) MULTIPLY expression(12:18)
-    34: expression(10:16) → expression(10:16) DIVIDE expression(13:19)
-    35: expression(10:16) → LPAREN expression(7:14) RPAREN
-    36: expression(10:16) → LPAREN error RPAREN
-    38: expression(11:17) → NUMBER
-    39: expression(11:17) → expression(11:17) ADD expression(10:16)
-    40: expression(11:17) → expression(11:17) SUBTRACT expression(11:17)
-    41: expression(11:17) → expression(11:17) MULTIPLY expression(12:18)
-    42: expression(11:17) → expression(11:17) DIVIDE expression(13:19)
-    43: expression(11:17) → LPAREN expression(7:14) RPAREN
-    44: expression(11:17) → LPAREN error RPAREN
-    46: expression(12:18) → NUMBER
-    47: expression(12:18) → expression(12:18) ADD expression(10:16)
-    48: expression(12:18) → expression(12:18) SUBTRACT expression(11:17)
-    49: expression(12:18) → expression(12:18) MULTIPLY expression(12:18)
-    50: expression(12:18) → expression(12:18) DIVIDE expression(13:19)
-    51: expression(12:18) → LPAREN expression(7:14) RPAREN
-    52: expression(12:18) → LPAREN error RPAREN
-    54: expression(13:19) → NUMBER
-    55: expression(13:19) → expression(13:19) ADD expression(10:16)
-    56: expression(13:19) → expression(13:19) SUBTRACT expression(11:17)
-    57: expression(13:19) → expression(13:19) MULTIPLY expression(12:18)
-    58: expression(13:19) → expression(13:19) DIVIDE expression(13:19)
-    59: expression(13:19) → LPAREN expression(7:14) RPAREN
-    60: expression(13:19) → LPAREN error RPAREN
+    0/n3: $start(0) → expression(0:1) $
+    1/n3: expression(0:1) → NUMBER
+    2/l2: expression(0:1) → expression(0:1) ADD expression(10:16)
+    3/l2: expression(0:1) → expression(0:1) SUBTRACT expression(11:17)
+    4/l1: expression(0:1) → expression(0:1) MULTIPLY expression(12:18)
+    5/l1: expression(0:1) → expression(0:1) DIVIDE expression(13:19)
+    6/n0: expression(0:1) → LPAREN expression(7:14) RPAREN
+    7/n0: expression(0:1) → LPAREN error RPAREN
+    19/n3: expression(7:14) → NUMBER
+    20/l2: expression(7:14) → expression(7:14) ADD expression(10:16)
+    21/l2: expression(7:14) → expression(7:14) SUBTRACT expression(11:17)
+    22/l1: expression(7:14) → expression(7:14) MULTIPLY expression(12:18)
+    23/l1: expression(7:14) → expression(7:14) DIVIDE expression(13:19)
+    24/n0: expression(7:14) → LPAREN expression(7:14) RPAREN
+    25/n0: expression(7:14) → LPAREN error RPAREN
+    30/n3: expression(10:16) → NUMBER
+    31/l2: expression(10:16) → expression(10:16) ADD expression(10:16)
+    32/l2: expression(10:16) → expression(10:16) SUBTRACT expression(11:17)
+    33/l1: expression(10:16) → expression(10:16) MULTIPLY expression(12:18)
+    34/l1: expression(10:16) → expression(10:16) DIVIDE expression(13:19)
+    35/n0: expression(10:16) → LPAREN expression(7:14) RPAREN
+    36/n0: expression(10:16) → LPAREN error RPAREN
+    38/n3: expression(11:17) → NUMBER
+    39/l2: expression(11:17) → expression(11:17) ADD expression(10:16)
+    40/l2: expression(11:17) → expression(11:17) SUBTRACT expression(11:17)
+    41/l1: expression(11:17) → expression(11:17) MULTIPLY expression(12:18)
+    42/l1: expression(11:17) → expression(11:17) DIVIDE expression(13:19)
+    43/n0: expression(11:17) → LPAREN expression(7:14) RPAREN
+    44/n0: expression(11:17) → LPAREN error RPAREN
+    46/n3: expression(12:18) → NUMBER
+    47/l2: expression(12:18) → expression(12:18) ADD expression(10:16)
+    48/l2: expression(12:18) → expression(12:18) SUBTRACT expression(11:17)
+    49/l1: expression(12:18) → expression(12:18) MULTIPLY expression(12:18)
+    50/l1: expression(12:18) → expression(12:18) DIVIDE expression(13:19)
+    51/n0: expression(12:18) → LPAREN expression(7:14) RPAREN
+    52/n0: expression(12:18) → LPAREN error RPAREN
+    54/n3: expression(13:19) → NUMBER
+    55/l2: expression(13:19) → expression(13:19) ADD expression(10:16)
+    56/l2: expression(13:19) → expression(13:19) SUBTRACT expression(11:17)
+    57/l1: expression(13:19) → expression(13:19) MULTIPLY expression(12:18)
+    58/l1: expression(13:19) → expression(13:19) DIVIDE expression(13:19)
+    59/n0: expression(13:19) → LPAREN expression(7:14) RPAREN
+    60/n0: expression(13:19) → LPAREN error RPAREN
 
 Original Productions:
   expression → NUMBER
@@ -81,31 +81,128 @@ Conflicts:
 
 Presidence:
   --- highest
-  left     0:
-    {MULTIPLY, DIVIDE}
+  nonassoc 0:
+    {LPAREN, RPAREN}
   left     1:
+    {MULTIPLY, DIVIDE}
+  left     2:
     {ADD, SUBTRACT}
-  nonassoc 2:
+  nonassoc 3:
     {_}
   --- lowest
 
+Table:
+{"0"=>
+  {"expression"=>[[:state, 1]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]]},
+ "1"=>
+  {"$"=>[[:state, 9]],
+   "ADD"=>[[:state, 10]],
+   "SUBTRACT"=>[[:state, 11]],
+   "MULTIPLY"=>[[:state, 12]],
+   "DIVIDE"=>[[:state, 13]]},
+ "2"=>
+  {"ADD"=>[[:reduce, 54]],
+   "SUBTRACT"=>[[:reduce, 54]],
+   "MULTIPLY"=>[[:reduce, 54]],
+   "DIVIDE"=>[[:reduce, 54]],
+   "RPAREN"=>[[:reduce, 54]],
+   "$"=>[[:reduce, 54]]},
+ "3"=>{"ADD"=>[[:state, 10]]},
+ "4"=>{"SUBTRACT"=>[[:state, 11]]},
+ "5"=>{"MULTIPLY"=>[[:state, 12]]},
+ "6"=>{"DIVIDE"=>[[:state, 13]]},
+ "7"=>
+  {"expression"=>[[:state, 14]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]],
+   "error"=>[[:state, 15]]},
+ "8"=>{"error"=>[[:state, 15]]},
+ "10"=>
+  {"expression"=>[[:state, 16]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]]},
+ "11"=>
+  {"expression"=>[[:state, 17]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]]},
+ "12"=>
+  {"expression"=>[[:state, 18]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]]},
+ "13"=>
+  {"expression"=>[[:state, 19]],
+   "NUMBER"=>[[:state, 2]],
+   "LPAREN"=>[[:state, 7]]},
+ "14"=>
+  {"$"=>[[:state, 9]],
+   "ADD"=>[[:state, 10]],
+   "SUBTRACT"=>[[:state, 11]],
+   "MULTIPLY"=>[[:state, 12]],
+   "DIVIDE"=>[[:state, 13]],
+   "RPAREN"=>[[:state, 20]]},
+ "15"=>{"RPAREN"=>[[:state, 21]]},
+ "16"=>
+  {"$"=>[[:reduce, 55]],
+   "ADD"=>[[:reduce, 55]],
+   "SUBTRACT"=>[[:reduce, 55]],
+   "MULTIPLY"=>[[:state, 12]],
+   "DIVIDE"=>[[:state, 13]],
+   "RPAREN"=>[[:reduce, 55]]},
+ "17"=>
+  {"$"=>[[:reduce, 56]],
+   "ADD"=>[[:reduce, 56]],
+   "SUBTRACT"=>[[:reduce, 56]],
+   "MULTIPLY"=>[[:state, 12]],
+   "DIVIDE"=>[[:state, 13]],
+   "RPAREN"=>[[:reduce, 56]]},
+ "18"=>
+  {"$"=>[[:reduce, 57]],
+   "ADD"=>[[:reduce, 57]],
+   "SUBTRACT"=>[[:reduce, 57]],
+   "MULTIPLY"=>[[:reduce, 57]],
+   "DIVIDE"=>[[:reduce, 57]],
+   "RPAREN"=>[[:reduce, 57]]},
+ "19"=>
+  {"$"=>[[:reduce, 58]],
+   "ADD"=>[[:reduce, 58]],
+   "SUBTRACT"=>[[:reduce, 58]],
+   "MULTIPLY"=>[[:reduce, 58]],
+   "DIVIDE"=>[[:reduce, 58]],
+   "RPAREN"=>[[:reduce, 58]]},
+ "20"=>
+  {"ADD"=>[[:reduce, 59]],
+   "SUBTRACT"=>[[:reduce, 59]],
+   "MULTIPLY"=>[[:reduce, 59]],
+   "DIVIDE"=>[[:reduce, 59]],
+   "RPAREN"=>[[:reduce, 59]],
+   "$"=>[[:reduce, 59]]},
+ "21"=>
+  {"ADD"=>[[:reduce, 60]],
+   "SUBTRACT"=>[[:reduce, 60]],
+   "MULTIPLY"=>[[:reduce, 60]],
+   "DIVIDE"=>[[:reduce, 60]],
+   "RPAREN"=>[[:reduce, 60]],
+   "$"=>[[:reduce, 60]]}}
+
 State 0:
   rules:
-    0: $start(0) →  • expression(0:1) $
+    0/n3: $start(0) →  • expression(0:1) $
       {}
-    1: expression(0:1) →  • NUMBER
+    1/n3: expression(0:1) →  • NUMBER
       {}
-    2: expression(0:1) →  • expression(0:1) ADD expression(10:16)
+    2/l2: expression(0:1) →  • expression(0:1) ADD expression(10:16)
       {}
-    3: expression(0:1) →  • expression(0:1) SUBTRACT expression(11:17)
+    3/l2: expression(0:1) →  • expression(0:1) SUBTRACT expression(11:17)
       {}
-    4: expression(0:1) →  • expression(0:1) MULTIPLY expression(12:18)
+    4/l1: expression(0:1) →  • expression(0:1) MULTIPLY expression(12:18)
       {}
-    5: expression(0:1) →  • expression(0:1) DIVIDE expression(13:19)
+    5/l1: expression(0:1) →  • expression(0:1) DIVIDE expression(13:19)
       {}
-    6: expression(0:1) →  • LPAREN expression(7:14) RPAREN
+    6/n0: expression(0:1) →  • LPAREN expression(7:14) RPAREN
       {}
-    7: expression(0:1) →  • LPAREN error RPAREN
+    7/n0: expression(0:1) →  • LPAREN error RPAREN
       {}
 
   transitions:
@@ -115,15 +212,15 @@ State 0:
 
 State 1:
   rules:
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -135,14 +232,14 @@ State 1:
 
 State 2:
   rules:
-    13: expression(0:1) → NUMBER • 
+    13/n3: expression(0:1) → NUMBER • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
 
   transitions:
 
 State 3:
   rules:
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
 
   transitions:
@@ -150,7 +247,7 @@ State 3:
 
 State 4:
   rules:
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
 
   transitions:
@@ -158,7 +255,7 @@ State 4:
 
 State 5:
   rules:
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
 
   transitions:
@@ -166,7 +263,7 @@ State 5:
 
 State 6:
   rules:
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -174,23 +271,23 @@ State 6:
 
 State 7:
   rules:
-    18: expression(0:1) → LPAREN • expression(7:14) RPAREN
+    18/n0: expression(0:1) → LPAREN • expression(7:14) RPAREN
       {}
-    19: expression(7:14) →  • NUMBER
+    19/n3: expression(7:14) →  • NUMBER
       {}
-    20: expression(7:14) →  • expression(7:14) ADD expression(10:16)
+    20/l2: expression(7:14) →  • expression(7:14) ADD expression(10:16)
       {}
-    21: expression(7:14) →  • expression(7:14) SUBTRACT expression(11:17)
+    21/l2: expression(7:14) →  • expression(7:14) SUBTRACT expression(11:17)
       {}
-    22: expression(7:14) →  • expression(7:14) MULTIPLY expression(12:18)
+    22/l1: expression(7:14) →  • expression(7:14) MULTIPLY expression(12:18)
       {}
-    23: expression(7:14) →  • expression(7:14) DIVIDE expression(13:19)
+    23/l1: expression(7:14) →  • expression(7:14) DIVIDE expression(13:19)
       {}
-    24: expression(7:14) →  • LPAREN expression(7:14) RPAREN
+    24/n0: expression(7:14) →  • LPAREN expression(7:14) RPAREN
       {}
-    25: expression(7:14) →  • LPAREN error RPAREN
+    25/n0: expression(7:14) →  • LPAREN error RPAREN
       {}
-    27: expression(0:1) → LPAREN • error RPAREN
+    27/n0: expression(0:1) → LPAREN • error RPAREN
       {}
 
   transitions:
@@ -201,7 +298,7 @@ State 7:
 
 State 8:
   rules:
-    27: expression(0:1) → LPAREN • error RPAREN
+    27/n0: expression(0:1) → LPAREN • error RPAREN
       {}
 
   transitions:
@@ -209,28 +306,28 @@ State 8:
 
 State 9:
   rules:
-    28: $start(0) → expression(0:1) $ • 
+    28/n3: $start(0) → expression(0:1) $ • 
       {}
 
   transitions:
 
 State 10:
   rules:
-    29: expression(0:1) → expression(0:1) ADD • expression(10:16)
+    29/l2: expression(0:1) → expression(0:1) ADD • expression(10:16)
       {}
-    30: expression(10:16) →  • NUMBER
+    30/n3: expression(10:16) →  • NUMBER
       {}
-    31: expression(10:16) →  • expression(10:16) ADD expression(10:16)
+    31/l2: expression(10:16) →  • expression(10:16) ADD expression(10:16)
       {}
-    32: expression(10:16) →  • expression(10:16) SUBTRACT expression(11:17)
+    32/l2: expression(10:16) →  • expression(10:16) SUBTRACT expression(11:17)
       {}
-    33: expression(10:16) →  • expression(10:16) MULTIPLY expression(12:18)
+    33/l1: expression(10:16) →  • expression(10:16) MULTIPLY expression(12:18)
       {}
-    34: expression(10:16) →  • expression(10:16) DIVIDE expression(13:19)
+    34/l1: expression(10:16) →  • expression(10:16) DIVIDE expression(13:19)
       {}
-    35: expression(10:16) →  • LPAREN expression(7:14) RPAREN
+    35/n0: expression(10:16) →  • LPAREN expression(7:14) RPAREN
       {}
-    36: expression(10:16) →  • LPAREN error RPAREN
+    36/n0: expression(10:16) →  • LPAREN error RPAREN
       {}
 
   transitions:
@@ -240,21 +337,21 @@ State 10:
 
 State 11:
   rules:
-    37: expression(0:1) → expression(0:1) SUBTRACT • expression(11:17)
+    37/l2: expression(0:1) → expression(0:1) SUBTRACT • expression(11:17)
       {}
-    38: expression(11:17) →  • NUMBER
+    38/n3: expression(11:17) →  • NUMBER
       {}
-    39: expression(11:17) →  • expression(11:17) ADD expression(10:16)
+    39/l2: expression(11:17) →  • expression(11:17) ADD expression(10:16)
       {}
-    40: expression(11:17) →  • expression(11:17) SUBTRACT expression(11:17)
+    40/l2: expression(11:17) →  • expression(11:17) SUBTRACT expression(11:17)
       {}
-    41: expression(11:17) →  • expression(11:17) MULTIPLY expression(12:18)
+    41/l1: expression(11:17) →  • expression(11:17) MULTIPLY expression(12:18)
       {}
-    42: expression(11:17) →  • expression(11:17) DIVIDE expression(13:19)
+    42/l1: expression(11:17) →  • expression(11:17) DIVIDE expression(13:19)
       {}
-    43: expression(11:17) →  • LPAREN expression(7:14) RPAREN
+    43/n0: expression(11:17) →  • LPAREN expression(7:14) RPAREN
       {}
-    44: expression(11:17) →  • LPAREN error RPAREN
+    44/n0: expression(11:17) →  • LPAREN error RPAREN
       {}
 
   transitions:
@@ -264,21 +361,21 @@ State 11:
 
 State 12:
   rules:
-    45: expression(0:1) → expression(0:1) MULTIPLY • expression(12:18)
+    45/l1: expression(0:1) → expression(0:1) MULTIPLY • expression(12:18)
       {}
-    46: expression(12:18) →  • NUMBER
+    46/n3: expression(12:18) →  • NUMBER
       {}
-    47: expression(12:18) →  • expression(12:18) ADD expression(10:16)
+    47/l2: expression(12:18) →  • expression(12:18) ADD expression(10:16)
       {}
-    48: expression(12:18) →  • expression(12:18) SUBTRACT expression(11:17)
+    48/l2: expression(12:18) →  • expression(12:18) SUBTRACT expression(11:17)
       {}
-    49: expression(12:18) →  • expression(12:18) MULTIPLY expression(12:18)
+    49/l1: expression(12:18) →  • expression(12:18) MULTIPLY expression(12:18)
       {}
-    50: expression(12:18) →  • expression(12:18) DIVIDE expression(13:19)
+    50/l1: expression(12:18) →  • expression(12:18) DIVIDE expression(13:19)
       {}
-    51: expression(12:18) →  • LPAREN expression(7:14) RPAREN
+    51/n0: expression(12:18) →  • LPAREN expression(7:14) RPAREN
       {}
-    52: expression(12:18) →  • LPAREN error RPAREN
+    52/n0: expression(12:18) →  • LPAREN error RPAREN
       {}
 
   transitions:
@@ -288,21 +385,21 @@ State 12:
 
 State 13:
   rules:
-    53: expression(0:1) → expression(0:1) DIVIDE • expression(13:19)
+    53/l1: expression(0:1) → expression(0:1) DIVIDE • expression(13:19)
       {}
-    54: expression(13:19) →  • NUMBER
+    54/n3: expression(13:19) →  • NUMBER
       {}
-    55: expression(13:19) →  • expression(13:19) ADD expression(10:16)
+    55/l2: expression(13:19) →  • expression(13:19) ADD expression(10:16)
       {}
-    56: expression(13:19) →  • expression(13:19) SUBTRACT expression(11:17)
+    56/l2: expression(13:19) →  • expression(13:19) SUBTRACT expression(11:17)
       {}
-    57: expression(13:19) →  • expression(13:19) MULTIPLY expression(12:18)
+    57/l1: expression(13:19) →  • expression(13:19) MULTIPLY expression(12:18)
       {}
-    58: expression(13:19) →  • expression(13:19) DIVIDE expression(13:19)
+    58/l1: expression(13:19) →  • expression(13:19) DIVIDE expression(13:19)
       {}
-    59: expression(13:19) →  • LPAREN expression(7:14) RPAREN
+    59/n0: expression(13:19) →  • LPAREN expression(7:14) RPAREN
       {}
-    60: expression(13:19) →  • LPAREN error RPAREN
+    60/n0: expression(13:19) →  • LPAREN error RPAREN
       {}
 
   transitions:
@@ -312,17 +409,17 @@ State 13:
 
 State 14:
   rules:
-    61: expression(0:1) → LPAREN expression(7:14) • RPAREN
+    61/n0: expression(0:1) → LPAREN expression(7:14) • RPAREN
       {}
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -335,7 +432,7 @@ State 14:
 
 State 15:
   rules:
-    67: expression(0:1) → LPAREN error • RPAREN
+    67/n0: expression(0:1) → LPAREN error • RPAREN
       {}
 
   transitions:
@@ -343,17 +440,17 @@ State 15:
 
 State 16:
   rules:
-    68: expression(0:1) → expression(0:1) ADD expression(10:16) • 
+    68/l2: expression(0:1) → expression(0:1) ADD expression(10:16) • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -365,17 +462,17 @@ State 16:
 
 State 17:
   rules:
-    74: expression(0:1) → expression(0:1) SUBTRACT expression(11:17) • 
+    74/l2: expression(0:1) → expression(0:1) SUBTRACT expression(11:17) • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -387,17 +484,17 @@ State 17:
 
 State 18:
   rules:
-    80: expression(0:1) → expression(0:1) MULTIPLY expression(12:18) • 
+    80/l1: expression(0:1) → expression(0:1) MULTIPLY expression(12:18) • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -409,17 +506,17 @@ State 18:
 
 State 19:
   rules:
-    86: expression(0:1) → expression(0:1) DIVIDE expression(13:19) • 
+    86/l1: expression(0:1) → expression(0:1) DIVIDE expression(13:19) • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
-    87: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression(0:1) • $
       {}
-    88: expression(0:1) → expression(0:1) • ADD expression(10:16)
+    88/l2: expression(0:1) → expression(0:1) • ADD expression(10:16)
       {}
-    89: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
+    89/l2: expression(0:1) → expression(0:1) • SUBTRACT expression(11:17)
       {}
-    90: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
+    90/l1: expression(0:1) → expression(0:1) • MULTIPLY expression(12:18)
       {}
-    91: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
+    91/l1: expression(0:1) → expression(0:1) • DIVIDE expression(13:19)
       {}
 
   transitions:
@@ -431,14 +528,14 @@ State 19:
 
 State 20:
   rules:
-    92: expression(0:1) → LPAREN expression(7:14) RPAREN • 
+    92/n0: expression(0:1) → LPAREN expression(7:14) RPAREN • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
 
   transitions:
 
 State 21:
   rules:
-    93: expression(0:1) → LPAREN error RPAREN • 
+    93/n0: expression(0:1) → LPAREN error RPAREN • 
       {ADD, SUBTRACT, MULTIPLY, DIVIDE, RPAREN, $}
 
   transitions:

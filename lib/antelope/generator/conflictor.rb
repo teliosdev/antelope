@@ -12,6 +12,11 @@ module Antelope
       end
 
       def call
+        recognize_conflicts
+      end
+
+      def recognize_conflicts
+
         @conflicts = []
 
         parser.states.each do |state|

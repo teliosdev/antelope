@@ -10,6 +10,7 @@ class ExampleParser < Antelope::Parser
   end
 
   presidence do
+    nonassoc LPAREN, RPAREN
     left MULTIPLY, DIVIDE
     left ADD, SUBTRACT
   end

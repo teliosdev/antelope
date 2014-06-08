@@ -22,7 +22,7 @@ ARGV.each do |program|
 
   raise "No parser for #{program}!" unless parser
 
-  r, c, fl = parser.generate
+  r, c, fl, t = parser.generate
 
   file_name = File.basename(program, ".rb")
 
@@ -30,6 +30,7 @@ ARGV.each do |program|
     f.write Antelope::Output.output(parser,
                                     :recognizer  => r,
                                     :constructor => c,
-                                    :conflictor  => fl)
+                                    :conflictor  => fl,
+                                    :table       => t.table)
   end
 end

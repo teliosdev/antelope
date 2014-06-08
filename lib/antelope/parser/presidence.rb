@@ -10,7 +10,7 @@ module Antelope
             presidence.sort_by! { |pr| pr.level }
             presidence << lowest_presidence
           else
-            @_presidence ||= []
+            @_presidence ||= [lowest_presidence(0)]
           end
         end
 
@@ -23,13 +23,28 @@ module Antelope
             first
         end
 
-        def lowest_presidence
-          Presidence.new(:nonassoc, [:_], presidence.last.level + 1)
+        def lowest_presidence(level = presidence.last.level + 1)
+          Presidence.new(:nonassoc, [:_], level)
         end
 
       end
 
-      Presidence = Struct.new(:type, :tokens, :level)
+      Presidence = Struct.new(:type, :tokens, :level) do
+
+        def <=>(other)
+          if level != other.level
+            other.level <=> level
+          else
+            if type == :left
+              1
+            elsif type == :right
+              -1
+            else
+              0
+            end
+          end
+        end
+      end
 
       class PresidenceBuilder < Builder
 

@@ -62,6 +62,7 @@ module Antelope
 
           rule.right.each do |part|
             transition = current_state.transitions[part.value]
+            transition.rule_for(rule).production = rule
             current_state = transition
           end
 

@@ -13,7 +13,7 @@ module Antelope
             @_building_productions = false
             productions[:"$start"] = [{
               :items => [Nonterminal.new(start_production), Terminal.new(:"$")],
-              :block => proc {} }]
+              :block => proc {}, :pres => presidence.last }]
           else
             @_productions
           end
@@ -72,8 +72,9 @@ module Antelope
           end
 
           items = [items].flatten
-          prec  = options[:prec] || items.last
-          options[:prec] = parent.presidence_for(prec)
+          prec  = options[:pres] || items.
+            select { |i| i.terminal? }.last
+          options[:pres] = parent.presidence_for(prec)
 
           @matches << options.merge(items: items, block: block)
         end

@@ -4,7 +4,8 @@ module Antelope
     DEFAULT_MODIFIERS = [
       Generator::Recognizer,
       Generator::Constructor,
-      Generator::Conflictor
+      Generator::Conflictor,
+      Generator::Table
     ].freeze
 
     DEFAULT_GENERATOR = nil # we don't have one yet
