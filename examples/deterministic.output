@@ -1,29 +1,29 @@
 Productions:
     0/n0: $start(0) → s(0:1) $
     1/n0: s(0:1) → e(0:2)
-    2/n0: e(0:2) → t(0:3) SEMICOLON
-    3/n0: e(0:2) → t(0:3) ADD e(9:11)
+    2/n0: e(0:2) → t(0:3) ";"
+    3/n0: e(0:2) → t(0:3) "+" e(9:11)
     4/n0: t(0:3) → NUMBER
-    5/n0: t(0:3) → LPAREN e(6:10) RPAREN
-    13/n0: e(6:10) → t(6:3) SEMICOLON
-    14/n0: e(6:10) → t(6:3) ADD e(9:11)
+    5/n0: t(0:3) → "(" e(6:10) ")"
+    13/n0: e(6:10) → t(6:3) ";"
+    14/n0: e(6:10) → t(6:3) "+" e(9:11)
     15/n0: t(6:3) → NUMBER
-    16/n0: t(6:3) → LPAREN e(6:10) RPAREN
-    20/n0: e(9:11) → t(9:3) SEMICOLON
-    21/n0: e(9:11) → t(9:3) ADD e(9:11)
+    16/n0: t(6:3) → "(" e(6:10) ")"
+    20/n0: e(9:11) → t(9:3) ";"
+    21/n0: e(9:11) → t(9:3) "+" e(9:11)
     22/n0: t(9:3) → NUMBER
-    23/n0: t(9:3) → LPAREN e(6:10) RPAREN
+    23/n0: t(9:3) → "(" e(6:10) ")"
 
 Original Productions:
   s → e
     
-  e → t SEMICOLON
+  e → t ";"
     
-  e → t ADD e
+  e → t "+" e
     
   t → NUMBER
     
-  t → LPAREN e RPAREN
+  t → "(" e ")"
     
   $start → s $
     
@@ -69,13 +69,13 @@ State 0:
       {}
     1/n0: s(0:1) →  • e(0:2)
       {}
-    2/n0: e(0:2) →  • t(0:3) SEMICOLON
+    2/n0: e(0:2) →  • t(0:3) ";"
       {}
-    3/n0: e(0:2) →  • t(0:3) ADD e(9:11)
+    3/n0: e(0:2) →  • t(0:3) "+" e(9:11)
       {}
     4/n0: t(0:3) →  • NUMBER
       {}
-    5/n0: t(0:3) →  • LPAREN e(6:10) RPAREN
+    5/n0: t(0:3) →  • "(" e(6:10) ")"
       {}
 
   transitions:
@@ -102,9 +102,9 @@ State 2:
 
 State 3:
   rules:
-    8/n0: e(0:2) → t(0:3) • SEMICOLON
+    8/n0: e(0:2) → t(0:3) • ";"
       {}
-    10/n0: e(0:2) → t(0:3) • ADD e(9:11)
+    10/n0: e(0:2) → t(0:3) • "+" e(9:11)
       {}
 
   transitions:
@@ -113,7 +113,7 @@ State 3:
 
 State 4:
   rules:
-    10/n0: e(0:2) → t(0:3) • ADD e(9:11)
+    10/n0: e(0:2) → t(0:3) • "+" e(9:11)
       {}
 
   transitions:
@@ -122,21 +122,21 @@ State 4:
 State 5:
   rules:
     11/n0: t(0:3) → NUMBER • 
-      {SEMICOLON, ADD}
+      {";", "+"}
 
   transitions:
 
 State 6:
   rules:
-    12/n0: t(0:3) → LPAREN • e(6:10) RPAREN
+    12/n0: t(0:3) → "(" • e(6:10) ")"
       {}
-    13/n0: e(6:10) →  • t(6:3) SEMICOLON
+    13/n0: e(6:10) →  • t(6:3) ";"
       {}
-    14/n0: e(6:10) →  • t(6:3) ADD e(9:11)
+    14/n0: e(6:10) →  • t(6:3) "+" e(9:11)
       {}
     15/n0: t(6:3) →  • NUMBER
       {}
-    16/n0: t(6:3) →  • LPAREN e(6:10) RPAREN
+    16/n0: t(6:3) →  • "(" e(6:10) ")"
       {}
 
   transitions:
@@ -154,22 +154,22 @@ State 7:
 
 State 8:
   rules:
-    18/n0: e(0:2) → t(0:3) SEMICOLON • 
-      {$, RPAREN}
+    18/n0: e(0:2) → t(0:3) ";" • 
+      {$, ")"}
 
   transitions:
 
 State 9:
   rules:
-    19/n0: e(0:2) → t(0:3) ADD • e(9:11)
+    19/n0: e(0:2) → t(0:3) "+" • e(9:11)
       {}
-    20/n0: e(9:11) →  • t(9:3) SEMICOLON
+    20/n0: e(9:11) →  • t(9:3) ";"
       {}
-    21/n0: e(9:11) →  • t(9:3) ADD e(9:11)
+    21/n0: e(9:11) →  • t(9:3) "+" e(9:11)
       {}
     22/n0: t(9:3) →  • NUMBER
       {}
-    23/n0: t(9:3) →  • LPAREN e(6:10) RPAREN
+    23/n0: t(9:3) →  • "(" e(6:10) ")"
       {}
 
   transitions:
@@ -180,7 +180,7 @@ State 9:
 
 State 10:
   rules:
-    24/n0: t(0:3) → LPAREN e(6:10) • RPAREN
+    24/n0: t(0:3) → "(" e(6:10) • ")"
       {}
 
   transitions:
@@ -188,15 +188,15 @@ State 10:
 
 State 11:
   rules:
-    25/n0: e(0:2) → t(0:3) ADD e(9:11) • 
-      {$, RPAREN}
+    25/n0: e(0:2) → t(0:3) "+" e(9:11) • 
+      {$, ")"}
 
   transitions:
 
 State 12:
   rules:
-    26/n0: t(0:3) → LPAREN e(6:10) RPAREN • 
-      {SEMICOLON, ADD}
+    26/n0: t(0:3) → "(" e(6:10) ")" • 
+      {";", "+"}
 
   transitions:
 

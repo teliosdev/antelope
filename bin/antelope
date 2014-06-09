@@ -2,6 +2,7 @@
 
 $: << File.expand_path("../../lib", __FILE__) << Dir.pwd
 require "antelope"
+require "pathname"
 
 ARGV.each do |program|
   grammar = Antelope::Ace::Grammar.from_file(program)
@@ -13,7 +14,9 @@ ARGV.each do |program|
           :conflictor,
           :table].zip(out)]
 
-  file_name = File.basename(program, ".ace")
+  program = Pathname.new(program)
+
+  file_name = program.parent + program.basename(".ace")
 
   File.open("#{file_name}.output", "w") do |f|
     f.write Antelope::Output.output(grammar, pass)
