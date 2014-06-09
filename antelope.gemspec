@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "liquid", "~> 2.6"
   spec.add_dependency "sourcify", "~> 0.5"
+  spec.add_dependency "hashie", "~> 3.0"
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"

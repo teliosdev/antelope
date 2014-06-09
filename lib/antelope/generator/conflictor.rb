@@ -1,7 +1,7 @@
 require "antelope/generator/conflictor/conflict"
 
 module Antelope
-  module Generator
+  class Generator
     class Conflictor
 
       attr_accessor :parser

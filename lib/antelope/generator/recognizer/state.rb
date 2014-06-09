@@ -2,7 +2,7 @@ require "forwardable"
 require "securerandom"
 
 module Antelope
-  module Generator
+  class Generator
     class Recognizer
       class State
 

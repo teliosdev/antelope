@@ -4,6 +4,12 @@ require "antelope/generator/recognizer"
 require "antelope/generator/table"
 
 module Antelope
-  module Generator
+  class Generator
+
+    def initialize(parser, *mods)
+      @parser = parser
+      @mods   = mods
+    end
+
   end
 end

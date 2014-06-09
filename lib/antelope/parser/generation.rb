@@ -15,11 +15,11 @@ module Antelope
 
         def generate(generator = DEFAULT_GENERATOR,
                      modifiers = DEFAULT_MODIFIERS)
-          results = modifiers.
-            map  { |x| x.new(self) }.
-            each { |x| x.call }
+          mods = modifiers.
+            map  { |x| x.new(self) }
+          results = mods.map(&:call)
           # This is when we'd generate
-          results
+          mods
         end
 
       end

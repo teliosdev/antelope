@@ -5,7 +5,7 @@ require "antelope/generator/constructor/follow"
 require "antelope/generator/constructor/lookahead"
 
 module Antelope
-  module Generator
+  class Generator
     class Constructor
 
       include Nullable

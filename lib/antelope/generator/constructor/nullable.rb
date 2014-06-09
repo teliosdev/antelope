@@ -1,5 +1,5 @@
 module Antelope
-  module Generator
+  class Generator
     class Constructor
       module Nullable
 

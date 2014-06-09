@@ -3,7 +3,7 @@ require "antelope/generator/recognizer/state"
 require "pp"
 
 module Antelope
-  module Generator
+  class Generator
     class Recognizer
 
       attr_reader :states
