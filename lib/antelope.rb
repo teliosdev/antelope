@@ -3,7 +3,6 @@ require "antelope/automaton"
 require "antelope/generator"
 require "antelope/version"
 require "antelope/builder"
-require "antelope/parser"
 require "antelope/ace"
 
 module Antelope

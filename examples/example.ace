@@ -1,0 +1,34 @@
+%{
+  require "antelope"
+%}
+
+%require "0.0.1"
+%type "ruby"
+
+%terminal NUMBER
+%terminal MULTIPLY "*"
+%terminal DIVIDE "/"
+%terminal ADD "+"
+%terminal SUBTRACT "-"
+%terminal LPAREN "("
+%terminal RPAREN ")"
+
+%nonassoc LPAREN RPAREN
+%left MULTIPLY DIVIDE
+%left ADD SUBTRACT
+
+%%
+
+expression: NUMBER                         { |a| a.to_i      }
+          | expression ADD expression      { |a, _, b| a + b }
+          | expression SUBTRACT expression { |a, _, b| a - b }
+          | expression MULTIPLY expression { |a, _, b| a * b }
+          | expression DIVIDE expression   { |a, _, b| a / b }
+          | LPAREN expression RPAREN       { |_, a, _| a     }
+          | LPAREN error RPAREN
+
+%%
+
+class ExampleParser < Antelope::Parser
+  %{write}
+end

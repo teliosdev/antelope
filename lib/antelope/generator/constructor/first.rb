@@ -10,21 +10,21 @@ module Antelope
 
         def first(token)
           case token
-          when Parser::Nonterminal
+          when Ace::Nonterminal
             firstifying(token) do
-              productions = parser.productions[token.value]
+              productions = parser.productions[token.name]
               productions.map { |prod|
                 first(prod[:items]) }.inject(Set.new, :+)
             end
           when Array
             first_array(token)
-          when Parser::Epsilon
+          when Ace::Epsilon
             Set.new
-          when Parser::Terminal
+          when Ace::Terminal
             Set.new([token])
           else
-            incorrect_argument! token, Parser::Nonterminal, Array,
-              Parser::Epsilon, Parser::Terminal
+            incorrect_argument! token, Ace::Nonterminal, Array,
+              Ace::Epsilon, Ace::Terminal
           end
         end
 

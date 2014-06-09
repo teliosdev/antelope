@@ -16,17 +16,17 @@ Productions:
 
 Original Productions:
   s → e
-    proc { }
+    
   e → t SEMICOLON
-    proc { }
+    
   e → t ADD e
-    proc { }
+    
   t → NUMBER
-    proc { }
+    
   t → LPAREN e RPAREN
-    proc { }
+    
   $start → s $
-    proc { }
+    
 
 Conflicts:
 
@@ -37,31 +37,31 @@ Presidence:
   --- lowest
 
 Table:
-{"0"=>
-  {"s"=>[[:state, 1]],
-   "e"=>[[:state, 2]],
-   "t"=>[[:state, 3]],
-   "NUMBER"=>[[:state, 5]],
-   "LPAREN"=>[[:state, 6]]},
- "1"=>{"$"=>[[:state, 7]]},
- "2"=>{"$"=>[[:reduce, 1]]},
- "3"=>{"SEMICOLON"=>[[:state, 8]], "ADD"=>[[:state, 9]]},
- "4"=>{"ADD"=>[[:state, 9]]},
- "5"=>{"SEMICOLON"=>[[:reduce, 22]], "ADD"=>[[:reduce, 22]]},
- "6"=>
-  {"e"=>[[:state, 10]],
-   "t"=>[[:state, 3]],
-   "NUMBER"=>[[:state, 5]],
-   "LPAREN"=>[[:state, 6]]},
- "8"=>{"$"=>[[:reduce, 20]], "RPAREN"=>[[:reduce, 20]]},
- "9"=>
-  {"e"=>[[:state, 11]],
-   "t"=>[[:state, 3]],
-   "NUMBER"=>[[:state, 5]],
-   "LPAREN"=>[[:state, 6]]},
- "10"=>{"RPAREN"=>[[:state, 12]]},
- "11"=>{"$"=>[[:reduce, 21]], "RPAREN"=>[[:reduce, 21]]},
- "12"=>{"SEMICOLON"=>[[:reduce, 23]], "ADD"=>[[:reduce, 23]]}}
+{0=>
+  {:s=>[[:state, 1]],
+   :e=>[[:state, 2]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 1=>{:"$"=>[[:state, 7]]},
+ 2=>{:"$"=>[[:reduce, 1]]},
+ 3=>{:SEMICOLON=>[[:state, 8]], :ADD=>[[:state, 9]]},
+ 4=>{:ADD=>[[:state, 9]]},
+ 5=>{:SEMICOLON=>[[:reduce, 22]], :ADD=>[[:reduce, 22]]},
+ 6=>
+  {:e=>[[:state, 10]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 8=>{:"$"=>[[:reduce, 20]], :RPAREN=>[[:reduce, 20]]},
+ 9=>
+  {:e=>[[:state, 11]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 10=>{:RPAREN=>[[:state, 12]]},
+ 11=>{:"$"=>[[:reduce, 21]], :RPAREN=>[[:reduce, 21]]},
+ 12=>{:SEMICOLON=>[[:reduce, 23]], :ADD=>[[:reduce, 23]]}}
 
 State 0:
   rules:

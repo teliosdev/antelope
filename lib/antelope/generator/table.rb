@@ -33,7 +33,7 @@ module Antelope
             @rules[rule.id] = rule
             if rule.final?
               rule.lookahead.each do |look|
-                table[state.id][look.value] << [:reduce, rule.production.id]
+                table[state.id][look.name] << [:reduce, rule.production.id]
               end
             end
           end

@@ -13,6 +13,7 @@ SimpleCov.start do
 
 end
 
+require "rspec/its"
 require "antelope"
 
 include Antelope

@@ -45,21 +45,21 @@ Productions:
 
 Original Productions:
   expression → NUMBER
-    proc { |a| a.to_i }
+    { |a| a.to_i      }
   expression → expression ADD expression
-    proc { |a, _, b| (a + b) }
+    { |a, _, b| a + b }
   expression → expression SUBTRACT expression
-    proc { |a, _, b| (a - b) }
+    { |a, _, b| a - b }
   expression → expression MULTIPLY expression
-    proc { |a, _, b| (a * b) }
+    { |a, _, b| a * b }
   expression → expression DIVIDE expression
-    proc { |a, _, b| (a / b) }
+    { |a, _, b| a / b }
   expression → LPAREN expression RPAREN
-    proc { |_, a, _| a }
+    { |_, a, _| a     }
   expression → LPAREN error RPAREN
-    proc { }
+    
   $start → expression $
-    proc { }
+    
 
 Conflicts:
   State 16:
@@ -92,99 +92,97 @@ Presidence:
   --- lowest
 
 Table:
-{"0"=>
-  {"expression"=>[[:state, 1]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]]},
- "1"=>
-  {"$"=>[[:state, 9]],
-   "ADD"=>[[:state, 10]],
-   "SUBTRACT"=>[[:state, 11]],
-   "MULTIPLY"=>[[:state, 12]],
-   "DIVIDE"=>[[:state, 13]]},
- "2"=>
-  {"ADD"=>[[:reduce, 54]],
-   "SUBTRACT"=>[[:reduce, 54]],
-   "MULTIPLY"=>[[:reduce, 54]],
-   "DIVIDE"=>[[:reduce, 54]],
-   "RPAREN"=>[[:reduce, 54]],
-   "$"=>[[:reduce, 54]]},
- "3"=>{"ADD"=>[[:state, 10]]},
- "4"=>{"SUBTRACT"=>[[:state, 11]]},
- "5"=>{"MULTIPLY"=>[[:state, 12]]},
- "6"=>{"DIVIDE"=>[[:state, 13]]},
- "7"=>
-  {"expression"=>[[:state, 14]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]],
-   "error"=>[[:state, 15]]},
- "8"=>{"error"=>[[:state, 15]]},
- "10"=>
-  {"expression"=>[[:state, 16]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]]},
- "11"=>
-  {"expression"=>[[:state, 17]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]]},
- "12"=>
-  {"expression"=>[[:state, 18]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]]},
- "13"=>
-  {"expression"=>[[:state, 19]],
-   "NUMBER"=>[[:state, 2]],
-   "LPAREN"=>[[:state, 7]]},
- "14"=>
-  {"$"=>[[:state, 9]],
-   "ADD"=>[[:state, 10]],
-   "SUBTRACT"=>[[:state, 11]],
-   "MULTIPLY"=>[[:state, 12]],
-   "DIVIDE"=>[[:state, 13]],
-   "RPAREN"=>[[:state, 20]]},
- "15"=>{"RPAREN"=>[[:state, 21]]},
- "16"=>
-  {"$"=>[[:reduce, 55]],
-   "ADD"=>[[:reduce, 55]],
-   "SUBTRACT"=>[[:reduce, 55]],
-   "MULTIPLY"=>[[:state, 12]],
-   "DIVIDE"=>[[:state, 13]],
-   "RPAREN"=>[[:reduce, 55]]},
- "17"=>
-  {"$"=>[[:reduce, 56]],
-   "ADD"=>[[:reduce, 56]],
-   "SUBTRACT"=>[[:reduce, 56]],
-   "MULTIPLY"=>[[:state, 12]],
-   "DIVIDE"=>[[:state, 13]],
-   "RPAREN"=>[[:reduce, 56]]},
- "18"=>
-  {"$"=>[[:reduce, 57]],
-   "ADD"=>[[:reduce, 57]],
-   "SUBTRACT"=>[[:reduce, 57]],
-   "MULTIPLY"=>[[:reduce, 57]],
-   "DIVIDE"=>[[:reduce, 57]],
-   "RPAREN"=>[[:reduce, 57]]},
- "19"=>
-  {"$"=>[[:reduce, 58]],
-   "ADD"=>[[:reduce, 58]],
-   "SUBTRACT"=>[[:reduce, 58]],
-   "MULTIPLY"=>[[:reduce, 58]],
-   "DIVIDE"=>[[:reduce, 58]],
-   "RPAREN"=>[[:reduce, 58]]},
- "20"=>
-  {"ADD"=>[[:reduce, 59]],
-   "SUBTRACT"=>[[:reduce, 59]],
-   "MULTIPLY"=>[[:reduce, 59]],
-   "DIVIDE"=>[[:reduce, 59]],
-   "RPAREN"=>[[:reduce, 59]],
-   "$"=>[[:reduce, 59]]},
- "21"=>
-  {"ADD"=>[[:reduce, 60]],
-   "SUBTRACT"=>[[:reduce, 60]],
-   "MULTIPLY"=>[[:reduce, 60]],
-   "DIVIDE"=>[[:reduce, 60]],
-   "RPAREN"=>[[:reduce, 60]],
-   "$"=>[[:reduce, 60]]}}
+{0=>
+  {:expression=>[[:state, 1]], :NUMBER=>[[:state, 2]], :LPAREN=>[[:state, 7]]},
+ 1=>
+  {:"$"=>[[:state, 9]],
+   :ADD=>[[:state, 10]],
+   :SUBTRACT=>[[:state, 11]],
+   :MULTIPLY=>[[:state, 12]],
+   :DIVIDE=>[[:state, 13]]},
+ 2=>
+  {:ADD=>[[:reduce, 54]],
+   :SUBTRACT=>[[:reduce, 54]],
+   :MULTIPLY=>[[:reduce, 54]],
+   :DIVIDE=>[[:reduce, 54]],
+   :RPAREN=>[[:reduce, 54]],
+   :"$"=>[[:reduce, 54]]},
+ 3=>{:ADD=>[[:state, 10]]},
+ 4=>{:SUBTRACT=>[[:state, 11]]},
+ 5=>{:MULTIPLY=>[[:state, 12]]},
+ 6=>{:DIVIDE=>[[:state, 13]]},
+ 7=>
+  {:expression=>[[:state, 14]],
+   :NUMBER=>[[:state, 2]],
+   :LPAREN=>[[:state, 7]],
+   :error=>[[:state, 15]]},
+ 8=>{:error=>[[:state, 15]]},
+ 10=>
+  {:expression=>[[:state, 16]],
+   :NUMBER=>[[:state, 2]],
+   :LPAREN=>[[:state, 7]]},
+ 11=>
+  {:expression=>[[:state, 17]],
+   :NUMBER=>[[:state, 2]],
+   :LPAREN=>[[:state, 7]]},
+ 12=>
+  {:expression=>[[:state, 18]],
+   :NUMBER=>[[:state, 2]],
+   :LPAREN=>[[:state, 7]]},
+ 13=>
+  {:expression=>[[:state, 19]],
+   :NUMBER=>[[:state, 2]],
+   :LPAREN=>[[:state, 7]]},
+ 14=>
+  {:"$"=>[[:state, 9]],
+   :ADD=>[[:state, 10]],
+   :SUBTRACT=>[[:state, 11]],
+   :MULTIPLY=>[[:state, 12]],
+   :DIVIDE=>[[:state, 13]],
+   :RPAREN=>[[:state, 20]]},
+ 15=>{:RPAREN=>[[:state, 21]]},
+ 16=>
+  {:"$"=>[[:reduce, 55]],
+   :ADD=>[[:reduce, 55]],
+   :SUBTRACT=>[[:reduce, 55]],
+   :MULTIPLY=>[[:state, 12]],
+   :DIVIDE=>[[:state, 13]],
+   :RPAREN=>[[:reduce, 55]]},
+ 17=>
+  {:"$"=>[[:reduce, 56]],
+   :ADD=>[[:reduce, 56]],
+   :SUBTRACT=>[[:reduce, 56]],
+   :MULTIPLY=>[[:state, 12]],
+   :DIVIDE=>[[:state, 13]],
+   :RPAREN=>[[:reduce, 56]]},
+ 18=>
+  {:"$"=>[[:reduce, 57]],
+   :ADD=>[[:reduce, 57]],
+   :SUBTRACT=>[[:reduce, 57]],
+   :MULTIPLY=>[[:reduce, 57]],
+   :DIVIDE=>[[:reduce, 57]],
+   :RPAREN=>[[:reduce, 57]]},
+ 19=>
+  {:"$"=>[[:reduce, 58]],
+   :ADD=>[[:reduce, 58]],
+   :SUBTRACT=>[[:reduce, 58]],
+   :MULTIPLY=>[[:reduce, 58]],
+   :DIVIDE=>[[:reduce, 58]],
+   :RPAREN=>[[:reduce, 58]]},
+ 20=>
+  {:ADD=>[[:reduce, 59]],
+   :SUBTRACT=>[[:reduce, 59]],
+   :MULTIPLY=>[[:reduce, 59]],
+   :DIVIDE=>[[:reduce, 59]],
+   :RPAREN=>[[:reduce, 59]],
+   :"$"=>[[:reduce, 59]]},
+ 21=>
+  {:ADD=>[[:reduce, 60]],
+   :SUBTRACT=>[[:reduce, 60]],
+   :MULTIPLY=>[[:reduce, 60]],
+   :DIVIDE=>[[:reduce, 60]],
+   :RPAREN=>[[:reduce, 60]],
+   :"$"=>[[:reduce, 60]]}}
 
 State 0:
   rules:

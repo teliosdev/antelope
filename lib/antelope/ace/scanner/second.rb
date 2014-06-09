@@ -16,7 +16,7 @@ module Antelope
           if @scanner.check(/([a-z]+):/)
             scan_second_rule_label or error!
             scan_second_rule_body
-            scan_second_rule_block
+            true
           end
         end
 
@@ -30,8 +30,10 @@ module Antelope
           body = true
           while body
             scan_second_rule_part || scan_second_rule_or ||
+            scan_second_rule_prec || scan_second_rule_block ||
             scan_whitespace || (body = false)
           end
+          @scanner.scan(/;/)
         end
 
         def scan_second_rule_part
@@ -46,6 +48,12 @@ module Antelope
           end
         end
 
+        def scan_second_rule_prec
+          if @scanner.scan(/%prec ([A-Za-z]+)/)
+            tokens << [:prec, @scanner[1]]
+          end
+        end
+
         def scan_second_rule_block
           if @scanner.scan(/\{/)
             tokens << [:block, _scan_block]
@@ -57,12 +65,14 @@ module Antelope
           body = "{"
 
           until brack.zero?
-            if part = @scanner.scan_until(/\{/)
+            if part = @scanner.scan_until(/(\}|\{)/)
               body << part
-              brack += 1
-            elsif part = @scanner.scan_until(/\}/)
-              body << part
-              brack -= 1
+
+              if @scanner[1] == "}"
+                brack -= 1
+              else
+                brack += 1
+              end
             else
               error!
             end

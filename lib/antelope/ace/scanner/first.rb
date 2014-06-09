@@ -10,7 +10,7 @@ module Antelope
         end
 
         def scan_first_copy
-          if @scanner.scan(/%{([\s\S]+?)\n%}/)
+          if @scanner.scan(/%{([\s\S]+?)\n\s*%}/)
             tokens << [:copy, @scanner[1]]
           end
         end
@@ -21,7 +21,7 @@ module Antelope
             arguments = []
             until @scanner.check(/\n/)
               @scanner.scan(/#{VALUE}/x) or error!
-              arguments << @scanner.matched.chomp
+              arguments.push(@scanner[2] || @scanner[3])
               @scanner.scan(/ */)
             end
 

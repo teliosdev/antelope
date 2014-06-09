@@ -34,7 +34,7 @@ module Antelope
         end
 
         def active
-          right[position] or Parser::Token.new(nil)
+          right[position] or Ace::Token.new(nil)
         end
 
         def succ

@@ -1,11 +1,12 @@
 module Antelope
-  class Parser
+  module Ace
     class Token
-      attr_reader :value
+      attr_reader :name
       attr_accessor :from
       attr_accessor :to
 
-      def initialize(value)
+      def initialize(name, value = nil)
+        @name  = name
         @value = value
         @from  = nil
         @to    = nil
@@ -30,7 +31,11 @@ module Antelope
       end
 
       def to_s
-        buf = "" << @value.to_s
+        buf = if @value && false
+          @value.inspect
+        else
+          @name.to_s
+        end
         if (from or to)
           buf << "("
           buf << "#{from.id}" if from
@@ -58,7 +63,7 @@ module Antelope
       end
 
       def without_transitions
-        self.class.new(value)
+        self.class.new(name, @value)
       end
 
       def hash
@@ -68,7 +73,9 @@ module Antelope
       alias_method :eql?, :==
 
       def to_a
-        [to, from, terminal?, nonterminal?, epsilon?, error?, value]
+        [to, from,
+          terminal?, nonterminal?, epsilon?, error?,
+          name, @value]
       end
     end
 
@@ -77,11 +84,14 @@ module Antelope
         true
       end
     end
+
     class Terminal < Token
+
       def terminal?
         true
       end
     end
+
     class Epsilon < Token
       def initialize(*)
         super :epsilon

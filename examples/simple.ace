@@ -1,0 +1,26 @@
+%{
+  require "antelope"
+%}
+
+%require "0.0.1"
+%type "ruby"
+
+%terminal IDENT
+%terminal STAR "*"
+%terminal EQUALS "="
+
+%%
+
+e: l EQUALS r
+ | r
+
+l: IDENT
+ | STAR r
+
+r: l
+
+%%
+
+class SimpleParser < Antelope::Parser
+  %{write}
+end

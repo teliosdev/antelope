@@ -11,10 +11,10 @@ module Antelope
         def follow(token)
 
           if token.nonterminal?
-            token = token.value
+            token = token.name
           elsif token.is_a? Symbol
           else
-            incorrect_argument! token, Parser::Nonterminal, Symbol
+            incorrect_argument! token, Ace::Nonterminal, Symbol
           end
 
           @follows.fetch(token) do
@@ -25,13 +25,13 @@ module Antelope
               value.each do |production|
                 items = production[:items]
                 positions = items.each_with_index.
-                  find_all { |t, _| t.value == token }.
+                  find_all { |t, _| t.name == token }.
                   map(&:last).map(&:succ)
                 positions.map { |pos| first(items[pos..-1]) }.
                   inject(set, :merge)
                 positions.each do |pos|
                   if pos == items.size || nullable?(items[pos..-1])
-                    set.merge follow(Parser::Nonterminal.new(key))
+                    set.merge follow(Ace::Nonterminal.new(key))
                   end
                 end
               end

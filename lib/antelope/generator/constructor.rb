@@ -37,12 +37,12 @@ module Antelope
           current_state = state
 
           rule.left.from = state
-          rule.left.to   = state.transitions[rule.left.value]
+          rule.left.to   = state.transitions[rule.left.name]
 
           states = [state]
 
           rule.right.each_with_index do |part, pos|
-            transition = current_state.transitions[part.value]
+            transition = current_state.transitions[part.name]
             if part.nonterminal?
               part.from = current_state
               part.to   = transition
@@ -61,7 +61,7 @@ module Antelope
           current_state = state
 
           rule.right.each do |part|
-            transition = current_state.transitions[part.value]
+            transition = current_state.transitions[part.name]
             transition.rule_for(rule).production = rule
             current_state = transition
           end

@@ -40,7 +40,9 @@ module Antelope
         start = [@scanner.pos - 8, 0].max
         stop  = [@scanner.pos + 8, @scanner.string.length].min
         snip  = @scanner.string[start..stop].strip
-        raise SyntaxError, "invalid syntax near `#{snip}`"
+        char  = @scanner.string[@scanner.pos]
+        p tokens
+        raise SyntaxError, "invalid syntax near `#{snip.inspect}` (#{char.inspect})"
       end
     end
   end

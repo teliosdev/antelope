@@ -22,7 +22,7 @@ module Antelope
         parser.states.each do |state|
           state.rules.each do |rule|
             if rule.lookahead.
-                any? { |tok| state.transitions.key?(tok.value) }
+                any? { |tok| state.transitions.key?(tok.name) }
               @conflicts << Conflict.new(state, :shift_reduce, [rule],
                 rule.lookahead - state.transitions.keys)
             end

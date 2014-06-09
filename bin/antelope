@@ -2,35 +2,20 @@
 
 $: << File.expand_path("../../lib", __FILE__) << Dir.pwd
 require "antelope"
-require "erb"
-
-def get_classes
-  Object.constants.
-    reject { |c| c == :Config        }.
-    map    { |c| Object.const_get(c) }.
-    select { |c| c.is_a? Class       }
-end
 
 ARGV.each do |program|
-  current_consts = get_classes
+  grammar = Antelope::Ace::Grammar.from_file(program)
 
-  load program
+  out = grammar.generate
 
-  parser = (get_classes - current_consts).
-    select { |x| x < Antelope::Parser   }.
-    first
+  pass = Hash[[:recognizer,
+          :constructor,
+          :conflictor,
+          :table].zip(out)]
 
-  raise "No parser for #{program}!" unless parser
-
-  r, c, fl, t = parser.generate
-
-  file_name = File.basename(program, ".rb")
+  file_name = File.basename(program, ".ace")
 
   File.open("#{file_name}.output", "w") do |f|
-    f.write Antelope::Output.output(parser,
-                                    :recognizer  => r,
-                                    :constructor => c,
-                                    :conflictor  => fl,
-                                    :table       => t.table)
+    f.write Antelope::Output.output(grammar, pass)
   end
 end

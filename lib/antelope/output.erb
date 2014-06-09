@@ -7,7 +7,7 @@ Original Productions:
 % parser.productions.each do |k, v|
 %  v.each do |prod|
   <%= k %> → <%= prod[:items].join(" ") %>
-    <%= prod[:block].to_source if prod[:block] %>
+    <%= prod[:block] %>
 %  end
 % end
 
@@ -23,12 +23,12 @@ Presidence:
   --- highest
 % parser.presidence.each do |pr|
   <%= "%-8s" % pr.type %> <%= pr.level %>:
-    {<%= pr.tokens.join(", ") %>}
+    {<%= pr.tokens.to_a.join(", ") %>}
 % end
   --- lowest
 
 Table:
-% PP.pp(table, _erbout)
+% PP.pp(table.table, _erbout)
 
 % parser.states.each do |state|
 State <%= state.id %>:

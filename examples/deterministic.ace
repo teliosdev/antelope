@@ -1,0 +1,27 @@
+%{
+  require "antelope"
+%}
+
+%require "0.0.1"
+%type "ruby"
+
+%terminal NUMBER
+%terminal SEMICOLON ";"
+%terminal ADD "+"
+%terminal LPAREN "("
+%terminal RPAREN ")"
+
+%%
+
+s: e
+e: t SEMICOLON
+ | t ADD e
+
+t: NUMBER
+ | LPAREN e RPAREN
+
+%%
+
+class DeterministicParser < Antelope::Parser
+  %{write}
+end
