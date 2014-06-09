@@ -31,7 +31,7 @@ module Antelope
       end
 
       def to_s
-        buf = if @value && false
+        buf = if @value
           @value.inspect
         else
           @name.to_s

@@ -1,0 +1,202 @@
+Productions:
+    0/n0: $start(0) → s(0:1) $
+    1/n0: s(0:1) → e(0:2)
+    2/n0: e(0:2) → t(0:3) ";"
+    3/n0: e(0:2) → t(0:3) "+" e(9:11)
+    4/n0: t(0:3) → NUMBER
+    5/n0: t(0:3) → "(" e(6:10) ")"
+    13/n0: e(6:10) → t(6:3) ";"
+    14/n0: e(6:10) → t(6:3) "+" e(9:11)
+    15/n0: t(6:3) → NUMBER
+    16/n0: t(6:3) → "(" e(6:10) ")"
+    20/n0: e(9:11) → t(9:3) ";"
+    21/n0: e(9:11) → t(9:3) "+" e(9:11)
+    22/n0: t(9:3) → NUMBER
+    23/n0: t(9:3) → "(" e(6:10) ")"
+
+Original Productions:
+  s → e
+    
+  e → t ";"
+    
+  e → t "+" e
+    
+  t → NUMBER
+    
+  t → "(" e ")"
+    
+  $start → s $
+    
+
+Conflicts:
+
+Presidence:
+  --- highest
+  nonassoc 0:
+    {_}
+  --- lowest
+
+Table:
+{0=>
+  {:s=>[[:state, 1]],
+   :e=>[[:state, 2]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 1=>{:"$"=>[[:state, 7]]},
+ 2=>{:"$"=>[[:reduce, 1]]},
+ 3=>{:SEMICOLON=>[[:state, 8]], :ADD=>[[:state, 9]]},
+ 4=>{:ADD=>[[:state, 9]]},
+ 5=>{:SEMICOLON=>[[:reduce, 22]], :ADD=>[[:reduce, 22]]},
+ 6=>
+  {:e=>[[:state, 10]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 8=>{:"$"=>[[:reduce, 20]], :RPAREN=>[[:reduce, 20]]},
+ 9=>
+  {:e=>[[:state, 11]],
+   :t=>[[:state, 3]],
+   :NUMBER=>[[:state, 5]],
+   :LPAREN=>[[:state, 6]]},
+ 10=>{:RPAREN=>[[:state, 12]]},
+ 11=>{:"$"=>[[:reduce, 21]], :RPAREN=>[[:reduce, 21]]},
+ 12=>{:SEMICOLON=>[[:reduce, 23]], :ADD=>[[:reduce, 23]]}}
+
+State 0:
+  rules:
+    0/n0: $start(0) →  • s(0:1) $
+      {}
+    1/n0: s(0:1) →  • e(0:2)
+      {}
+    2/n0: e(0:2) →  • t(0:3) ";"
+      {}
+    3/n0: e(0:2) →  • t(0:3) "+" e(9:11)
+      {}
+    4/n0: t(0:3) →  • NUMBER
+      {}
+    5/n0: t(0:3) →  • "(" e(6:10) ")"
+      {}
+
+  transitions:
+    s     : State 1
+    e     : State 2
+    t     : State 3
+    NUMBER: State 5
+    LPAREN: State 6
+
+State 1:
+  rules:
+    6/n0: $start(0) → s(0:1) • $
+      {}
+
+  transitions:
+    $: State 7
+
+State 2:
+  rules:
+    7/n0: s(0:1) → e(0:2) • 
+      {$}
+
+  transitions:
+
+State 3:
+  rules:
+    8/n0: e(0:2) → t(0:3) • ";"
+      {}
+    10/n0: e(0:2) → t(0:3) • "+" e(9:11)
+      {}
+
+  transitions:
+    SEMICOLON: State 8
+    ADD      : State 9
+
+State 4:
+  rules:
+    10/n0: e(0:2) → t(0:3) • "+" e(9:11)
+      {}
+
+  transitions:
+    ADD: State 9
+
+State 5:
+  rules:
+    11/n0: t(0:3) → NUMBER • 
+      {";", "+"}
+
+  transitions:
+
+State 6:
+  rules:
+    12/n0: t(0:3) → "(" • e(6:10) ")"
+      {}
+    13/n0: e(6:10) →  • t(6:3) ";"
+      {}
+    14/n0: e(6:10) →  • t(6:3) "+" e(9:11)
+      {}
+    15/n0: t(6:3) →  • NUMBER
+      {}
+    16/n0: t(6:3) →  • "(" e(6:10) ")"
+      {}
+
+  transitions:
+    e     : State 10
+    t     : State 3
+    NUMBER: State 5
+    LPAREN: State 6
+
+State 7:
+  rules:
+    17/n0: $start(0) → s(0:1) $ • 
+      {}
+
+  transitions:
+
+State 8:
+  rules:
+    18/n0: e(0:2) → t(0:3) ";" • 
+      {$, ")"}
+
+  transitions:
+
+State 9:
+  rules:
+    19/n0: e(0:2) → t(0:3) "+" • e(9:11)
+      {}
+    20/n0: e(9:11) →  • t(9:3) ";"
+      {}
+    21/n0: e(9:11) →  • t(9:3) "+" e(9:11)
+      {}
+    22/n0: t(9:3) →  • NUMBER
+      {}
+    23/n0: t(9:3) →  • "(" e(6:10) ")"
+      {}
+
+  transitions:
+    e     : State 11
+    t     : State 3
+    NUMBER: State 5
+    LPAREN: State 6
+
+State 10:
+  rules:
+    24/n0: t(0:3) → "(" e(6:10) • ")"
+      {}
+
+  transitions:
+    RPAREN: State 12
+
+State 11:
+  rules:
+    25/n0: e(0:2) → t(0:3) "+" e(9:11) • 
+      {$, ")"}
+
+  transitions:
+
+State 12:
+  rules:
+    26/n0: t(0:3) → "(" e(6:10) ")" • 
+      {";", "+"}
+
+  transitions:
+
