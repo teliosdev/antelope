@@ -4,13 +4,16 @@ module Antelope
       module Loading
         module ClassMethods
           def from_file(file_name)
-            from_string File.read(file_name)
+            body = File.read(file_name)
+            output   = File.dirname(file_name)
+            name     = File.basename(file_name).gsub(/\.[A-Za-z]+/, "")
+            from_string(name, output, body)
           end
 
-          def from_string(string)
+          def from_string(name, output, string)
             scanner  = Ace::Scanner.scan(string)
             compiler = Ace::Compiler.compile(scanner)
-            new(compiler)
+            new(name, output, compiler)
           end
         end
 

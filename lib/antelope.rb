@@ -1,5 +1,5 @@
-require "antelope/output"
 require "antelope/automaton"
+require "antelope/generation"
 require "antelope/generator"
 require "antelope/version"
 require "antelope/builder"

@@ -2,23 +2,26 @@ module Antelope
   module Ace
     class Grammar
 
-      DEFAULT_MODIFIERS = [
-        Generator::Recognizer,
-        Generator::Constructor,
-        Generator::Conflictor,
-        Generator::Table
-      ].freeze
+      DEFAULT_MODIFIERS = {
+        recognizer:  Generation::Recognizer,
+        constructor: Generation::Constructor,
+        conflictor:  Generation::Conflictor,
+        table:       Generation::Table
+      }.freeze
 
-      DEFAULT_GENERATOR = nil
+      DEFAULT_GENERATORS = [Generator::Output, Generator::Ruby]
 
       module Generation
-        def generate(generator = DEFAULT_GENERATOR,
-                     modifiers = DEFAULT_MODIFIERS)
-          mods = modifiers.
+        def generate(generators = DEFAULT_GENERATORS,
+                     modifiers  = DEFAULT_MODIFIERS)
+          mods = modifiers.values.
             map  { |x| x.new(self) }
-          results = mods.map(&:call)
+          mods.map(&:call)
+          hash = Hash[modifiers.keys.zip(mods)]
           # This is when we'd generate
-          mods
+          generators.each do |gen|
+            gen.new(self, hash).generate
+          end
         end
       end
     end

@@ -1,7 +1,3 @@
-%{
-  require "antelope"
-%}
-
 %require "0.0.1"
 %type "ruby"
 
@@ -19,7 +15,7 @@
 
 %%
 
-expression: NUMBER                         { |a| a.to_i      }
+expression: NUMBER                         { |a| a[1]        }
           | expression ADD expression      { |a, _, b| a + b }
           | expression SUBTRACT expression { |a, _, b| a - b }
           | expression MULTIPLY expression { |a, _, b| a * b }
@@ -29,6 +25,14 @@ expression: NUMBER                         { |a| a.to_i      }
 
 %%
 
-class ExampleParser < Antelope::Parser
+class ExampleParser
   %{write}
+
+  def type(token)
+    token[0]
+  end
 end
+
+input = [[:NUMBER, 2], [:ADD], [:NUMBER, 2]]
+
+p ExampleParser.new.parse(input)

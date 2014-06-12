@@ -15,8 +15,13 @@ module Antelope
       include Generation
 
       attr_accessor :states
+      attr_accessor :name
+      attr_accessor :output
+      attr_reader :compiler
 
-      def initialize(compiler)
+      def initialize(name, output, compiler)
+        @name     = name
+        @output   = Pathname.new(output)
         @compiler = compiler
       end
     end

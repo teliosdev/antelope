@@ -1,9 +1,8 @@
-require "antelope/generator/recognizer/rule"
-require "antelope/generator/recognizer/state"
-require "pp"
+require "antelope/generation/recognizer/rule"
+require "antelope/generation/recognizer/state"
 
 module Antelope
-  class Generator
+  module Generation
     class Recognizer
 
       attr_reader :states
@@ -26,7 +25,7 @@ module Antelope
       def compute_initial_state
         rule = Rule.new(Ace::Nonterminal.new(:"$start"),
           parser.productions[:"$start"][0][:items].map(&:dup),
-          parser.productions[:"$start"][0][:pres], 0)
+          parser.productions[:"$start"][0][:pres], 0, "")
         compute_whole_state(rule)
       end
 
@@ -68,7 +67,7 @@ module Antelope
             parser.productions[rule.active.name].each do |prod|
               state << Rule.new(rule.active,
                                 prod[:items].map(&:dup),
-                                prod[:pres], 0)
+                                prod[:pres], 0, prod[:block])
             end
           end
         end

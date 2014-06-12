@@ -1,11 +1,11 @@
 require "set"
-require "antelope/generator/constructor/nullable"
-require "antelope/generator/constructor/first"
-require "antelope/generator/constructor/follow"
-require "antelope/generator/constructor/lookahead"
+require "antelope/generation/constructor/nullable"
+require "antelope/generation/constructor/first"
+require "antelope/generation/constructor/follow"
+require "antelope/generation/constructor/lookahead"
 
 module Antelope
-  class Generator
+  module Generation
     class Constructor
 
       include Nullable

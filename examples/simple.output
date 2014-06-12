@@ -12,6 +12,8 @@ Productions:
     19/n0: l(8:2) → IDENT
     20/n0: l(8:2) → "*" r(5:9)
 
+test
+
 Original Productions:
   e → l "=" r
     
@@ -35,29 +37,44 @@ Presidence:
   --- lowest
 
 Table:
-{0=>
-  {:e=>[[:state, 1]],
-   :l=>[[:state, 2]],
-   :r=>[[:state, 3]],
-   :IDENT=>[[:state, 4]],
-   :STAR=>[[:state, 5]]},
- 1=>{:"$"=>[[:state, 7]]},
- 2=>{:EQUALS=>[[:state, 8]], :"$"=>[[:reduce, 18]]},
- 3=>{:"$"=>[[:reduce, 2]]},
- 4=>{:EQUALS=>[[:reduce, 19]], :"$"=>[[:reduce, 19]]},
- 5=>
-  {:r=>[[:state, 9]],
-   :l=>[[:state, 2]],
-   :IDENT=>[[:state, 4]],
-   :STAR=>[[:state, 5]]},
- 6=>{:"$"=>[[:reduce, 18]]},
- 8=>
-  {:r=>[[:state, 10]],
-   :l=>[[:state, 2]],
-   :IDENT=>[[:state, 4]],
-   :STAR=>[[:state, 5]]},
- 9=>{:EQUALS=>[[:reduce, 20]], :"$"=>[[:reduce, 20]]},
- 10=>{:"$"=>[[:reduce, 1]]}}
+[{:e=>[:state, 1],
+  :l=>[:state, 2],
+  :r=>[:state, 3],
+  :IDENT=>[:state, 4],
+  :STAR=>[:state, 5]},
+ {:"$"=>[:state, 7]},
+ {:EQUALS=>[:state, 8], :"$"=>[:reduce, 18]},
+ {:"$"=>[:reduce, 2]},
+ {:EQUALS=>[:reduce, 19], :"$"=>[:reduce, 19]},
+ {:r=>[:state, 9], :l=>[:state, 2], :IDENT=>[:state, 4], :STAR=>[:state, 5]},
+ {:"$"=>[:reduce, 18]},
+ {},
+ {:r=>[:state, 10], :l=>[:state, 2], :IDENT=>[:state, 4], :STAR=>[:state, 5]},
+ {:EQUALS=>[:reduce, 20], :"$"=>[:reduce, 20]},
+ {:"$"=>[:reduce, 1]}]
+
+["",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ "",
+ ""]
 
 State 0:
   rules:

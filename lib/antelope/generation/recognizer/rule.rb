@@ -1,13 +1,14 @@
 # encoding: utf-8
 
 module Antelope
-  class Generator
+  module Generation
     class Recognizer
       class Rule
 
         attr_reader :left
         attr_reader :right
         attr_reader :position
+        attr_reader :block
         attr_accessor :lookahead
         attr_accessor :id
         attr_accessor :presidence
@@ -15,13 +16,14 @@ module Antelope
 
         include Comparable
 
-        def initialize(left, right, pres, position)
+        def initialize(left, right, pres, position, block)
           @left       = left
           @right      = right.freeze
           @position   = position
           @lookahead  = Set.new
           @presidence = pres
           @production = self
+          @block      = block
           @id         = SecureRandom.hex
         end
 
@@ -38,7 +40,7 @@ module Antelope
         end
 
         def succ
-          Rule.new(left, right, presidence, position + 1)
+          Rule.new(left, right, presidence, position + 1, block)
         end
 
         def succ?
@@ -60,7 +62,7 @@ module Antelope
         def without_transitions
           @_without_transitions ||=
             Rule.new(left.without_transitions,
-                     right.map(&:without_transitions), position)
+                     right.map(&:without_transitions), position, block)
         end
 
         def ===(other)

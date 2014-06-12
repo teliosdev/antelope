@@ -10,6 +10,14 @@ module Antelope
             end
           end
         end
+
+        def nonterminals
+          @_nonterminals ||= productions.keys
+        end
+
+        def symbols
+          @_symbols ||= terminals + nonterminals
+        end
       end
     end
   end
