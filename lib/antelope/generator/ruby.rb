@@ -10,20 +10,18 @@ module Antelope
 
       def generate_productions_list
         out = "["
-        rules = mods[:table].rules.each do |rule|
-          next out << "nil, " unless rule
 
-          out                       <<
-            "["                     <<
-            rule.left.name.inspect  <<
-            ", "                    <<
-            rule.right.size.inspect <<
+        grammar.all_productions.each do |production|
+          out                              <<
+            "["                            <<
+            production.label.name.inspect  <<
+            ", " << production.items.size.inspect  <<
             ", "
 
-          block = if rule.production.block.empty?
+          block = if production.block.empty?
             "proc {}"
           else
-            "proc #{rule.production.block}"
+            "proc #{production.block}"
           end
 
           out << block << "],\n"

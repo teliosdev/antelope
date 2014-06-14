@@ -3,6 +3,7 @@ require "antelope/ace/grammar/productions"
 require "antelope/ace/grammar/presidence"
 require "antelope/ace/grammar/loading"
 require "antelope/ace/grammar/generation"
+require "antelope/ace/grammar/production"
 
 module Antelope
   module Ace

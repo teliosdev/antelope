@@ -40,7 +40,7 @@ module Antelope
                   [:reduce, rule.production.id]
               end
 
-              if rule.production.left.name == :$start
+              if rule.production.id.zero?
                 table[state.id][:"$"] = [[:accept, rule.production.id]]
               end
             end

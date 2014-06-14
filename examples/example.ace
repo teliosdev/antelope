@@ -34,5 +34,12 @@ class ExampleParser
 end
 
 input = [[:NUMBER, 2], [:ADD], [:NUMBER, 2]]
+input = [
+  [:NUMBER, 2],
+  [:ADD],
+  [:NUMBER, 2],
+  [:MULTIPLY],
+  [:NUMBER, 3]
+]
 
 p ExampleParser.new.parse(input)

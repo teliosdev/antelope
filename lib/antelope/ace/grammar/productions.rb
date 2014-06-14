@@ -6,11 +6,15 @@ module Antelope
           @_productions || generate_productions
         end
 
+        def all_productions
+          productions.values.flatten.sort_by(&:id)
+        end
+
         def generate_productions
           @_productions = Hash.new { |h, k| h[k] = [] }
           @compiler.rules.each do |rule|
-            @_productions[rule[:label]] = []
-          end.each do |rule|
+            productions[rule[:label]] = []
+          end.each_with_index do |rule, id|
             left  = rule[:label]
             items = rule[:set].map { |_| find_token(_) }
             prec  = unless rule[:prec].empty?
@@ -20,28 +24,26 @@ module Antelope
             end
             prec  = presidence_for(prec)
 
-            @_productions[rule[:label]] << {
-              items: items,
-              block: rule[:block],
-              pres:  prec
-            }
+            productions[rule[:label]] <<
+              Production.new(Nonterminal.new(left), items,
+                             rule[:block], prec, id + 1)
           end
 
-          @_productions[:"$start"] = [{
-            items: [
-              Nonterminal.new(@compiler.rules.first[:label]),
-              Terminal.new(:"$")
-            ], block: "", pres: presidence.last
-          }]
+          productions[:$start] = [
+            Production.new(Nonterminal.new(:$start), [
+                Nonterminal.new(@compiler.rules.first[:label]),
+                Terminal.new(:"$")
+              ], "", presidence.last, 0)
+          ]
 
-          @_productions
+          productions
         end
 
         private
 
         def find_token(value)
           value = value.to_sym
-          if @_productions.key?(value)
+          if productions.key?(value)
             Nonterminal.new(value)
           elsif terminal = terminals.
               find { |term| term.name == value }

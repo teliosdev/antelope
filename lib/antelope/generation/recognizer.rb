@@ -23,9 +23,8 @@ module Antelope
       end
 
       def compute_initial_state
-        rule = Rule.new(Ace::Nonterminal.new(:"$start"),
-          parser.productions[:"$start"][0][:items].map(&:dup),
-          parser.productions[:"$start"][0][:pres], 0, "")
+        production = parser.productions[:$start][0]
+        rule = Rule.new(production, 0)
         compute_whole_state(rule)
       end
 
@@ -63,11 +62,9 @@ module Antelope
 
       def compute_closure(state)
         fixed_point(state.rules) do
-          state.rules.select { |x| x.active.nonterminal? }.each do |rule|
+          state.rules.select { |_| _.active.nonterminal? }.each do |rule|
             parser.productions[rule.active.name].each do |prod|
-              state << Rule.new(rule.active,
-                                prod[:items].map(&:dup),
-                                prod[:pres], 0, prod[:block])
+              state << Rule.new(prod, 0)
             end
           end
         end

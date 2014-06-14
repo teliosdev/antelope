@@ -44,7 +44,7 @@ describe Ace::Compiler do
   its(:options) { should have_key :type }
 
   it "should have the proper terminals" do
-    expect(subject.options[:terminals].map(&:first)).to eq ["NUMBER",
-      "SEMICOLON", "ADD", "LPAREN", "RPAREN"]
+    expect(subject.options[:terminals].map(&:first)).to eq [:NUMBER,
+      :SEMICOLON, :ADD, :LPAREN, :RPAREN]
   end
 end

@@ -1,47 +1,32 @@
 Productions:
     0/n3: $start(0) → expression(0:1) $
-    1/n3: expression(0:1) → NUMBER
-    2/l2: expression(0:1) → expression(0:1) "+" expression(10:16)
-    3/l2: expression(0:1) → expression(0:1) "-" expression(11:17)
-    4/l1: expression(0:1) → expression(0:1) "*" expression(12:18)
-    5/l1: expression(0:1) → expression(0:1) "/" expression(13:19)
-    6/n0: expression(0:1) → "(" expression(7:14) ")"
-    7/n0: expression(0:1) → "(" error ")"
-    19/n3: expression(7:14) → NUMBER
-    20/l2: expression(7:14) → expression(7:14) "+" expression(10:16)
-    21/l2: expression(7:14) → expression(7:14) "-" expression(11:17)
-    22/l1: expression(7:14) → expression(7:14) "*" expression(12:18)
-    23/l1: expression(7:14) → expression(7:14) "/" expression(13:19)
-    24/n0: expression(7:14) → "(" expression(7:14) ")"
-    25/n0: expression(7:14) → "(" error ")"
-    30/n3: expression(10:16) → NUMBER
-    31/l2: expression(10:16) → expression(10:16) "+" expression(10:16)
-    32/l2: expression(10:16) → expression(10:16) "-" expression(11:17)
-    33/l1: expression(10:16) → expression(10:16) "*" expression(12:18)
-    34/l1: expression(10:16) → expression(10:16) "/" expression(13:19)
-    35/n0: expression(10:16) → "(" expression(7:14) ")"
-    36/n0: expression(10:16) → "(" error ")"
-    38/n3: expression(11:17) → NUMBER
-    39/l2: expression(11:17) → expression(11:17) "+" expression(10:16)
-    40/l2: expression(11:17) → expression(11:17) "-" expression(11:17)
-    41/l1: expression(11:17) → expression(11:17) "*" expression(12:18)
-    42/l1: expression(11:17) → expression(11:17) "/" expression(13:19)
-    43/n0: expression(11:17) → "(" expression(7:14) ")"
-    44/n0: expression(11:17) → "(" error ")"
-    46/n3: expression(12:18) → NUMBER
-    47/l2: expression(12:18) → expression(12:18) "+" expression(10:16)
-    48/l2: expression(12:18) → expression(12:18) "-" expression(11:17)
-    49/l1: expression(12:18) → expression(12:18) "*" expression(12:18)
-    50/l1: expression(12:18) → expression(12:18) "/" expression(13:19)
-    51/n0: expression(12:18) → "(" expression(7:14) ")"
-    52/n0: expression(12:18) → "(" error ")"
-    54/n3: expression(13:19) → NUMBER
+    1/n3: expression(13:19) → NUMBER
+    2/l2: expression(13:19) → expression(0:1) "+" expression(10:16)
+    3/l2: expression(13:19) → expression(0:1) "-" expression(11:17)
+    4/l1: expression(13:19) → expression(0:1) "*" expression(12:18)
+    5/l1: expression(13:19) → expression(0:1) "/" expression(13:19)
+    6/n0: expression(13:19) → "(" expression(7:14) ")"
+    7/n0: expression(13:19) → "(" error ")"
+    20/l2: expression(13:19) → expression(7:14) "+" expression(10:16)
+    21/l2: expression(13:19) → expression(7:14) "-" expression(11:17)
+    22/l1: expression(13:19) → expression(7:14) "*" expression(12:18)
+    23/l1: expression(13:19) → expression(7:14) "/" expression(13:19)
+    31/l2: expression(13:19) → expression(10:16) "+" expression(10:16)
+    32/l2: expression(13:19) → expression(10:16) "-" expression(11:17)
+    33/l1: expression(13:19) → expression(10:16) "*" expression(12:18)
+    34/l1: expression(13:19) → expression(10:16) "/" expression(13:19)
+    39/l2: expression(13:19) → expression(11:17) "+" expression(10:16)
+    40/l2: expression(13:19) → expression(11:17) "-" expression(11:17)
+    41/l1: expression(13:19) → expression(11:17) "*" expression(12:18)
+    42/l1: expression(13:19) → expression(11:17) "/" expression(13:19)
+    47/l2: expression(13:19) → expression(12:18) "+" expression(10:16)
+    48/l2: expression(13:19) → expression(12:18) "-" expression(11:17)
+    49/l1: expression(13:19) → expression(12:18) "*" expression(12:18)
+    50/l1: expression(13:19) → expression(12:18) "/" expression(13:19)
     55/l2: expression(13:19) → expression(13:19) "+" expression(10:16)
     56/l2: expression(13:19) → expression(13:19) "-" expression(11:17)
     57/l1: expression(13:19) → expression(13:19) "*" expression(12:18)
     58/l1: expression(13:19) → expression(13:19) "/" expression(13:19)
-    59/n0: expression(13:19) → "(" expression(7:14) ")"
-    60/n0: expression(13:19) → "(" error ")"
 
 Original Productions:
   expression → NUMBER
@@ -98,12 +83,12 @@ Table:
   :SUBTRACT=>[:state, 11],
   :MULTIPLY=>[:state, 12],
   :DIVIDE=>[:state, 13]},
- {:ADD=>[:reduce, 54],
-  :SUBTRACT=>[:reduce, 54],
-  :MULTIPLY=>[:reduce, 54],
-  :DIVIDE=>[:reduce, 54],
-  :RPAREN=>[:reduce, 54],
-  :"$"=>[:reduce, 54]},
+ {:ADD=>[:reduce, 1],
+  :SUBTRACT=>[:reduce, 1],
+  :MULTIPLY=>[:reduce, 1],
+  :DIVIDE=>[:reduce, 1],
+  :RPAREN=>[:reduce, 1],
+  :"$"=>[:reduce, 1]},
  {:ADD=>[:state, 10]},
  {:SUBTRACT=>[:state, 11]},
  {:MULTIPLY=>[:state, 12]},
@@ -125,97 +110,97 @@ Table:
   :DIVIDE=>[:state, 13],
   :RPAREN=>[:state, 20]},
  {:RPAREN=>[:state, 21]},
- {:"$"=>[:reduce, 55],
-  :ADD=>[:reduce, 55],
-  :SUBTRACT=>[:reduce, 55],
+ {:"$"=>[:reduce, 2],
+  :ADD=>[:reduce, 2],
+  :SUBTRACT=>[:reduce, 2],
   :MULTIPLY=>[:state, 12],
   :DIVIDE=>[:state, 13],
-  :RPAREN=>[:reduce, 55]},
- {:"$"=>[:reduce, 56],
-  :ADD=>[:reduce, 56],
-  :SUBTRACT=>[:reduce, 56],
+  :RPAREN=>[:reduce, 2]},
+ {:"$"=>[:reduce, 3],
+  :ADD=>[:reduce, 3],
+  :SUBTRACT=>[:reduce, 3],
   :MULTIPLY=>[:state, 12],
   :DIVIDE=>[:state, 13],
-  :RPAREN=>[:reduce, 56]},
- {:"$"=>[:reduce, 57],
-  :ADD=>[:reduce, 57],
-  :SUBTRACT=>[:reduce, 57],
-  :MULTIPLY=>[:reduce, 57],
-  :DIVIDE=>[:reduce, 57],
-  :RPAREN=>[:reduce, 57]},
- {:"$"=>[:reduce, 58],
-  :ADD=>[:reduce, 58],
-  :SUBTRACT=>[:reduce, 58],
-  :MULTIPLY=>[:reduce, 58],
-  :DIVIDE=>[:reduce, 58],
-  :RPAREN=>[:reduce, 58]},
- {:ADD=>[:reduce, 59],
-  :SUBTRACT=>[:reduce, 59],
-  :MULTIPLY=>[:reduce, 59],
-  :DIVIDE=>[:reduce, 59],
-  :RPAREN=>[:reduce, 59],
-  :"$"=>[:reduce, 59]},
- {:ADD=>[:reduce, 60],
-  :SUBTRACT=>[:reduce, 60],
-  :MULTIPLY=>[:reduce, 60],
-  :DIVIDE=>[:reduce, 60],
-  :RPAREN=>[:reduce, 60],
-  :"$"=>[:reduce, 60]}]
+  :RPAREN=>[:reduce, 3]},
+ {:"$"=>[:reduce, 4],
+  :ADD=>[:reduce, 4],
+  :SUBTRACT=>[:reduce, 4],
+  :MULTIPLY=>[:reduce, 4],
+  :DIVIDE=>[:reduce, 4],
+  :RPAREN=>[:reduce, 4]},
+ {:"$"=>[:reduce, 5],
+  :ADD=>[:reduce, 5],
+  :SUBTRACT=>[:reduce, 5],
+  :MULTIPLY=>[:reduce, 5],
+  :DIVIDE=>[:reduce, 5],
+  :RPAREN=>[:reduce, 5]},
+ {:ADD=>[:reduce, 6],
+  :SUBTRACT=>[:reduce, 6],
+  :MULTIPLY=>[:reduce, 6],
+  :DIVIDE=>[:reduce, 6],
+  :RPAREN=>[:reduce, 6],
+  :"$"=>[:reduce, 6]},
+ {:ADD=>[:reduce, 7],
+  :SUBTRACT=>[:reduce, 7],
+  :MULTIPLY=>[:reduce, 7],
+  :DIVIDE=>[:reduce, 7],
+  :RPAREN=>[:reduce, 7],
+  :"$"=>[:reduce, 7]}]
 
 [#<Antelope::Generation::Recognizer::Rule id=0 left=$start(0) right=[expression(0:1) $] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=1 left=expression(0:1) right=[NUMBER] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=2 left=expression(0:1) right=[expression(0:1) "+" expression(10:16)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=3 left=expression(0:1) right=[expression(0:1) "-" expression(11:17)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=4 left=expression(0:1) right=[expression(0:1) "*" expression(12:18)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=5 left=expression(0:1) right=[expression(0:1) "/" expression(13:19)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=6 left=expression(0:1) right=["(" expression(7:14) ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=7 left=expression(0:1) right=["(" error ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=1 left=expression(13:19) right=[NUMBER] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=2 left=expression(13:19) right=[expression(0:1) "+" expression(10:16)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=3 left=expression(13:19) right=[expression(0:1) "-" expression(11:17)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=4 left=expression(13:19) right=[expression(0:1) "*" expression(12:18)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=5 left=expression(13:19) right=[expression(0:1) "/" expression(13:19)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=6 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=7 left=expression(13:19) right=["(" error ")"] position=0>,
  nil,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=13 left=expression(0:1) right=[NUMBER] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=13 left=expression(13:19) right=[NUMBER] position=1>,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=18 left=expression(0:1) right=["(" expression(7:14) ")"] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=19 left=expression(7:14) right=[NUMBER] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=20 left=expression(7:14) right=[expression(7:14) "+" expression(10:16)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=21 left=expression(7:14) right=[expression(7:14) "-" expression(11:17)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=22 left=expression(7:14) right=[expression(7:14) "*" expression(12:18)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=23 left=expression(7:14) right=[expression(7:14) "/" expression(13:19)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=24 left=expression(7:14) right=["(" expression(7:14) ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=25 left=expression(7:14) right=["(" error ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=18 left=expression(13:19) right=["(" expression ")"] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=19 left=expression(13:19) right=[NUMBER] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=20 left=expression(13:19) right=[expression(7:14) "+" expression(10:16)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=21 left=expression(13:19) right=[expression(7:14) "-" expression(11:17)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=22 left=expression(13:19) right=[expression(7:14) "*" expression(12:18)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=23 left=expression(13:19) right=[expression(7:14) "/" expression(13:19)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=24 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=25 left=expression(13:19) right=["(" error ")"] position=0>,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=27 left=expression(0:1) right=["(" error ")"] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=28 left=$start(0) right=[expression(0:1) $] position=2>,
- #<Antelope::Generation::Recognizer::Rule id=29 left=expression(0:1) right=[expression(0:1) "+" expression(10:16)] position=2>,
- #<Antelope::Generation::Recognizer::Rule id=30 left=expression(10:16) right=[NUMBER] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=31 left=expression(10:16) right=[expression(10:16) "+" expression(10:16)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=32 left=expression(10:16) right=[expression(10:16) "-" expression(11:17)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=33 left=expression(10:16) right=[expression(10:16) "*" expression(12:18)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=34 left=expression(10:16) right=[expression(10:16) "/" expression(13:19)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=35 left=expression(10:16) right=["(" expression(7:14) ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=36 left=expression(10:16) right=["(" error ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=37 left=expression(0:1) right=[expression(0:1) "-" expression(11:17)] position=2>,
- #<Antelope::Generation::Recognizer::Rule id=38 left=expression(11:17) right=[NUMBER] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=39 left=expression(11:17) right=[expression(11:17) "+" expression(10:16)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=40 left=expression(11:17) right=[expression(11:17) "-" expression(11:17)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=41 left=expression(11:17) right=[expression(11:17) "*" expression(12:18)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=42 left=expression(11:17) right=[expression(11:17) "/" expression(13:19)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=43 left=expression(11:17) right=["(" expression(7:14) ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=44 left=expression(11:17) right=["(" error ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=45 left=expression(0:1) right=[expression(0:1) "*" expression(12:18)] position=2>,
- #<Antelope::Generation::Recognizer::Rule id=46 left=expression(12:18) right=[NUMBER] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=47 left=expression(12:18) right=[expression(12:18) "+" expression(10:16)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=48 left=expression(12:18) right=[expression(12:18) "-" expression(11:17)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=49 left=expression(12:18) right=[expression(12:18) "*" expression(12:18)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=50 left=expression(12:18) right=[expression(12:18) "/" expression(13:19)] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=51 left=expression(12:18) right=["(" expression(7:14) ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=52 left=expression(12:18) right=["(" error ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=53 left=expression(0:1) right=[expression(0:1) "/" expression(13:19)] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=27 left=expression(13:19) right=["(" error ")"] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=28 left=$start(0) right=[expression $] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=29 left=expression(13:19) right=[expression "+" expression] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=30 left=expression(13:19) right=[NUMBER] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=31 left=expression(13:19) right=[expression(10:16) "+" expression(10:16)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=32 left=expression(13:19) right=[expression(10:16) "-" expression(11:17)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=33 left=expression(13:19) right=[expression(10:16) "*" expression(12:18)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=34 left=expression(13:19) right=[expression(10:16) "/" expression(13:19)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=35 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=36 left=expression(13:19) right=["(" error ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=37 left=expression(13:19) right=[expression "-" expression] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=38 left=expression(13:19) right=[NUMBER] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=39 left=expression(13:19) right=[expression(11:17) "+" expression(10:16)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=40 left=expression(13:19) right=[expression(11:17) "-" expression(11:17)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=41 left=expression(13:19) right=[expression(11:17) "*" expression(12:18)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=42 left=expression(13:19) right=[expression(11:17) "/" expression(13:19)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=43 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=44 left=expression(13:19) right=["(" error ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=45 left=expression(13:19) right=[expression "*" expression] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=46 left=expression(13:19) right=[NUMBER] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=47 left=expression(13:19) right=[expression(12:18) "+" expression(10:16)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=48 left=expression(13:19) right=[expression(12:18) "-" expression(11:17)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=49 left=expression(13:19) right=[expression(12:18) "*" expression(12:18)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=50 left=expression(13:19) right=[expression(12:18) "/" expression(13:19)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=51 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=52 left=expression(13:19) right=["(" error ")"] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=53 left=expression(13:19) right=[expression "/" expression] position=2>,
  #<Antelope::Generation::Recognizer::Rule id=54 left=expression(13:19) right=[NUMBER] position=0>,
  #<Antelope::Generation::Recognizer::Rule id=55 left=expression(13:19) right=[expression(13:19) "+" expression(10:16)] position=0>,
  #<Antelope::Generation::Recognizer::Rule id=56 left=expression(13:19) right=[expression(13:19) "-" expression(11:17)] position=0>,
@@ -223,57 +208,57 @@ Table:
  #<Antelope::Generation::Recognizer::Rule id=58 left=expression(13:19) right=[expression(13:19) "/" expression(13:19)] position=0>,
  #<Antelope::Generation::Recognizer::Rule id=59 left=expression(13:19) right=["(" expression(7:14) ")"] position=0>,
  #<Antelope::Generation::Recognizer::Rule id=60 left=expression(13:19) right=["(" error ")"] position=0>,
- #<Antelope::Generation::Recognizer::Rule id=61 left=expression(0:1) right=["(" expression(7:14) ")"] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=61 left=expression(13:19) right=["(" expression ")"] position=2>,
  nil,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=67 left=expression(0:1) right=["(" error ")"] position=2>,
- #<Antelope::Generation::Recognizer::Rule id=68 left=expression(0:1) right=[expression(0:1) "+" expression(10:16)] position=3>,
+ #<Antelope::Generation::Recognizer::Rule id=67 left=expression(13:19) right=["(" error ")"] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=68 left=expression(13:19) right=[expression "+" expression] position=3>,
  nil,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=74 left=expression(0:1) right=[expression(0:1) "-" expression(11:17)] position=3>,
+ #<Antelope::Generation::Recognizer::Rule id=74 left=expression(13:19) right=[expression "-" expression] position=3>,
  nil,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=80 left=expression(0:1) right=[expression(0:1) "*" expression(12:18)] position=3>,
+ #<Antelope::Generation::Recognizer::Rule id=80 left=expression(13:19) right=[expression "*" expression] position=3>,
  nil,
  nil,
  nil,
  nil,
  nil,
- #<Antelope::Generation::Recognizer::Rule id=86 left=expression(0:1) right=[expression(0:1) "/" expression(13:19)] position=3>,
- #<Antelope::Generation::Recognizer::Rule id=87 left=$start(0) right=[expression(0:1) $] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=88 left=expression(0:1) right=[expression(0:1) "+" expression(10:16)] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=89 left=expression(0:1) right=[expression(0:1) "-" expression(11:17)] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=90 left=expression(0:1) right=[expression(0:1) "*" expression(12:18)] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=91 left=expression(0:1) right=[expression(0:1) "/" expression(13:19)] position=1>,
- #<Antelope::Generation::Recognizer::Rule id=92 left=expression(0:1) right=["(" expression(7:14) ")"] position=3>,
- #<Antelope::Generation::Recognizer::Rule id=93 left=expression(0:1) right=["(" error ")"] position=3>]
+ #<Antelope::Generation::Recognizer::Rule id=86 left=expression(13:19) right=[expression "/" expression] position=3>,
+ #<Antelope::Generation::Recognizer::Rule id=87 left=$start(0) right=[expression $] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=88 left=expression(13:19) right=[expression "+" expression] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=89 left=expression(13:19) right=[expression "-" expression] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=90 left=expression(13:19) right=[expression "*" expression] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=91 left=expression(13:19) right=[expression "/" expression] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=92 left=expression(13:19) right=["(" expression ")"] position=3>,
+ #<Antelope::Generation::Recognizer::Rule id=93 left=expression(13:19) right=["(" error ")"] position=3>]
 
 State 0:
   rules:
     0/n3: $start(0) →  • expression(0:1) $
       {}
-    1/n3: expression(0:1) →  • NUMBER
+    1/n3: expression(13:19) →  • NUMBER
       {}
-    2/l2: expression(0:1) →  • expression(0:1) "+" expression(10:16)
+    2/l2: expression(13:19) →  • expression(0:1) "+" expression(10:16)
       {}
-    3/l2: expression(0:1) →  • expression(0:1) "-" expression(11:17)
+    3/l2: expression(13:19) →  • expression(0:1) "-" expression(11:17)
       {}
-    4/l1: expression(0:1) →  • expression(0:1) "*" expression(12:18)
+    4/l1: expression(13:19) →  • expression(0:1) "*" expression(12:18)
       {}
-    5/l1: expression(0:1) →  • expression(0:1) "/" expression(13:19)
+    5/l1: expression(13:19) →  • expression(0:1) "/" expression(13:19)
       {}
-    6/n0: expression(0:1) →  • "(" expression(7:14) ")"
+    6/n0: expression(13:19) →  • "(" expression(7:14) ")"
       {}
-    7/n0: expression(0:1) →  • "(" error ")"
+    7/n0: expression(13:19) →  • "(" error ")"
       {}
 
   transitions:
@@ -283,15 +268,15 @@ State 0:
 
 State 1:
   rules:
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -303,14 +288,14 @@ State 1:
 
 State 2:
   rules:
-    13/n3: expression(0:1) → NUMBER • 
+    13/n3: expression(13:19) → NUMBER • 
       {"+", "-", "*", "/", ")", $}
 
   transitions:
 
 State 3:
   rules:
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
 
   transitions:
@@ -318,7 +303,7 @@ State 3:
 
 State 4:
   rules:
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
 
   transitions:
@@ -326,7 +311,7 @@ State 4:
 
 State 5:
   rules:
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
 
   transitions:
@@ -334,7 +319,7 @@ State 5:
 
 State 6:
   rules:
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -342,23 +327,23 @@ State 6:
 
 State 7:
   rules:
-    18/n0: expression(0:1) → "(" • expression(7:14) ")"
+    18/n0: expression(13:19) → "(" • expression ")"
       {}
-    19/n3: expression(7:14) →  • NUMBER
+    19/n3: expression(13:19) →  • NUMBER
       {}
-    20/l2: expression(7:14) →  • expression(7:14) "+" expression(10:16)
+    20/l2: expression(13:19) →  • expression(7:14) "+" expression(10:16)
       {}
-    21/l2: expression(7:14) →  • expression(7:14) "-" expression(11:17)
+    21/l2: expression(13:19) →  • expression(7:14) "-" expression(11:17)
       {}
-    22/l1: expression(7:14) →  • expression(7:14) "*" expression(12:18)
+    22/l1: expression(13:19) →  • expression(7:14) "*" expression(12:18)
       {}
-    23/l1: expression(7:14) →  • expression(7:14) "/" expression(13:19)
+    23/l1: expression(13:19) →  • expression(7:14) "/" expression(13:19)
       {}
-    24/n0: expression(7:14) →  • "(" expression(7:14) ")"
+    24/n0: expression(13:19) →  • "(" expression(7:14) ")"
       {}
-    25/n0: expression(7:14) →  • "(" error ")"
+    25/n0: expression(13:19) →  • "(" error ")"
       {}
-    27/n0: expression(0:1) → "(" • error ")"
+    27/n0: expression(13:19) → "(" • error ")"
       {}
 
   transitions:
@@ -369,7 +354,7 @@ State 7:
 
 State 8:
   rules:
-    27/n0: expression(0:1) → "(" • error ")"
+    27/n0: expression(13:19) → "(" • error ")"
       {}
 
   transitions:
@@ -377,28 +362,28 @@ State 8:
 
 State 9:
   rules:
-    28/n3: $start(0) → expression(0:1) $ • 
+    28/n3: $start(0) → expression $ • 
       {}
 
   transitions:
 
 State 10:
   rules:
-    29/l2: expression(0:1) → expression(0:1) "+" • expression(10:16)
+    29/l2: expression(13:19) → expression "+" • expression
       {}
-    30/n3: expression(10:16) →  • NUMBER
+    30/n3: expression(13:19) →  • NUMBER
       {}
-    31/l2: expression(10:16) →  • expression(10:16) "+" expression(10:16)
+    31/l2: expression(13:19) →  • expression(10:16) "+" expression(10:16)
       {}
-    32/l2: expression(10:16) →  • expression(10:16) "-" expression(11:17)
+    32/l2: expression(13:19) →  • expression(10:16) "-" expression(11:17)
       {}
-    33/l1: expression(10:16) →  • expression(10:16) "*" expression(12:18)
+    33/l1: expression(13:19) →  • expression(10:16) "*" expression(12:18)
       {}
-    34/l1: expression(10:16) →  • expression(10:16) "/" expression(13:19)
+    34/l1: expression(13:19) →  • expression(10:16) "/" expression(13:19)
       {}
-    35/n0: expression(10:16) →  • "(" expression(7:14) ")"
+    35/n0: expression(13:19) →  • "(" expression(7:14) ")"
       {}
-    36/n0: expression(10:16) →  • "(" error ")"
+    36/n0: expression(13:19) →  • "(" error ")"
       {}
 
   transitions:
@@ -408,21 +393,21 @@ State 10:
 
 State 11:
   rules:
-    37/l2: expression(0:1) → expression(0:1) "-" • expression(11:17)
+    37/l2: expression(13:19) → expression "-" • expression
       {}
-    38/n3: expression(11:17) →  • NUMBER
+    38/n3: expression(13:19) →  • NUMBER
       {}
-    39/l2: expression(11:17) →  • expression(11:17) "+" expression(10:16)
+    39/l2: expression(13:19) →  • expression(11:17) "+" expression(10:16)
       {}
-    40/l2: expression(11:17) →  • expression(11:17) "-" expression(11:17)
+    40/l2: expression(13:19) →  • expression(11:17) "-" expression(11:17)
       {}
-    41/l1: expression(11:17) →  • expression(11:17) "*" expression(12:18)
+    41/l1: expression(13:19) →  • expression(11:17) "*" expression(12:18)
       {}
-    42/l1: expression(11:17) →  • expression(11:17) "/" expression(13:19)
+    42/l1: expression(13:19) →  • expression(11:17) "/" expression(13:19)
       {}
-    43/n0: expression(11:17) →  • "(" expression(7:14) ")"
+    43/n0: expression(13:19) →  • "(" expression(7:14) ")"
       {}
-    44/n0: expression(11:17) →  • "(" error ")"
+    44/n0: expression(13:19) →  • "(" error ")"
       {}
 
   transitions:
@@ -432,21 +417,21 @@ State 11:
 
 State 12:
   rules:
-    45/l1: expression(0:1) → expression(0:1) "*" • expression(12:18)
+    45/l1: expression(13:19) → expression "*" • expression
       {}
-    46/n3: expression(12:18) →  • NUMBER
+    46/n3: expression(13:19) →  • NUMBER
       {}
-    47/l2: expression(12:18) →  • expression(12:18) "+" expression(10:16)
+    47/l2: expression(13:19) →  • expression(12:18) "+" expression(10:16)
       {}
-    48/l2: expression(12:18) →  • expression(12:18) "-" expression(11:17)
+    48/l2: expression(13:19) →  • expression(12:18) "-" expression(11:17)
       {}
-    49/l1: expression(12:18) →  • expression(12:18) "*" expression(12:18)
+    49/l1: expression(13:19) →  • expression(12:18) "*" expression(12:18)
       {}
-    50/l1: expression(12:18) →  • expression(12:18) "/" expression(13:19)
+    50/l1: expression(13:19) →  • expression(12:18) "/" expression(13:19)
       {}
-    51/n0: expression(12:18) →  • "(" expression(7:14) ")"
+    51/n0: expression(13:19) →  • "(" expression(7:14) ")"
       {}
-    52/n0: expression(12:18) →  • "(" error ")"
+    52/n0: expression(13:19) →  • "(" error ")"
       {}
 
   transitions:
@@ -456,7 +441,7 @@ State 12:
 
 State 13:
   rules:
-    53/l1: expression(0:1) → expression(0:1) "/" • expression(13:19)
+    53/l1: expression(13:19) → expression "/" • expression
       {}
     54/n3: expression(13:19) →  • NUMBER
       {}
@@ -480,17 +465,17 @@ State 13:
 
 State 14:
   rules:
-    61/n0: expression(0:1) → "(" expression(7:14) • ")"
+    61/n0: expression(13:19) → "(" expression • ")"
       {}
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -503,7 +488,7 @@ State 14:
 
 State 15:
   rules:
-    67/n0: expression(0:1) → "(" error • ")"
+    67/n0: expression(13:19) → "(" error • ")"
       {}
 
   transitions:
@@ -511,17 +496,17 @@ State 15:
 
 State 16:
   rules:
-    68/l2: expression(0:1) → expression(0:1) "+" expression(10:16) • 
+    68/l2: expression(13:19) → expression "+" expression • 
       {"+", "-", "*", "/", ")", $}
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -533,17 +518,17 @@ State 16:
 
 State 17:
   rules:
-    74/l2: expression(0:1) → expression(0:1) "-" expression(11:17) • 
+    74/l2: expression(13:19) → expression "-" expression • 
       {"+", "-", "*", "/", ")", $}
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -555,17 +540,17 @@ State 17:
 
 State 18:
   rules:
-    80/l1: expression(0:1) → expression(0:1) "*" expression(12:18) • 
+    80/l1: expression(13:19) → expression "*" expression • 
       {"+", "-", "*", "/", ")", $}
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -577,17 +562,17 @@ State 18:
 
 State 19:
   rules:
-    86/l1: expression(0:1) → expression(0:1) "/" expression(13:19) • 
+    86/l1: expression(13:19) → expression "/" expression • 
       {"+", "-", "*", "/", ")", $}
-    87/n3: $start(0) → expression(0:1) • $
+    87/n3: $start(0) → expression • $
       {}
-    88/l2: expression(0:1) → expression(0:1) • "+" expression(10:16)
+    88/l2: expression(13:19) → expression • "+" expression
       {}
-    89/l2: expression(0:1) → expression(0:1) • "-" expression(11:17)
+    89/l2: expression(13:19) → expression • "-" expression
       {}
-    90/l1: expression(0:1) → expression(0:1) • "*" expression(12:18)
+    90/l1: expression(13:19) → expression • "*" expression
       {}
-    91/l1: expression(0:1) → expression(0:1) • "/" expression(13:19)
+    91/l1: expression(13:19) → expression • "/" expression
       {}
 
   transitions:
@@ -599,14 +584,14 @@ State 19:
 
 State 20:
   rules:
-    92/n0: expression(0:1) → "(" expression(7:14) ")" • 
+    92/n0: expression(13:19) → "(" expression ")" • 
       {"+", "-", "*", "/", ")", $}
 
   transitions:
 
 State 21:
   rules:
-    93/n0: expression(0:1) → "(" error ")" • 
+    93/n0: expression(13:19) → "(" error ")" • 
       {"+", "-", "*", "/", ")", $}
 
   transitions:

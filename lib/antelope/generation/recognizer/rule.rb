@@ -12,19 +12,24 @@ module Antelope
         attr_accessor :lookahead
         attr_accessor :id
         attr_accessor :presidence
-        attr_accessor :production
+        attr_reader :production
 
         include Comparable
 
-        def initialize(left, right, pres, position, block)
-          @left       = left
-          @right      = right.freeze
+        def initialize(production, position, inherited = false)
+          @left       = production.label
           @position   = position
           @lookahead  = Set.new
-          @presidence = pres
-          @production = self
-          @block      = block
+          @presidence = production.prec
+          @production = production
+          @block      = production.block
           @id         = SecureRandom.hex
+
+          if inherited
+            @right = inherited
+          else
+            @right = production.items.map(&:dup).freeze
+          end
         end
 
         def inspect
@@ -40,7 +45,7 @@ module Antelope
         end
 
         def succ
-          Rule.new(left, right, presidence, position + 1, block)
+          Rule.new(production, position + 1)
         end
 
         def succ?
@@ -61,8 +66,7 @@ module Antelope
 
         def without_transitions
           @_without_transitions ||=
-            Rule.new(left.without_transitions,
-                     right.map(&:without_transitions), position, block)
+            Rule.new(production, position)
         end
 
         def ===(other)

@@ -2,17 +2,11 @@ Productions:
     0/n0: $start(0) → e(0:1) $
     1/n0: e(0:1) → l(0:2) "=" r(8:10)
     2/n0: e(0:1) → r(0:3)
-    3/n0: l(0:2) → IDENT
-    4/n0: l(0:2) → "*" r(5:9)
-    5/n0: r(0:3) → l(0:2)
-    12/n0: r(5:9) → l(5:2)
-    13/n0: l(5:2) → IDENT
-    14/n0: l(5:2) → "*" r(5:9)
+    3/n0: l(8:2) → IDENT
+    4/n0: l(8:2) → "*" r(5:9)
+    5/n0: r(8:10) → l(0:2)
+    12/n0: r(8:10) → l(5:2)
     18/n0: r(8:10) → l(8:2)
-    19/n0: l(8:2) → IDENT
-    20/n0: l(8:2) → "*" r(5:9)
-
-test
 
 Original Productions:
   e → l "=" r
@@ -43,38 +37,39 @@ Table:
   :IDENT=>[:state, 4],
   :STAR=>[:state, 5]},
  {:"$"=>[:state, 7]},
- {:EQUALS=>[:state, 8], :"$"=>[:reduce, 18]},
+ {:EQUALS=>[:state, 8], :"$"=>[:reduce, 5]},
  {:"$"=>[:reduce, 2]},
- {:EQUALS=>[:reduce, 19], :"$"=>[:reduce, 19]},
+ {:EQUALS=>[:reduce, 3], :"$"=>[:reduce, 3]},
  {:r=>[:state, 9], :l=>[:state, 2], :IDENT=>[:state, 4], :STAR=>[:state, 5]},
- {:"$"=>[:reduce, 18]},
- {},
+ {:"$"=>[:reduce, 5]},
+ {:"$"=>[:accept, 0]},
  {:r=>[:state, 10], :l=>[:state, 2], :IDENT=>[:state, 4], :STAR=>[:state, 5]},
- {:EQUALS=>[:reduce, 20], :"$"=>[:reduce, 20]},
+ {:EQUALS=>[:reduce, 4], :"$"=>[:reduce, 4]},
  {:"$"=>[:reduce, 1]}]
 
-["",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- "",
- ""]
+[#<Antelope::Generation::Recognizer::Rule id=0 left=$start(0) right=[e(0:1) $] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=1 left=e(0:1) right=[l(0:2) "=" r(8:10)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=2 left=e(0:1) right=[r(0:3)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=3 left=l(8:2) right=[IDENT] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=4 left=l(8:2) right=["*" r(5:9)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=5 left=r(8:10) right=[l(0:2)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=6 left=$start(0) right=[e $] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=7 left=e(0:1) right=[l "=" r] position=1>,
+ nil,
+ #<Antelope::Generation::Recognizer::Rule id=9 left=e(0:1) right=[r] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=10 left=l(8:2) right=[IDENT] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=11 left=l(8:2) right=["*" r] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=12 left=r(8:10) right=[l(5:2)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=13 left=l(8:2) right=[IDENT] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=14 left=l(8:2) right=["*" r(5:9)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=15 left=r(8:10) right=[l] position=1>,
+ #<Antelope::Generation::Recognizer::Rule id=16 left=$start(0) right=[e $] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=17 left=e(0:1) right=[l "=" r] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=18 left=r(8:10) right=[l(8:2)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=19 left=l(8:2) right=[IDENT] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=20 left=l(8:2) right=["*" r(5:9)] position=0>,
+ #<Antelope::Generation::Recognizer::Rule id=21 left=l(8:2) right=["*" r] position=2>,
+ #<Antelope::Generation::Recognizer::Rule id=22 left=e(0:1) right=[l "=" r] position=3>]
 
 State 0:
   rules:
@@ -84,11 +79,11 @@ State 0:
       {}
     2/n0: e(0:1) →  • r(0:3)
       {}
-    3/n0: l(0:2) →  • IDENT
+    3/n0: l(8:2) →  • IDENT
       {}
-    4/n0: l(0:2) →  • "*" r(5:9)
+    4/n0: l(8:2) →  • "*" r(5:9)
       {}
-    5/n0: r(0:3) →  • l(0:2)
+    5/n0: r(8:10) →  • l(0:2)
       {}
 
   transitions:
@@ -100,7 +95,7 @@ State 0:
 
 State 1:
   rules:
-    6/n0: $start(0) → e(0:1) • $
+    6/n0: $start(0) → e • $
       {}
 
   transitions:
@@ -108,9 +103,9 @@ State 1:
 
 State 2:
   rules:
-    7/n0: e(0:1) → l(0:2) • "=" r(8:10)
+    7/n0: e(0:1) → l • "=" r
       {}
-    15/n0: r(0:3) → l(0:2) • 
+    15/n0: r(8:10) → l • 
       {$}
 
   transitions:
@@ -118,27 +113,27 @@ State 2:
 
 State 3:
   rules:
-    9/n0: e(0:1) → r(0:3) • 
+    9/n0: e(0:1) → r • 
       {$}
 
   transitions:
 
 State 4:
   rules:
-    10/n0: l(0:2) → IDENT • 
+    10/n0: l(8:2) → IDENT • 
       {"=", $}
 
   transitions:
 
 State 5:
   rules:
-    11/n0: l(0:2) → "*" • r(5:9)
+    11/n0: l(8:2) → "*" • r
       {}
-    12/n0: r(5:9) →  • l(5:2)
+    12/n0: r(8:10) →  • l(5:2)
       {}
-    13/n0: l(5:2) →  • IDENT
+    13/n0: l(8:2) →  • IDENT
       {}
-    14/n0: l(5:2) →  • "*" r(5:9)
+    14/n0: l(8:2) →  • "*" r(5:9)
       {}
 
   transitions:
@@ -149,21 +144,21 @@ State 5:
 
 State 6:
   rules:
-    15/n0: r(0:3) → l(0:2) • 
+    15/n0: r(8:10) → l • 
       {$}
 
   transitions:
 
 State 7:
   rules:
-    16/n0: $start(0) → e(0:1) $ • 
+    16/n0: $start(0) → e $ • 
       {}
 
   transitions:
 
 State 8:
   rules:
-    17/n0: e(0:1) → l(0:2) "=" • r(8:10)
+    17/n0: e(0:1) → l "=" • r
       {}
     18/n0: r(8:10) →  • l(8:2)
       {}
@@ -180,14 +175,14 @@ State 8:
 
 State 9:
   rules:
-    21/n0: l(0:2) → "*" r(5:9) • 
+    21/n0: l(8:2) → "*" r • 
       {"=", $}
 
   transitions:
 
 State 10:
   rules:
-    22/n0: e(0:1) → l(0:2) "=" r(8:10) • 
+    22/n0: e(0:1) → l "=" r • 
       {$}
 
   transitions:
