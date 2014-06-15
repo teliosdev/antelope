@@ -14,7 +14,7 @@ module Antelope
             token = token.name
           elsif token.is_a? Symbol
           else
-            incorrect_argument! token, Ace::Nonterminal, Symbol
+            incorrect_argument! token, Ace::Token::Nonterminal, Symbol
           end
 
           @follows.fetch(token) do
@@ -31,7 +31,7 @@ module Antelope
                   inject(set, :merge)
                 positions.each do |pos|
                   if pos == items.size || nullable?(items[pos..-1])
-                    set.merge follow(Ace::Nonterminal.new(key))
+                    set.merge follow(Ace::Token::Nonterminal.new(key))
                   end
                 end
               end

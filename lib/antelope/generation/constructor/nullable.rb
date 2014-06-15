@@ -9,7 +9,7 @@ module Antelope
 
         def nullable?(token)
           case token
-          when Ace::Nonterminal
+          when Ace::Token::Nonterminal
             nullifying(token) do
               productions = parser.productions[token.name]
               !!productions.any? { |prod| nullable?(prod[:items]) }
@@ -17,13 +17,12 @@ module Antelope
           when Array
             token.dup.delete_if { |tok|
               @nullifying.include?(tok) }.all? { |tok| nullable?(tok) }
-          when Ace::Epsilon
+          when Ace::Token::Epsilon
             true
-          when Ace::Terminal
+          when Ace::Token::Terminal
             false
           else
-            incorrect_argument! token, Ace::Nonterminal, Array,
-              Ace::Epsilon, Ace::Terminal
+            incorrect_argument! token, Ace::Token, Array
           end
         end
 

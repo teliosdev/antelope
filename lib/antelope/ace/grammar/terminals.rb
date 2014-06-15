@@ -6,7 +6,7 @@ module Antelope
         def terminals
           @_terminals ||= begin
             @compiler.options.fetch(:terminals, []).map do |v|
-              Terminal.new(*v)
+              Token::Terminal.new(*v)
             end
           end
         end

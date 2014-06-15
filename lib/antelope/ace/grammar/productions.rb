@@ -25,14 +25,14 @@ module Antelope
             prec  = presidence_for(prec)
 
             productions[rule[:label]] <<
-              Production.new(Nonterminal.new(left), items,
+              Production.new(Token::Nonterminal.new(left), items,
                              rule[:block], prec, id + 1)
           end
 
           productions[:$start] = [
-            Production.new(Nonterminal.new(:$start), [
-                Nonterminal.new(@compiler.rules.first[:label]),
-                Terminal.new(:"$")
+            Production.new(Token::Nonterminal.new(:$start), [
+                Token::Nonterminal.new(@compiler.rules.first[:label]),
+                Token::Terminal.new(:"$")
               ], "", presidence.last, 0)
           ]
 
@@ -44,14 +44,14 @@ module Antelope
         def find_token(value)
           value = value.to_sym
           if productions.key?(value)
-            Nonterminal.new(value)
+            Token::Nonterminal.new(value)
           elsif terminal = terminals.
               find { |term| term.name == value }
             terminal
           elsif value == :error
-            Error.new
+            Token::Error.new
           elsif [:nothing, :ε].include?(value)
-            Epsilon.new
+            Token::Epsilon.new
           else
             raise UndefinedTokenError, "Could not find a token named #{value.inspect}"
           end

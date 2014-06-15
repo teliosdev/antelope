@@ -8,7 +8,7 @@ describe Ace::Scanner do
       [:part, "d"],
       [:block, "{ { } }"],
       [:third],
-      [:body, "\nhi\n"]
+      [:copy, "\nhi\n"]
     ]
   end
 

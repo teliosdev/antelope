@@ -17,7 +17,7 @@ module Antelope
           @scanner.scan(CONTENT_BOUNDRY) or error!
 
           tokens << [:third]
-          tokens << [:body, @scanner.scan(/[\s\S]+/m)]
+          tokens << [:copy, @scanner.scan(/[\s\S]+/m) || ""]
         end
       end
     end
