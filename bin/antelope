@@ -8,17 +8,4 @@ ARGV.each do |program|
   grammar = Antelope::Ace::Grammar.from_file(program)
 
   out = grammar.generate
-
-  #pass = Hash[[:recognizer,
-  #        :constructor,
-  #        :conflictor,
-  #        :table].zip(out)]
-
-  #program = Pathname.new(program)
-
-  #file_name = program.parent + program.basename(".ace")
-
-  #File.open("#{file_name}.output", "w") do |f|
-  #  f.write Antelope::Output.output(grammar, pass)
-  #end
 end

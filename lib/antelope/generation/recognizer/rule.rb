@@ -3,15 +3,54 @@
 module Antelope
   module Generation
     class Recognizer
+
+      # Defines a rule.  A rule has a corresponding production, and a
+      # position in that production.  It also contains extra
+      # information for other reasons.
       class Rule
 
+        # The left-hand side of the rule.
+        #
+        # @return [Ace::Token::Nonterminal]
         attr_reader :left
+
+        # The right-hand side of the rule.
+        #
+        # @return [Ace::Token]
         attr_reader :right
+
+        # The current position inside of the rule.
+        #
+        # @return [Numeric]
         attr_reader :position
+
+        # The block to be executed on production match.
+        #
+        # @deprecated Use {Production#block} instead.
+        # @return [String]
         attr_reader :block
+
+        # The lookahead set for this specific rule.  Contains nothing
+        # unless {#succ?} returns false.
+        #
+        # @return [Set<Symbol>]
         attr_accessor :lookahead
+
+        # The id for this rule.  Initialy, this is set to a string of
+        # hexadecimal characters; after construction of all states,
+        # however, it is a number.
+        #
+        # @return [String, Numeric]
         attr_accessor :id
+
+        # The presidence for this rule.
+        #
+        # @return [Ace::Presidence]
         attr_accessor :presidence
+
+        # The associated production.
+        #
+        # @return [Ace::Grammar::Production]
         attr_reader :production
 
         include Comparable

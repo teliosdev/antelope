@@ -42,7 +42,7 @@ module Antelope
   # `<content>` is code to be used in the output file upon matching
   # the specific rule.
   #
-  # The thid part consists of a body, which is copied directly into
+  # The third part consists of a body, which is copied directly into
   # the output.
   module Ace
 

@@ -80,7 +80,10 @@ module Antelope
       # Computes all states.  Uses a fix point iteration to determine
       # when no states have been added.  Loops through every state and
       # every rule, looking for rules that have an active nonterminal
-      # and computing
+      # and computing the closure for said rule.
+      #
+      # @return [void]
+      # @see #compute_closure
       def compute_states
         fixed_point(states) do
           states.dup.each do |state|
@@ -104,6 +107,11 @@ module Antelope
         end
       end
 
+      # Given a state, it does a fixed point iteration on the rules of
+      # the state that have an active nonterminal, and add the
+      # corresponding production rules to the state.
+      #
+      # @return [void]
       def compute_closure(state)
         fixed_point(state.rules) do
           state.rules.select { |_| _.active.nonterminal? }.each do |rule|
@@ -116,16 +124,29 @@ module Antelope
 
       private
 
+      # Find a state that include a specific rule, or yields the rule.
+      #
+      # @param rule [Rule]
+      # @yield [rule]
+      # @return [State]
       def find_state_for(rule)
         states.find { |state| state.include?(rule) } or yield(rule)
       end
 
+      # Changes the IDs of the states into a more friendly format.
+      #
+      # @return [void]
       def redefine_state_ids
         states.each_with_index do |state, i|
           state.id = i
         end
       end
 
+      # Redefines all of the rule ids to make them more friendly.
+      # Every rule in every state is given a unique ID, reguardless if
+      # the rules are equivalent.
+      #
+      # @return [void]
       def redefine_rule_ids
         start = 0
 
@@ -137,6 +158,15 @@ module Antelope
         end
       end
 
+      # Begins a fixed point iteration on the given enumerable.  It
+      # initializes the added elements to one; then, while the number
+      # of added elements is not zero, it yields and checks for added
+      # elements.
+      #
+      # @param enum [Enumerable]
+      # @yield for every iteration.  Guarenteed to do so at least
+      #   once.
+      # @return [void]
       def fixed_point(enum)
         added = 1
 
