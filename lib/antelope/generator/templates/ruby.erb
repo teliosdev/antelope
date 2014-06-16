@@ -4,11 +4,28 @@
 # symbol.  These types should line up with the terminals that were
 # defined in the original grammar.
 
+# The actions to take during parsing.  In every state, there are a
+# set of acceptable peek tokens; this table tells the parser what
+# to do on each acceptable peek token.  The possible actions include
+# `:accept`, `:reduce`, and `:state`; `:accept` means to accept the
+# input and return the value of the pasing.  `:reduce` means to
+# reduce the top of the stack into a given nonterminal.  `:state`
+# means to transition to another state.
+#
+# @return [Array<Hash<(Symbol, Array<(Symbol, Numeric)>)>>]
 ACTION_TABLE = <%= generate_action_table %>.freeze # >
 
+# A list of all of the productions.  Only includes the left-hand side,
+# the number of tokens on the right-hand side, and the block to call
+# on reduction.
+#
+# @return [Array<Array<(Symbol, Numeric, Proc)>>]
 PRODUCTIONS  = <%= generate_productions_list %>.freeze # >
 
-# input should be an array.
+# Runs the parser.
+#
+# @param input [Array<Object>] the input to run the parser over.
+# @return [Object] the result of the accept.
 def parse(input)
   stack = []
   stack.push([nil, 0])

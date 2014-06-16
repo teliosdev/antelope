@@ -3,31 +3,71 @@ require "antelope/generation/recognizer/state"
 
 module Antelope
   module Generation
+
+    # Recognizes all of the states in the grammar.
+    #
+    # @see http://redjazz96.tumblr.com/post/88446352960
     class Recognizer
 
+      # A list of all of the states in the grammar.
+      #
+      # @return [Set<State>]
       attr_reader :states
-      attr_reader :start
-      attr_reader :parser
 
-      def initialize(parser)
-        @parser = parser
+      # The initial state.  This is the state that is constructed from
+      # the rule with the left-hand side being `$start`.
+      #
+      # @return [State]
+      attr_reader :start
+
+      # The grammar that the recognizer is running off of.
+      #
+      # @return [Ace::Grammar]
+      attr_reader :grammar
+
+      # Initialize the recognizer.
+      #
+      # @param grammar [Ace::Grammar]
+      def initialize(grammar)
+        @grammar = grammar
         @states = Set.new
       end
 
+      # Runs the recognizer.  After all states have been created, it
+      # resets the state ids into a more friendly form (they were
+      # originally hexadecimal, see {State#initialize}), and then
+      # resets the rule ids in each state into a more friendly form
+      # (they were also originally hexadecmial, see {Rule#initialize}
+      # ).
+      #
+      # @see #compute_initial_state
+      # @return [void]
       def call
         @states = Set.new
         @start  = compute_initial_state
         redefine_state_ids
         redefine_rule_ids
-        parser.states = states
+        grammar.states = states
       end
 
+      # Computes the initial state.  Starting with the default
+      # production of `$start`, it then generates the whole state
+      # and then the spawned states from it.
+      #
+      # @return [State]
       def compute_initial_state
-        production = parser.productions[:$start][0]
+        production = grammar.productions[:$start][0]
         rule = Rule.new(production, 0)
         compute_whole_state(rule)
       end
 
+      # Computes the entire initial state from the initial rule.
+      # It starts with a blank state, adds the initial rule to it, and
+      # then generates the closure for that state; it then computes
+      # the rest of the states in the grammar.
+      #
+      # @param rule [Rule] the initial rule.
+      # @return [State]
       def compute_whole_state(rule)
         state = State.new
         state << rule
@@ -63,7 +103,7 @@ module Antelope
       def compute_closure(state)
         fixed_point(state.rules) do
           state.rules.select { |_| _.active.nonterminal? }.each do |rule|
-            parser.productions[rule.active.name].each do |prod|
+            grammar.productions[rule.active.name].each do |prod|
               state << Rule.new(prod, 0)
             end
           end

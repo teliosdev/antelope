@@ -3,7 +3,7 @@ module Antelope
 
     class UnresolvableConflictError < StandardError; end
 
-    class Table
+    class Tableizer
 
       attr_accessor :parser
       attr_accessor :table
@@ -19,9 +19,6 @@ module Antelope
       end
 
       def tablize
-        #@table = #Hash.new { |hash, key|
-        #  hash[key] = Hash.new { |h, k|
-        #    h[k] = [] } }
         @table = Array.new(parser.states.size) do
           Hash.new { |h, k| h[k] = [] }
         end
