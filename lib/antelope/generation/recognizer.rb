@@ -77,6 +77,10 @@ module Antelope
         state
       end
 
+      # Computes all states.  Uses a fix point iteration to determine
+      # when no states have been added.  Loops through every state and
+      # every rule, looking for rules that have an active nonterminal
+      # and computing
       def compute_states
         fixed_point(states) do
           states.dup.each do |state|

@@ -64,7 +64,7 @@ module Antelope
     # @param source [String] the source file.  This should be in
     #   {.source_root}.
     # @param destination [String] the destination file.  This will be
-    #   in {Grammar#output}.
+    #   in {Ace::Grammar#output}.
     # @yieldparam [String] content The content that ERB created.
     # @yieldreturn [String] The new content to write to the output.
     # @return [void]
