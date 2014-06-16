@@ -4,7 +4,7 @@ Productions:
 % end
 
 Original Productions:
-% parser.productions.each do |k, v|
+% grammar.productions.each do |k, v|
 %  v.each do |prod|
   <%= k %> → <%= prod[:items].join(" ") %>
     <%= prod[:block] %>
@@ -21,7 +21,7 @@ Conflicts:
 
 Presidence:
   --- highest
-% parser.presidence.each do |pr|
+% grammar.presidence.each do |pr|
   <%= "%-8s" % pr.type %> <%= pr.level %>:
     {<%= pr.tokens.to_a.join(", ") %>}
 % end
@@ -32,7 +32,7 @@ Table:
 
 % PP.pp(tableizer.rules, _erbout)
 
-% parser.states.each do |state|
+% grammar.states.each do |state|
 State <%= state.id %>:
   rules:
 %   state.rules.each do |rule|

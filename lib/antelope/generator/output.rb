@@ -18,8 +18,6 @@ module Antelope
         end
       end
 
-      alias_method :grammar, :parser
-
       # Actually performs the generation.  Uses the template in
       # output.erb, and generates the file `<file>.output`.
       #
