@@ -1,11 +1,10 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path("../../lib", __FILE__) << Dir.pwd
+$: << File.expand_path("../../lib", __FILE__)
 require "antelope"
-require "pathname"
 
 ARGV.each do |program|
   grammar = Antelope::Ace::Grammar.from_file(program)
 
-  out = grammar.generate
+  grammar.generate
 end
