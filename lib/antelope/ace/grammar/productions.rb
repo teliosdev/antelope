@@ -48,11 +48,11 @@ module Antelope
 
         # Generates a production for a given compiler rule.  Converts
         # the tokens in the set to their {Token} counterparts,
-        # and then sets the presidence for the production.  If the
-        # presidence declaration from the compiler rule is empty,
+        # and then sets the precedence for the production.  If the
+        # precedence declaration from the compiler rule is empty,
         # then it'll use the last terminal from the set to check for
-        # presidence; otherwise, it'll use the presidence declaration.
-        # This is to make sure that every production has a presidence
+        # precedence; otherwise, it'll use the precedence declaration.
+        # This is to make sure that every production has a precedence
         # declaration.
         #
         # @param rule [Hash] the compiler's rule.
@@ -67,7 +67,7 @@ module Antelope
             find_token(rule[:prec])
           end
 
-          prec  = presidence_for(prec)
+          prec  = precedence_for(prec)
 
           Production.new(Token::Nonterminal.new(left), items,
                rule[:block], prec, id + 1)
@@ -77,14 +77,14 @@ module Antelope
         # hand side of the production is the `:$start` symbol, with
         # the right hand side being the first rule's left-hand side
         # and the terminal `$`.  This production is automagically
-        # given the last presidence, and an id of 0.
+        # given the last precedence, and an id of 0.
         #
         # @return [Production]
         def default_production
           Production.new(Token::Nonterminal.new(:$start), [
               Token::Nonterminal.new(@compiler.rules.first[:label]),
               Token::Terminal.new(:"$")
-            ], "", presidence.last, 0)
+            ], "", precedence.last, 0)
         end
 
         # Finds a token based on its corresponding symbol.  First

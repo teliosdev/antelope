@@ -42,7 +42,7 @@ module Antelope
       # - **`block`** (`String`) &mdash; The code to be run on a reduction.
       #   this should be formatted in the language that the output
       #   parser is written in.  Optional; default value is `""`.
-      # - **`prec`** (`String`) &mdash; The presidence level for the
+      # - **`prec`** (`String`) &mdash; The precedence level for the
       #   rule.  This should be a nonterminal or terminal.  Optional;
       #   default value is `""`.
       #
@@ -56,8 +56,8 @@ module Antelope
       #   properly defined, the grammar will throw an error saying
       #   that a symbol used in the grammar is not defined.
       # - **`:prec`** (`Array<(Symbol, Array<Symbol>)>`) &mdash; A list
-      #   of the presidence rules of the grammar.  The first element
-      #   of each element is the _type_ of presidence (and should be
+      #   of the precedence rules of the grammar.  The first element
+      #   of each element is the _type_ of precedence (and should be
       #   any of `:left`, `:right`, or `:nonassoc`), and the second
       #   element should be the symbols that are on that level.
       # - **`:type`** (`String`) &mdash; The type of generator to
@@ -119,14 +119,14 @@ module Antelope
       #   Requires 1 argument.  If the first argument is a version
       #   greater than the current version of Antelope, it raises
       #   an error.
-      # - `:left` &mdash; creates a new presidence level, with the
-      #   argument values being the symbols.  The presidence level
+      # - `:left` &mdash; creates a new precedence level, with the
+      #   argument values being the symbols.  The precedence level
       #   is left associative.
-      # - `:right` &mdash; creates a new presidence level, with the
-      #   argument valeus being the symbols.  The presidence level
+      # - `:right` &mdash; creates a new precedence level, with the
+      #   argument valeus being the symbols.  The precedence level
       #   is right associative.
-      # - `:nonassoc` &mdash; creates a nre presidence level, with the
-      #   argument values being the symbols.  The presidence level
+      # - `:nonassoc` &mdash; creates a nre precedence level, with the
+      #   argument values being the symbols.  The precedence level
       #   is nonassociative.
       # - `:type` &mdash; the type of parser to generate.  This should
       #   correspond to the output language of the parser.  Currently
@@ -221,11 +221,11 @@ module Antelope
         compile_label(@current_label)
       end
 
-      # Compiles the presidence operator.  This should only occur in a
+      # Compiles the precedence operator.  This should only occur in a
       # rule definition, and in the second part.  It sets the
-      # presidence definition on the current rule.
+      # precedence definition on the current rule.
       #
-      # @param prec [String] the presidence of the rule.
+      # @param prec [String] the precedence of the rule.
       # @return [void]
       def compile_prec(prec)
         require_state! :second

@@ -1,41 +1,41 @@
 module Antelope
   module Ace
 
-    # Defines a presidence.  A presidence has a type, tokens, and a
+    # Defines a precedence.  A precedence has a type, tokens, and a
     # level.
-    class Presidence < Struct.new(:type, :tokens, :level)
+    class Precedence < Struct.new(:type, :tokens, :level)
 
       # @!attribute [rw] type
-      #   The type of presidence level.  This should be one of
+      #   The type of precedence level.  This should be one of
       #   `:left`, `:right`, or `:nonassoc`.
       #
       #   @return [Symbol] the type.
       # @!attribute [rw] tokens
-      #   An set of tokens that are on this specific presidence
+      #   An set of tokens that are on this specific precedence
       #   level.  The tokens are identified as symbols.  The special
       #   symbol, `:_`, represents any token.
       #
       #   @return [Set<Symbol>] the tokens on this level.
       # @!attribute [rw] level
       #   The level we're on.  The higher the level, the higher the
-      #   presidence.
+      #   precedence.
 
       include Comparable
 
       # Compares the other object to this object.  If the other object
-      # isn't a {Presidence}, it returns nil.  If the other
-      # presidence isn't on the same level as this one, then the
+      # isn't a {Precedence}, it returns nil.  If the other
+      # precedence isn't on the same level as this one, then the
       # levels are compared and the result of that is returned.  If
-      # it is, however, the type is checked; if this presidence is
+      # it is, however, the type is checked; if this precedence is
       # left associative, then it returns 1 (it is greater than the
-      # other); if this presidence is right associative, then it
-      # returns -1 (it is less than the other); if this presidence is
+      # other); if this precedence is right associative, then it
+      # returns -1 (it is less than the other); if this precedence is
       # nonassociative, it returns 0 (it is equal to the other).
       #
       # @param other [Object] the object to compare to this one.
       # @return [Numeric?]
       def <=>(other)
-        return nil unless other.is_a? Presidence
+        return nil unless other.is_a? Precedence
         if level != other.level
           level <=> other.level
         elsif type == :left

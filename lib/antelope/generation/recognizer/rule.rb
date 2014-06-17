@@ -45,10 +45,10 @@ module Antelope
         # @return [String, Numeric]
         attr_accessor :id
 
-        # The presidence for this rule.
+        # The precedence for this rule.
         #
-        # @return [Ace::Presidence]
-        attr_accessor :presidence
+        # @return [Ace::Precedence]
+        attr_accessor :precedence
 
         # The associated production.
         #
@@ -68,7 +68,7 @@ module Antelope
           @left       = production.label.dup
           @position   = position
           @lookahead  = Set.new
-          @presidence = production.prec
+          @precedence = production.prec
           @production = production
           @block      = production.block
           @id         = SecureRandom.hex
@@ -89,14 +89,14 @@ module Antelope
         end
 
         # Give a nicer representation of the rule as a string.  Shows
-        # the id of the rule, the presidence, and the actual
+        # the id of the rule, the precedence, and the actual
         # production; if the given argument is true, it will show a
         # dot to show the position of the rule.
         #
         # @param dot [Boolean] show the current position of the rule.
         # @return [String]
         def to_s(dot = true)
-          "#{id}/#{presidence.type.to_s[0]}#{presidence.level}: " \
+          "#{id}/#{precedence.type.to_s[0]}#{precedence.level}: " \
             "#{left} → #{right[0, position].join(" ")}" \
             "#{" • " if dot}#{right[position..-1].join(" ")}"
         end

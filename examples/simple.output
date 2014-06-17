@@ -30,7 +30,7 @@ FOLLOW:
   l(8:2): {$}
   r(8:10): {$}
 
-Presidence:
+Precedence:
   --- highest
   nonassoc 1:
     {_}

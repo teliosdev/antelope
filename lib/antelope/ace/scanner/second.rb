@@ -8,7 +8,7 @@ module Antelope
       # identifier followed by a colon; the body consists of "parts",
       # an "or", a "prec", and/or a "block".  The part may consist
       # of any alphabetical characters.  An or is just a vertical bar
-      # (`|`).  A prec is a presidence declaraction, which is `%prec `
+      # (`|`).  A prec is a precedence declaraction, which is `%prec `
       # followed by any alphabetical characters.  A block is a `{`,
       # followed by code, followed by a terminating `}`.  Rules _may_
       # be terminated by a semicolon, but this is optional.
@@ -100,7 +100,7 @@ module Antelope
           end
         end
 
-        # Attempts to scan a presidence definition.  A presidence
+        # Attempts to scan a precedence definition.  A precedence
         # definition is "%prec " followed by a terminal or nonterminal.
         #
         # @return [Boolean] if it matched.

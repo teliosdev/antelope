@@ -2,7 +2,7 @@ require "antelope/ace/errors"
 require "antelope/ace/scanner"
 require "antelope/ace/compiler"
 require "antelope/ace/token"
-require "antelope/ace/presidence"
+require "antelope/ace/precedence"
 require "antelope/ace/grammar"
 
 module Antelope

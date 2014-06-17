@@ -20,9 +20,9 @@ module Antelope
         #
         #   @return [String]
         # @!attribute [rw] prec
-        #   The presidence declaration for the production.
+        #   The precedence declaration for the production.
         #
-        #   @return [Ace::Presidence]
+        #   @return [Ace::Precedence]
         # @!attribute [rw] id
         #   The ID of the production.  The starting production always
         #   has an ID of 0.

@@ -62,7 +62,7 @@ FOLLOW:
   expression(12:18): {$, "+", "-", "*", "/", ")"}
   expression(13:19): {$, "+", "-", "*", "/", ")"}
 
-Presidence:
+Precedence:
   --- highest
   nonassoc 4:
     {LPAREN, RPAREN}

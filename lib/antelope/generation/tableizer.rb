@@ -72,12 +72,12 @@ module Antelope
         table
       end
 
-      # Resolve any conflicts through presidence, if we can.  If we
+      # Resolve any conflicts through precedence, if we can.  If we
       # can't, let the user know.  This makes sure that every value
       # of the hashes is a single array.
       #
       # @raise [UnresolvableConflictError] if a conflict could not be
-      #   resolved using presidence rules.
+      #   resolved using precedence rules.
       # @return [void]
       def conflictize
         @table.each_with_index do |v, state|
@@ -87,16 +87,16 @@ module Antelope
               next
             end
 
-            terminal = grammar.presidence_for(on)
+            terminal = grammar.precedence_for(on)
 
             state_part = data.select { |(t, d)| t == :state }.first
             rule_part  = data.select { |(t, d)| t == :reduce}.first
 
-            result = @rules[rule_part[1]].presidence <=> terminal
+            result = @rules[rule_part[1]].precedence <=> terminal
 
             case result
             when 0
-              p v, terminal, @rules[rule_part[1]].presidence
+              p v, terminal, @rules[rule_part[1]].precedence
               raise UnresolvableConflictError,
                 "Could not determine move for #{on} in state #{state}"
             when 1

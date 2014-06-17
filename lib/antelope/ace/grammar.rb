@@ -1,6 +1,6 @@
 require "antelope/ace/grammar/terminals"
 require "antelope/ace/grammar/productions"
-require "antelope/ace/grammar/presidence"
+require "antelope/ace/grammar/precedences"
 require "antelope/ace/grammar/loading"
 require "antelope/ace/grammar/generation"
 require "antelope/ace/grammar/production"
@@ -9,13 +9,13 @@ module Antelope
   module Ace
 
     # Defines a grammar from an Ace file.  This handles setting up
-    # productions, loading from files, terminals, presidence, and
+    # productions, loading from files, terminals, precedence, and
     # generation.
     class Grammar
 
       include Terminals
       include Productions
-      include Presidence
+      include Precedences
       include Loading
       include Grammar::Generation
 

@@ -32,7 +32,7 @@ FOLLOW:
   e(9:11): {$, ")"}
   t(9:3): {";", "+"}
 
-Presidence:
+Precedence:
   --- highest
   nonassoc 1:
     {_}
