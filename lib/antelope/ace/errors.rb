@@ -19,9 +19,15 @@ module Antelope
     class UndefinedTokenError < Error
     end
 
-    # Pimarily used in the {Compiler}, if a scanner token appears that
-    # should not be in the current state, this is raised.
+    # Primarily used in the {Compiler}, if a scanner token appears
+    # that should not be in the current state, this is raised.
     class InvalidStateError < Error
+    end
+
+    # Primarily used in the {Grammar} (specifically
+    # {Grammar::Generation}), if the grammar could not determine the
+    # generator to use for the generation, it raises this.
+    class NoTypeError < Error
     end
   end
 end

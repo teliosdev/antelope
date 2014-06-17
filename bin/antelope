@@ -2,9 +2,6 @@
 
 $: << File.expand_path("../../lib", __FILE__)
 require "antelope"
+require "antelope/cli"
 
-ARGV.each do |program|
-  grammar = Antelope::Ace::Grammar.from_file(program)
-
-  grammar.generate
-end
+Antelope::CLI.start(ARGV)

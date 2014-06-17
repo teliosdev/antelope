@@ -61,8 +61,7 @@ module Antelope
       #   any of `:left`, `:right`, or `:nonassoc`), and the second
       #   element should be the symbols that are on that level.
       # - **`:type`** (`String`) &mdash; The type of generator to
-      #   generate; this should be a language.  It's currently
-      #   ineffective.
+      #   generate; this should be a language.
       # - **`:extra`** (`Hash<Symbol, Array<Object>>`) &mdash; Extra
       #   options that are not defined here.
       # @return [Hash]
@@ -129,8 +128,7 @@ module Antelope
       #   argument values being the symbols.  The precedence level
       #   is nonassociative.
       # - `:type` &mdash; the type of parser to generate.  This should
-      #   correspond to the output language of the parser.  Currently
-      #   ineffective.
+      #   correspond to the output language of the parser.
       #
       # @param name [String, Symbol] the name of the directive.
       #   Accepts any of `:terminal`, `:require`, `:left`, `:right`,
