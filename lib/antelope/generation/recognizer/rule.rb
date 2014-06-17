@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "securerandom"
+
 module Antelope
   module Generation
     class Recognizer
@@ -26,12 +28,12 @@ module Antelope
 
         # The block to be executed on production match.
         #
-        # @deprecated Use {Production#block} instead.
+        # @deprecated Use {Ace::Grammar::Production#block} instead.
         # @return [String]
         attr_reader :block
 
         # The lookahead set for this specific rule.  Contains nothing
-        # unless {#succ?} returns false.
+        # unless {#final?} returns true.
         #
         # @return [Set<Symbol>]
         attr_accessor :lookahead
@@ -55,8 +57,15 @@ module Antelope
 
         include Comparable
 
+        # Initialize the rule.
+        #
+        # @param production [Ace::Grammar::Production] the production
+        #   that this rule is based off of.
+        # @param position [Numeric] the position that this rule is in
+        #   the production.
+        # @param inherited [nil] do not use.
         def initialize(production, position, inherited = false)
-          @left       = production.label
+          @left       = production.label.dup
           @position   = position
           @lookahead  = Set.new
           @presidence = production.prec
@@ -71,30 +80,69 @@ module Antelope
           end
         end
 
+        # Give a nice representation of the rule as a string.
+        #
+        # @return [String]
         def inspect
-          "#<#{self.class} id=#{id} left=#{left} right=[#{right.join(" ")}] position=#{position}>"
+          "#<#{self.class} id=#{id} left=#{left} " \
+            "right=[#{right.join(" ")}] position=#{position}>"
         end
 
+        # Give a nicer representation of the rule as a string.  Shows
+        # the id of the rule, the presidence, and the actual
+        # production; if the given argument is true, it will show a
+        # dot to show the position of the rule.
+        #
+        # @param dot [Boolean] show the current position of the rule.
+        # @return [String]
         def to_s(dot = true)
-          "#{id}/#{presidence.type.to_s[0]}#{presidence.level}: #{left} → #{right[0, position].join(" ")}#{" • " if dot}#{right[position..-1].join(" ")}"
+          "#{id}/#{presidence.type.to_s[0]}#{presidence.level}: " \
+            "#{left} → #{right[0, position].join(" ")}" \
+            "#{" • " if dot}#{right[position..-1].join(" ")}"
         end
 
+        # Returns the active token.  If there is no active token, it
+        # returns a blank {Ace::Token}.
+        #
+        # @return [Ace::Token]
         def active
           right[position] or Ace::Token.new(nil)
         end
 
+        # Creates the rule after this one by incrementing the position
+        # by one.  {#succ?} should be called to make sure that this
+        # rule exists.
+        #
+        # @return [Rule]
         def succ
           Rule.new(production, position + 1)
         end
 
+        # Checks to see if a rule can exist after this one; i.e. the
+        # position is not equal to the size of the right side of the
+        # rule.
+        #
+        # @return [Boolean]
         def succ?
-          right.size > (position)
+          right.size > position
         end
 
+        # Checks to see if this is the final rule, as in no rule can
+        # exist after this one; i.e. the position is equal to the
+        # size of the right side.
+        #
+        # @return [Boolean]
         def final?
           !succ?
         end
 
+        # Compares this rule to another object.  If the other object
+        # is not a rule, it delegates the comparison.  Otherwise, it
+        # converts both this and the other rule into arrays and
+        # compares the result.
+        #
+        # @param other [Object] the object to compare.
+        # @return [Numeric]
         def <=>(other)
           if other.is_a? Rule
             to_a <=> other.to_a
@@ -103,11 +151,12 @@ module Antelope
           end
         end
 
-        def without_transitions
-          @_without_transitions ||=
-            Rule.new(production, position)
-        end
-
+        # Fuzzily compares this object to another object.  If the
+        # other object is not a rule, it delegates the comparison.
+        # Otherwise, it fuzzily compares the left and right sides.
+        #
+        # @param other [Object] the object to compare.
+        # @return [Numeric]
         def ===(other)
           if other.is_a? Rule
             left === other.left and right.each_with_index.
@@ -117,12 +166,24 @@ module Antelope
           end
         end
 
+        # Generates a hash for this class.
+        #
+        # @note This is not intended for use.  It is only defined to be
+        #   compatible with Hashs (and by extension, Sets).
+        # @private
+        # @return [Object]
         def hash
           to_a.hash
         end
 
         alias_method :eql?, :==
 
+        # Creates an array representation of this class.
+        #
+        # @note This is not intended for use.  It is only defined to
+        #   make equality checking easier, and to create a hash.
+        # @private
+        # @return [Array<(Ace::Token::Nonterminal, Array<Ace::Token>, Numeric)>]
         def to_a
           [left, right, position]
         end

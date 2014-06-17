@@ -1,4 +1,5 @@
 --protected
+--private
 -m markdown
 -
 LICENSE.txt

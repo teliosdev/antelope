@@ -1,22 +1,18 @@
 Productions:
-% constructor.productions.each do |production|
-    <%= production.to_s(false) %>
-% end
-
-Original Productions:
 % grammar.productions.each do |k, v|
 %  v.each do |prod|
-  <%= k %> → <%= prod[:items].join(" ") %>
-    <%= prod[:block] %>
+  <%= k %> → <%= prod[:items].join(" ") %> <%= prod[:block] %>
 %  end
 % end
 
-Conflicts:
-% conflictor.conflicts.each do |conflict|
-  State <%= conflict.state.id %>:
-    rules : <%= conflict.rules.map(&:id).join(", ") %>
-    type  : <%= conflict.type %>
-    tokens: {<%= conflict.token.to_a.join(", ") %>}
+Productions, Again:
+% constructor.productions.each do |production|
+  <%= production.to_s(false) %>
+% end
+
+FOLLOW:
+% constructor.instance_variable_get(:@follows).each do |k, v|
+  <%= k %>: {<%= v.map(&:to_s).join(", ") %>}
 % end
 
 Presidence:
@@ -28,9 +24,14 @@ Presidence:
   --- lowest
 
 Table:
-% PP.pp(Hash[tableizer.table.each_with_index.to_a.map(&:reverse)], _erbout)
-
-% PP.pp(tableizer.rules, _erbout)
+% len = tableizer.table.flatten.map(&:keys).flatten.map(&:size).max
+% tableizer.table.each_with_index do |v, i|
+  State <%= i %>:
+%   v.each do |token, action|
+    <%= "%-#{len}s" % token %>: <%= action[0] %> (<%= action[1] %>)
+%   end
+% end
+  <%# PP.pp(Hash[tableizer.table.each_with_index.to_a.map(&:reverse)], _erbout) %>
 
 % grammar.states.each do |state|
 State <%= state.id %>:

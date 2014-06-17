@@ -145,7 +145,7 @@ module Antelope
         self.class.new(name, @value)
       end
 
-      # Generates a hashs for this class.
+      # Generates a hash for this class.
       #
       # @note This is not intended for use.  It is only defined to be
       #   compatible with Hashs (and by extension, Sets).

@@ -8,7 +8,6 @@ module Antelope
       DEFAULT_MODIFIERS = [
         [:recognizer,  Generation::Recognizer ],
         [:constructor, Generation::Constructor],
-        [:conflictor,  Generation::Conflictor ],
         [:tableizer,   Generation::Tableizer  ]
       ].freeze
 

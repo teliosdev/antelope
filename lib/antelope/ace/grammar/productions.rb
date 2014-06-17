@@ -92,7 +92,7 @@ module Antelope
         # tries to find it in the terminals; otherwise, if the symbol
         # is `error`, it returns a {Token::Error}; if the symbol is
         # `nothing` or `ε`, it returns a {Token::Epsilon}; if it's
-        # none of those, it raises an {UndefiendTokenError}.
+        # none of those, it raises an {UndefinedTokenError}.
         #
         # @raise [UndefinedTokenError] if the token doesn't exist.
         # @param value [String, Symbol, #intern] the token's symbol to

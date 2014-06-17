@@ -1,30 +1,55 @@
 module Antelope
   module Generation
 
-    class UnresolvableConflictError < StandardError; end
-
+    # Constructs the table required for the parser.
     class Tableizer
 
-      attr_accessor :parser
+      # The grammar that the table is based off of.
+      #
+      # @return [Ace::Grammar]
+      attr_accessor :grammar
+
+      # The table itself.
+      #
+      # @return [Array<Hash<(Symbol, Array<(Symbol, Numeric)>)>>]
       attr_accessor :table
+
+      # All rules in the grammar.
+      #
+      # @return [Hash<(Numeric, Recognizer::Rule)>]
       attr_accessor :rules
 
-      def initialize(parser)
-        @parser = parser
+      # Initialize.
+      #
+      # @param grammar [Ace::Grammar]
+      def initialize(grammar)
+        @grammar = grammar
       end
 
+      # Construct the table, and then check the table for conflicts.
+      #
+      # @return [void]
+      # @see #tablize
+      # @see #conflictize
       def call
         tablize
         conflictize
       end
 
+      # Construct a table based on the grammar.  The table itself is
+      # an array whose elements are hashes; the index of the array
+      # corresponds to the state ID, and the keys of the hashes
+      # correspond to acceptable tokens.  The values of the hashes
+      # should be an array of arrays (at this point).
+      #
+      # @return [void]
       def tablize
-        @table = Array.new(parser.states.size) do
+        @table = Array.new(grammar.states.size) do
           Hash.new { |h, k| h[k] = [] }
         end
         @rules = []
 
-        parser.states.each do |state|
+        grammar.states.each do |state|
           state.transitions.each do |on, to|
             table[state.id][on] << [:state, to.id]
           end
@@ -47,6 +72,13 @@ module Antelope
         table
       end
 
+      # Resolve any conflicts through presidence, if we can.  If we
+      # can't, let the user know.  This makes sure that every value
+      # of the hashes is a single array.
+      #
+      # @raise [UnresolvableConflictError] if a conflict could not be
+      #   resolved using presidence rules.
+      # @return [void]
       def conflictize
         @table.each_with_index do |v, state|
           v.each do |on, data|
@@ -55,7 +87,7 @@ module Antelope
               next
             end
 
-            terminal = parser.presidence_for(on)
+            terminal = grammar.presidence_for(on)
 
             state_part = data.select { |(t, d)| t == :state }.first
             rule_part  = data.select { |(t, d)| t == :reduce}.first

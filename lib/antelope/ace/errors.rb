@@ -4,7 +4,7 @@ module Antelope
     # Defines an error that can occur within the Ace module.  All
     # errors that are raised within the Ace module are subclasses of
     # this.
-    class Error < StandardError
+    class Error < Antelope::Error
     end
 
     # Used primarily in the {Scanner}, this is raised when an input
