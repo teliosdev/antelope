@@ -1,4 +1,4 @@
-%require "0.0.1"
+%require "~> 0.1"
 %type "ruby"
 
 %terminal NUMBER
