@@ -8,60 +8,6 @@ Productions:
   expression → "(" $error ")" 
   $start → expression $ 
 
-Productions, Again:
-  0/n0: $start(0) → expression(0:1) $
-  1/n1: expression(0:1) → NUMBER
-  2/l2: expression(0:1) → expression(0:1) "+" expression(10:16)
-  3/l2: expression(0:1) → expression(0:1) "-" expression(11:17)
-  4/l3: expression(0:1) → expression(0:1) "*" expression(12:18)
-  5/l3: expression(0:1) → expression(0:1) "/" expression(13:19)
-  6/n4: expression(0:1) → "(" expression(7:14) ")"
-  7/n4: expression(0:1) → "(" $error ")"
-  19/n1: expression(7:14) → NUMBER
-  20/l2: expression(7:14) → expression(7:14) "+" expression(10:16)
-  21/l2: expression(7:14) → expression(7:14) "-" expression(11:17)
-  22/l3: expression(7:14) → expression(7:14) "*" expression(12:18)
-  23/l3: expression(7:14) → expression(7:14) "/" expression(13:19)
-  24/n4: expression(7:14) → "(" expression(7:14) ")"
-  25/n4: expression(7:14) → "(" $error ")"
-  30/n1: expression(10:16) → NUMBER
-  31/l2: expression(10:16) → expression(10:16) "+" expression(10:16)
-  32/l2: expression(10:16) → expression(10:16) "-" expression(11:17)
-  33/l3: expression(10:16) → expression(10:16) "*" expression(12:18)
-  34/l3: expression(10:16) → expression(10:16) "/" expression(13:19)
-  35/n4: expression(10:16) → "(" expression(7:14) ")"
-  36/n4: expression(10:16) → "(" $error ")"
-  38/n1: expression(11:17) → NUMBER
-  39/l2: expression(11:17) → expression(11:17) "+" expression(10:16)
-  40/l2: expression(11:17) → expression(11:17) "-" expression(11:17)
-  41/l3: expression(11:17) → expression(11:17) "*" expression(12:18)
-  42/l3: expression(11:17) → expression(11:17) "/" expression(13:19)
-  43/n4: expression(11:17) → "(" expression(7:14) ")"
-  44/n4: expression(11:17) → "(" $error ")"
-  46/n1: expression(12:18) → NUMBER
-  47/l2: expression(12:18) → expression(12:18) "+" expression(10:16)
-  48/l2: expression(12:18) → expression(12:18) "-" expression(11:17)
-  49/l3: expression(12:18) → expression(12:18) "*" expression(12:18)
-  50/l3: expression(12:18) → expression(12:18) "/" expression(13:19)
-  51/n4: expression(12:18) → "(" expression(7:14) ")"
-  52/n4: expression(12:18) → "(" $error ")"
-  54/n1: expression(13:19) → NUMBER
-  55/l2: expression(13:19) → expression(13:19) "+" expression(10:16)
-  56/l2: expression(13:19) → expression(13:19) "-" expression(11:17)
-  57/l3: expression(13:19) → expression(13:19) "*" expression(12:18)
-  58/l3: expression(13:19) → expression(13:19) "/" expression(13:19)
-  59/n4: expression(13:19) → "(" expression(7:14) ")"
-  60/n4: expression(13:19) → "(" $error ")"
-
-FOLLOW:
-  $start(0): {}
-  expression(0:1): {$, "+", "-", "*", "/"}
-  expression(7:14): {")", "+", "-", "*", "/"}
-  expression(10:16): {$, "+", "-", "*", "/", ")"}
-  expression(11:17): {$, "+", "-", "*", "/", ")"}
-  expression(12:18): {$, "+", "-", "*", "/", ")"}
-  expression(13:19): {$, "+", "-", "*", "/", ")"}
-
 Precedence:
   --- highest
   nonassoc 4:
@@ -76,112 +22,7 @@ Precedence:
     {$}
   --- lowest
 
-Table:
   State 0:
-    expression: state (1)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-  State 1:
-    $         : state (9)
-    ADD       : state (10)
-    SUBTRACT  : state (11)
-    MULTIPLY  : state (12)
-    DIVIDE    : state (13)
-  State 2:
-    $         : reduce (1)
-    ADD       : reduce (1)
-    SUBTRACT  : reduce (1)
-    MULTIPLY  : reduce (1)
-    DIVIDE    : reduce (1)
-    RPAREN    : reduce (1)
-  State 3:
-    ADD       : state (10)
-  State 4:
-    SUBTRACT  : state (11)
-  State 5:
-    MULTIPLY  : state (12)
-  State 6:
-    DIVIDE    : state (13)
-  State 7:
-    expression: state (14)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-    $error    : state (15)
-  State 8:
-    $error    : state (15)
-  State 9:
-    $         : accept (0)
-  State 10:
-    expression: state (16)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-  State 11:
-    expression: state (17)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-  State 12:
-    expression: state (18)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-  State 13:
-    expression: state (19)
-    NUMBER    : state (2)
-    LPAREN    : state (7)
-  State 14:
-    $         : state (9)
-    ADD       : state (10)
-    SUBTRACT  : state (11)
-    MULTIPLY  : state (12)
-    DIVIDE    : state (13)
-    RPAREN    : state (20)
-  State 15:
-    RPAREN    : state (21)
-  State 16:
-    $         : reduce (2)
-    ADD       : reduce (2)
-    SUBTRACT  : reduce (2)
-    MULTIPLY  : state (12)
-    DIVIDE    : state (13)
-    RPAREN    : reduce (2)
-  State 17:
-    $         : reduce (3)
-    ADD       : reduce (3)
-    SUBTRACT  : reduce (3)
-    MULTIPLY  : state (12)
-    DIVIDE    : state (13)
-    RPAREN    : reduce (3)
-  State 18:
-    $         : reduce (4)
-    ADD       : reduce (4)
-    SUBTRACT  : reduce (4)
-    MULTIPLY  : reduce (4)
-    DIVIDE    : reduce (4)
-    RPAREN    : reduce (4)
-  State 19:
-    $         : reduce (5)
-    ADD       : reduce (5)
-    SUBTRACT  : reduce (5)
-    MULTIPLY  : reduce (5)
-    DIVIDE    : reduce (5)
-    RPAREN    : reduce (5)
-  State 20:
-    $         : reduce (6)
-    ADD       : reduce (6)
-    SUBTRACT  : reduce (6)
-    MULTIPLY  : reduce (6)
-    DIVIDE    : reduce (6)
-    RPAREN    : reduce (6)
-  State 21:
-    $         : reduce (7)
-    ADD       : reduce (7)
-    SUBTRACT  : reduce (7)
-    MULTIPLY  : reduce (7)
-    DIVIDE    : reduce (7)
-    RPAREN    : reduce (7)
-  
-
-State 0:
-  rules:
     0/n0: $start(0) →  • expression(0:1) $
       {}
     1/n1: expression(0:1) →  • NUMBER
@@ -198,73 +39,65 @@ State 0:
       {}
     7/n4: expression(0:1) →  • "(" $error ")"
       {}
+    transitions:
+      expression: State 1
+      NUMBER: State 2
+      LPAREN: State 7
 
-  transitions:
-    expression: State 1
-    NUMBER    : State 2
-    LPAREN    : State 7
+  State 1:
+    8/n0: $start → expression • $
+      {}
+    83/l2: expression → expression • "+" expression
+      {}
+    84/l2: expression → expression • "-" expression
+      {}
+    85/l3: expression → expression • "*" expression
+      {}
+    86/l3: expression → expression • "/" expression
+      {}
+    transitions:
+      $: State 9
+      ADD: State 10
+      SUBTRACT: State 11
+      MULTIPLY: State 12
+      DIVIDE: State 13
 
-State 1:
-  rules:
-    87/n0: $start → expression • $
-      {}
-    88/l2: expression → expression • "+" expression
-      {}
-    89/l2: expression → expression • "-" expression
-      {}
-    90/l3: expression → expression • "*" expression
-      {}
-    91/l3: expression → expression • "/" expression
-      {}
-
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-
-State 2:
-  rules:
+  State 2:
     13/n1: expression → NUMBER • 
       {$, "+", "-", "*", "/", ")"}
+    reductions:
+      $: Rule 1
+      ADD: Rule 1
+      SUBTRACT: Rule 1
+      MULTIPLY: Rule 1
+      DIVIDE: Rule 1
+      RPAREN: Rule 1
 
-  transitions:
-
-State 3:
-  rules:
-    88/l2: expression → expression • "+" expression
+  State 3:
+    83/l2: expression → expression • "+" expression
       {}
+    transitions:
+      ADD: State 10
 
-  transitions:
-    ADD: State 10
-
-State 4:
-  rules:
-    89/l2: expression → expression • "-" expression
+  State 4:
+    84/l2: expression → expression • "-" expression
       {}
+    transitions:
+      SUBTRACT: State 11
 
-  transitions:
-    SUBTRACT: State 11
-
-State 5:
-  rules:
-    90/l3: expression → expression • "*" expression
+  State 5:
+    85/l3: expression → expression • "*" expression
       {}
+    transitions:
+      MULTIPLY: State 12
 
-  transitions:
-    MULTIPLY: State 12
-
-State 6:
-  rules:
-    91/l3: expression → expression • "/" expression
+  State 6:
+    86/l3: expression → expression • "/" expression
       {}
+    transitions:
+      DIVIDE: State 13
 
-  transitions:
-    DIVIDE: State 13
-
-State 7:
-  rules:
+  State 7:
     18/n4: expression → "(" • expression ")"
       {}
     19/n1: expression(7:14) →  • NUMBER
@@ -283,30 +116,25 @@ State 7:
       {}
     27/n4: expression → "(" • $error ")"
       {}
+    transitions:
+      expression: State 14
+      NUMBER: State 2
+      LPAREN: State 7
+      $error: State 15
 
-  transitions:
-    expression: State 14
-    NUMBER    : State 2
-    LPAREN    : State 7
-    $error    : State 15
-
-State 8:
-  rules:
+  State 8:
     27/n4: expression → "(" • $error ")"
       {}
+    transitions:
+      $error: State 15
 
-  transitions:
-    $error: State 15
-
-State 9:
-  rules:
+  State 9:
     28/n0: $start → expression $ • 
       {}
+    accepting:
+      $: Rule 0
 
-  transitions:
-
-State 10:
-  rules:
+  State 10:
     29/l2: expression → expression "+" • expression
       {}
     30/n1: expression(10:16) →  • NUMBER
@@ -323,14 +151,12 @@ State 10:
       {}
     36/n4: expression(10:16) →  • "(" $error ")"
       {}
+    transitions:
+      expression: State 16
+      NUMBER: State 2
+      LPAREN: State 7
 
-  transitions:
-    expression: State 16
-    NUMBER    : State 2
-    LPAREN    : State 7
-
-State 11:
-  rules:
+  State 11:
     37/l2: expression → expression "-" • expression
       {}
     38/n1: expression(11:17) →  • NUMBER
@@ -347,14 +173,12 @@ State 11:
       {}
     44/n4: expression(11:17) →  • "(" $error ")"
       {}
+    transitions:
+      expression: State 17
+      NUMBER: State 2
+      LPAREN: State 7
 
-  transitions:
-    expression: State 17
-    NUMBER    : State 2
-    LPAREN    : State 7
-
-State 12:
-  rules:
+  State 12:
     45/l3: expression → expression "*" • expression
       {}
     46/n1: expression(12:18) →  • NUMBER
@@ -371,14 +195,12 @@ State 12:
       {}
     52/n4: expression(12:18) →  • "(" $error ")"
       {}
+    transitions:
+      expression: State 18
+      NUMBER: State 2
+      LPAREN: State 7
 
-  transitions:
-    expression: State 18
-    NUMBER    : State 2
-    LPAREN    : State 7
-
-State 13:
-  rules:
+  State 13:
     53/l3: expression → expression "/" • expression
       {}
     54/n1: expression(13:19) →  • NUMBER
@@ -395,142 +217,132 @@ State 13:
       {}
     60/n4: expression(13:19) →  • "(" $error ")"
       {}
+    transitions:
+      expression: State 19
+      NUMBER: State 2
+      LPAREN: State 7
 
-  transitions:
-    expression: State 19
-    NUMBER    : State 2
-    LPAREN    : State 7
-
-State 14:
-  rules:
+  State 14:
     61/n4: expression → "(" expression • ")"
       {}
-    87/n0: $start → expression • $
+    83/l2: expression → expression • "+" expression
       {}
-    88/l2: expression → expression • "+" expression
+    84/l2: expression → expression • "-" expression
       {}
-    89/l2: expression → expression • "-" expression
+    85/l3: expression → expression • "*" expression
       {}
-    90/l3: expression → expression • "*" expression
+    86/l3: expression → expression • "/" expression
       {}
-    91/l3: expression → expression • "/" expression
-      {}
+    transitions:
+      ADD: State 10
+      SUBTRACT: State 11
+      MULTIPLY: State 12
+      DIVIDE: State 13
+      RPAREN: State 20
 
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-    RPAREN  : State 20
-
-State 15:
-  rules:
-    67/n4: expression → "(" $error • ")"
+  State 15:
+    66/n4: expression → "(" $error • ")"
       {}
+    transitions:
+      RPAREN: State 21
 
-  transitions:
-    RPAREN: State 21
-
-State 16:
-  rules:
-    68/l2: expression → expression "+" expression • 
+  State 16:
+    67/l2: expression → expression "+" expression • 
       {$, "+", "-", "*", "/", ")"}
-    87/n0: $start → expression • $
+    83/l2: expression → expression • "+" expression
       {}
-    88/l2: expression → expression • "+" expression
+    84/l2: expression → expression • "-" expression
       {}
-    89/l2: expression → expression • "-" expression
+    85/l3: expression → expression • "*" expression
       {}
-    90/l3: expression → expression • "*" expression
+    86/l3: expression → expression • "/" expression
       {}
-    91/l3: expression → expression • "/" expression
-      {}
+    transitions:
+      MULTIPLY: State 12
+      DIVIDE: State 13
+    reductions:
+      ADD: Rule 2
+      SUBTRACT: Rule 2
+      $: Rule 2
+      RPAREN: Rule 2
 
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-
-State 17:
-  rules:
-    74/l2: expression → expression "-" expression • 
+  State 17:
+    72/l2: expression → expression "-" expression • 
       {$, "+", "-", "*", "/", ")"}
-    87/n0: $start → expression • $
+    83/l2: expression → expression • "+" expression
       {}
-    88/l2: expression → expression • "+" expression
+    84/l2: expression → expression • "-" expression
       {}
-    89/l2: expression → expression • "-" expression
+    85/l3: expression → expression • "*" expression
       {}
-    90/l3: expression → expression • "*" expression
+    86/l3: expression → expression • "/" expression
       {}
-    91/l3: expression → expression • "/" expression
-      {}
+    transitions:
+      MULTIPLY: State 12
+      DIVIDE: State 13
+    reductions:
+      ADD: Rule 3
+      SUBTRACT: Rule 3
+      $: Rule 3
+      RPAREN: Rule 3
 
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-
-State 18:
-  rules:
-    80/l3: expression → expression "*" expression • 
+  State 18:
+    77/l3: expression → expression "*" expression • 
       {$, "+", "-", "*", "/", ")"}
-    87/n0: $start → expression • $
+    83/l2: expression → expression • "+" expression
       {}
-    88/l2: expression → expression • "+" expression
+    84/l2: expression → expression • "-" expression
       {}
-    89/l2: expression → expression • "-" expression
+    85/l3: expression → expression • "*" expression
       {}
-    90/l3: expression → expression • "*" expression
+    86/l3: expression → expression • "/" expression
       {}
-    91/l3: expression → expression • "/" expression
-      {}
+    reductions:
+      ADD: Rule 4
+      SUBTRACT: Rule 4
+      MULTIPLY: Rule 4
+      DIVIDE: Rule 4
+      $: Rule 4
+      RPAREN: Rule 4
 
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-
-State 19:
-  rules:
-    86/l3: expression → expression "/" expression • 
+  State 19:
+    82/l3: expression → expression "/" expression • 
       {$, "+", "-", "*", "/", ")"}
-    87/n0: $start → expression • $
+    83/l2: expression → expression • "+" expression
       {}
-    88/l2: expression → expression • "+" expression
+    84/l2: expression → expression • "-" expression
       {}
-    89/l2: expression → expression • "-" expression
+    85/l3: expression → expression • "*" expression
       {}
-    90/l3: expression → expression • "*" expression
+    86/l3: expression → expression • "/" expression
       {}
-    91/l3: expression → expression • "/" expression
-      {}
+    reductions:
+      ADD: Rule 5
+      SUBTRACT: Rule 5
+      MULTIPLY: Rule 5
+      DIVIDE: Rule 5
+      $: Rule 5
+      RPAREN: Rule 5
 
-  transitions:
-    $       : State 9
-    ADD     : State 10
-    SUBTRACT: State 11
-    MULTIPLY: State 12
-    DIVIDE  : State 13
-
-State 20:
-  rules:
-    92/n4: expression → "(" expression ")" • 
+  State 20:
+    87/n4: expression → "(" expression ")" • 
       {$, "+", "-", "*", "/", ")"}
+    reductions:
+      $: Rule 6
+      ADD: Rule 6
+      SUBTRACT: Rule 6
+      MULTIPLY: Rule 6
+      DIVIDE: Rule 6
+      RPAREN: Rule 6
 
-  transitions:
-
-State 21:
-  rules:
-    93/n4: expression → "(" $error ")" • 
+  State 21:
+    88/n4: expression → "(" $error ")" • 
       {$, "+", "-", "*", "/", ")"}
-
-  transitions:
+    reductions:
+      $: Rule 7
+      ADD: Rule 7
+      SUBTRACT: Rule 7
+      MULTIPLY: Rule 7
+      DIVIDE: Rule 7
+      RPAREN: Rule 7
 

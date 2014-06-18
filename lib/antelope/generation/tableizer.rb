@@ -96,8 +96,7 @@ module Antelope
 
             case result
             when 0
-              p v, terminal, @rules[rule_part[1]].precedence
-              raise UnresolvableConflictError,
+              $stderr.puts \
                 "Could not determine move for #{on} in state #{state}"
             when 1
               @table[state][on] = rule_part

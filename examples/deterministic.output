@@ -6,32 +6,6 @@ Productions:
   t → "(" e ")" 
   $start → s $ 
 
-Productions, Again:
-  0/n0: $start(0) → s(0:1) $
-  1/n1: s(0:1) → e(0:2)
-  2/n1: e(0:2) → t(0:3) ";"
-  3/n1: e(0:2) → t(0:3) "+" e(9:11)
-  4/n1: t(0:3) → NUMBER
-  5/n1: t(0:3) → "(" e(6:10) ")"
-  13/n1: e(6:10) → t(6:3) ";"
-  14/n1: e(6:10) → t(6:3) "+" e(9:11)
-  15/n1: t(6:3) → NUMBER
-  16/n1: t(6:3) → "(" e(6:10) ")"
-  20/n1: e(9:11) → t(9:3) ";"
-  21/n1: e(9:11) → t(9:3) "+" e(9:11)
-  22/n1: t(9:3) → NUMBER
-  23/n1: t(9:3) → "(" e(6:10) ")"
-
-FOLLOW:
-  $start(0): {}
-  s(0:1): {$}
-  e(0:2): {$}
-  t(0:3): {";", "+"}
-  e(6:10): {")"}
-  t(6:3): {";", "+"}
-  e(9:11): {$, ")"}
-  t(9:3): {";", "+"}
-
 Precedence:
   --- highest
   nonassoc 1:
@@ -40,52 +14,7 @@ Precedence:
     {$}
   --- lowest
 
-Table:
   State 0:
-    s        : state (1)
-    e        : state (2)
-    t        : state (3)
-    NUMBER   : state (5)
-    LPAREN   : state (6)
-  State 1:
-    $        : state (7)
-  State 2:
-    $        : reduce (1)
-  State 3:
-    SEMICOLON: state (8)
-    ADD      : state (9)
-  State 4:
-    ADD      : state (9)
-  State 5:
-    SEMICOLON: reduce (4)
-    ADD      : reduce (4)
-  State 6:
-    e        : state (10)
-    t        : state (3)
-    NUMBER   : state (5)
-    LPAREN   : state (6)
-  State 7:
-    $        : accept (0)
-  State 8:
-    $        : reduce (2)
-    RPAREN   : reduce (2)
-  State 9:
-    e        : state (11)
-    t        : state (3)
-    NUMBER   : state (5)
-    LPAREN   : state (6)
-  State 10:
-    RPAREN   : state (12)
-  State 11:
-    $        : reduce (3)
-    RPAREN   : reduce (3)
-  State 12:
-    SEMICOLON: reduce (5)
-    ADD      : reduce (5)
-  
-
-State 0:
-  rules:
     0/n0: $start(0) →  • s(0:1) $
       {}
     1/n1: s(0:1) →  • e(0:2)
@@ -98,57 +27,48 @@ State 0:
       {}
     5/n1: t(0:3) →  • "(" e(6:10) ")"
       {}
+    transitions:
+      s: State 1
+      e: State 2
+      t: State 3
+      NUMBER: State 5
+      LPAREN: State 6
 
-  transitions:
-    s     : State 1
-    e     : State 2
-    t     : State 3
-    NUMBER: State 5
-    LPAREN: State 6
-
-State 1:
-  rules:
+  State 1:
     6/n0: $start → s • $
       {}
+    transitions:
+      $: State 7
 
-  transitions:
-    $: State 7
-
-State 2:
-  rules:
+  State 2:
     7/n1: s → e • 
       {$}
+    reductions:
+      $: Rule 1
 
-  transitions:
-
-State 3:
-  rules:
+  State 3:
     8/n1: e → t • ";"
       {}
     10/n1: e → t • "+" e
       {}
+    transitions:
+      SEMICOLON: State 8
+      ADD: State 9
 
-  transitions:
-    SEMICOLON: State 8
-    ADD      : State 9
-
-State 4:
-  rules:
+  State 4:
     10/n1: e → t • "+" e
       {}
+    transitions:
+      ADD: State 9
 
-  transitions:
-    ADD: State 9
-
-State 5:
-  rules:
+  State 5:
     11/n1: t → NUMBER • 
       {";", "+"}
+    reductions:
+      SEMICOLON: Rule 4
+      ADD: Rule 4
 
-  transitions:
-
-State 6:
-  rules:
+  State 6:
     12/n1: t → "(" • e ")"
       {}
     13/n1: e(6:10) →  • t(6:3) ";"
@@ -159,29 +79,26 @@ State 6:
       {}
     16/n1: t(6:3) →  • "(" e(6:10) ")"
       {}
+    transitions:
+      e: State 10
+      t: State 3
+      NUMBER: State 5
+      LPAREN: State 6
 
-  transitions:
-    e     : State 10
-    t     : State 3
-    NUMBER: State 5
-    LPAREN: State 6
-
-State 7:
-  rules:
+  State 7:
     17/n0: $start → s $ • 
       {}
+    accepting:
+      $: Rule 0
 
-  transitions:
-
-State 8:
-  rules:
+  State 8:
     18/n1: e → t ";" • 
       {$, ")"}
+    reductions:
+      $: Rule 2
+      RPAREN: Rule 2
 
-  transitions:
-
-State 9:
-  rules:
+  State 9:
     19/n1: e → t "+" • e
       {}
     20/n1: e(9:11) →  • t(9:3) ";"
@@ -192,32 +109,29 @@ State 9:
       {}
     23/n1: t(9:3) →  • "(" e(6:10) ")"
       {}
+    transitions:
+      e: State 11
+      t: State 3
+      NUMBER: State 5
+      LPAREN: State 6
 
-  transitions:
-    e     : State 11
-    t     : State 3
-    NUMBER: State 5
-    LPAREN: State 6
-
-State 10:
-  rules:
+  State 10:
     24/n1: t → "(" e • ")"
       {}
+    transitions:
+      RPAREN: State 12
 
-  transitions:
-    RPAREN: State 12
-
-State 11:
-  rules:
+  State 11:
     25/n1: e → t "+" e • 
       {$, ")"}
+    reductions:
+      $: Rule 3
+      RPAREN: Rule 3
 
-  transitions:
-
-State 12:
-  rules:
+  State 12:
     26/n1: t → "(" e ")" • 
       {";", "+"}
-
-  transitions:
+    reductions:
+      SEMICOLON: Rule 5
+      ADD: Rule 5
 

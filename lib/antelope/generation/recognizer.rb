@@ -31,6 +31,7 @@ module Antelope
       def initialize(grammar)
         @grammar = grammar
         @states = Set.new
+        @map = {}
       end
 
       # Runs the recognizer.  After all states have been created, it
@@ -94,6 +95,7 @@ module Antelope
                 ns << succ
                 compute_closure(ns)
                 states << ns
+                @map[succ] = ns
                 ns
               end
 
@@ -129,8 +131,9 @@ module Antelope
       # @param rule [Rule]
       # @yield [rule]
       # @return [State]
-      def find_state_for(rule)
-        states.find { |state| state.include?(rule) } or yield(rule)
+      def find_state_for(rule, &block)
+        #states.find { |state| state.include?(rule) } or yield(rule)
+        @map.fetch(rule) { block.call(rule) }
       end
 
       # Changes the IDs of the states into a more friendly format.

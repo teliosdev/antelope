@@ -34,7 +34,10 @@ module Antelope
                      modifiers  = DEFAULT_MODIFIERS)
           mods = modifiers.map(&:last).
             map  { |x| x.new(self) }
-          mods.map(&:call)
+          mods.each do |mod|
+            puts "Running mod #{mod.class}..."
+            mod.call
+          end
           hash = Hash[modifiers.map(&:first).zip(mods)]
           # This is when we'd generate
 

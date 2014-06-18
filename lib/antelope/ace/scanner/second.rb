@@ -86,7 +86,7 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_part
-          if @scanner.scan(/([A-Za-z._-]+)(?!\:)/)
+          if @scanner.scan(/([A-Za-z._-]+)(?!\:|[A-Za-z._-])/)
             tokens << [:part, @scanner[1]]
           end
         end

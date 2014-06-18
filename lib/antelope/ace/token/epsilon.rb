@@ -7,9 +7,9 @@ module Antelope
       # reduce to nothing.
       class Epsilon < Token
         # Initialize.  Technically takes no arguments.  Sets
-        # the name of the token to be `:epsilon`.
+        # the name of the token to be `:$empty`.
         def initialize(*)
-          super :epsilon
+          super :"$empty"
         end
 
         # (see Token#epsilon?)
