@@ -7,6 +7,12 @@ module Antelope
     class Error < Antelope::Error
     end
 
+    # Used primarily in the {Compiler}, this is raised when the
+    # version requirement of the Ace file doesn't match the running
+    # version of Ace.
+    class IncompatibleVersionError < Error
+    end
+
     # Used primarily in the {Scanner}, this is raised when an input
     # is malformed.  The message should contain a snippet of the input
     # which caused the error.
