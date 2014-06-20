@@ -1,0 +1,22 @@
+%type "ruby"
+
+%terminal IDENT
+%terminal STAR "*"
+%terminal EQUALS "="
+
+%%
+
+e: l EQUALS r
+ | r
+ | nothing
+
+l: IDENT
+ | STAR r
+
+r: l
+
+%%
+
+class SimpleParser
+  %{write}
+end

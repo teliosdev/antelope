@@ -136,6 +136,15 @@ module Antelope
           !succ?
         end
 
+        # The complete opposite of {#final?} - it checks to see if
+        # this is the first rule, as in no rule can exist before this
+        # one; i.e. the position is zero.
+        #
+        # @return [Boolean]
+        def start?
+          position.zero?
+        end
+
         # Compares this rule to another object.  If the other object
         # is not a rule, it delegates the comparison.  Otherwise, it
         # converts both this and the other rule into arrays and

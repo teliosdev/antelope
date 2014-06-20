@@ -93,6 +93,13 @@ module Antelope
         @options  = { :terminals => [], :prec => [], :extra => {} }
       end
 
+      # Pretty inspect.
+      #
+      # @return [String]
+      def inspect
+        "#<#{self.class} state=#{@state.inspect} options=#{@options.inspect}>"
+      end
+
       # Runs the compiler on the input tokens.  For each token,
       # it calls `compile_<type>` with `<type>` being the first
       # element of the token, with the remaining part of the array
@@ -279,7 +286,7 @@ module Antelope
 
         unless required_version =~ antelope_version
           raise IncompatibleVersionError,
-            "Grammar requires #{args[0]}, " \
+            "Grammar requires #{required}, " \
             "have #{Antelope::VERSION}"
         end
       end

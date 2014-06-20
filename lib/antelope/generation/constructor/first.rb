@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Antelope
   module Generation
     class Constructor

@@ -71,6 +71,9 @@ module Antelope
           # This is going to be the output set.
           set = Set.new
 
+          productions = grammar.states.map(&:rules).flatten.
+            inject(Set.new, :merge)
+
           productions.each do |rule|
             items = rule.right
 

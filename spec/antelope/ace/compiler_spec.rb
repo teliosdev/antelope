@@ -5,7 +5,7 @@ describe Ace::Compiler do
       test
     %}
 
-    %require "0.0.1"
+    %require "#{VERSION}"
     %type "ruby"
 
     %terminal NUMBER
@@ -46,5 +46,15 @@ describe Ace::Compiler do
   it "should have the proper terminals" do
     expect(subject.options[:terminals].map(&:first)).to eq [:NUMBER,
       :SEMICOLON, :ADD, :LPAREN, :RPAREN]
+  end
+
+  context "with an unmatched version" do
+    let :file do "%require \"0.0.0\"\n%%\n%%\n" end
+
+    it "should raise an error" do
+      expect {
+        subject
+      }.to raise_error(Ace::IncompatibleVersionError)
+    end
   end
 end
