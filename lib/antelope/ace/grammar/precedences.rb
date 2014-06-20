@@ -30,7 +30,7 @@ module Antelope
           set = Set.new([token, :_])
 
           precedence.
-            select { |pr| set.intersect?(pr.tokens) }.
+            select { |pr| set.intersection(pr.tokens).any? }.
             first
         end
 
