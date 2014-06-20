@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "antelope/ace/grammar/terminals"
 require "antelope/ace/grammar/productions"
 require "antelope/ace/grammar/precedences"

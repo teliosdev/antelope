@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "strscan"
 require "antelope/ace/scanner/first"
 require "antelope/ace/scanner/second"

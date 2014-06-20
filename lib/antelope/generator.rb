@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "antelope/generator/output"
 require "antelope/generator/ruby"
 require "erb"

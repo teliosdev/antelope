@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "antelope/generation/errors"
 require "antelope/generation/constructor"
 require "antelope/generation/recognizer"

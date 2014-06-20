@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "set"
 require "antelope/generation/constructor/nullable"
 require "antelope/generation/constructor/first"

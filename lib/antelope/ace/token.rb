@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "antelope/ace/token/nonterminal"
 require "antelope/ace/token/terminal"
 require "antelope/ace/token/epsilon"

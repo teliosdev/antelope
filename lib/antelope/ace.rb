@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "antelope/ace/errors"
 require "antelope/ace/scanner"
 require "antelope/ace/compiler"
