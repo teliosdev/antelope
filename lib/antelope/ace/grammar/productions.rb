@@ -69,6 +69,10 @@ module Antelope
             find_token(rule[:prec])
           end
 
+          unless rule[:prec].empty?
+            puts "PREC, #{prec.inspect}"
+          end
+
           prec  = precedence_for(prec)
 
           Production.new(Token::Nonterminal.new(left), items,

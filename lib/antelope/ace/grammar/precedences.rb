@@ -29,9 +29,15 @@ module Antelope
 
           set = Set.new([token, :_])
 
-          precedence.
+          prec = precedence.
             select { |pr| set.intersection(pr.tokens).any? }.
             first
+
+          if token == :modifier
+            p prec
+          end
+
+          prec
         end
 
         private

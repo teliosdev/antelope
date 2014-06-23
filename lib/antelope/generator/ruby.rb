@@ -32,7 +32,7 @@ module Antelope
             ", "
 
           block = if production.block.empty?
-            "proc {}"
+            "proc { |_| _ }"
           else
             "proc #{production.block}"
           end

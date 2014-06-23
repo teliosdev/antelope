@@ -57,7 +57,7 @@ module Antelope
           end
 
           state.rules.each do |rule|
-            @rules[rule.id] = rule
+            @rules[rule.production.id] = rule.production
             if rule.final?
               rule.lookahead.each do |look|
                 table[state.id][look.name] <<
@@ -94,7 +94,7 @@ module Antelope
             state_part = data.select { |(t, d)| t == :state }.first
             rule_part  = data.select { |(t, d)| t == :reduce}.first
 
-            result = @rules[rule_part[1]].precedence <=> terminal
+            result = @rules[rule_part[1]].prec <=> terminal
 
             case result
             when 0
