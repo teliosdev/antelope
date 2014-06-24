@@ -93,17 +93,15 @@ module Antelope
             state.rules.each do |rule|
               next unless rule.succ?
               transitional = find_state_for(rule.succ) do |succ|
-                ns = State.new
-                ns << succ
+                ns = State.new << succ
                 compute_closure(ns)
-                states << ns
                 @map[succ] = ns
-                ns
               end
 
               if state.transitions[rule.active.name]
                 state.transitions[rule.active.name].merge! transitional
               else
+                states << transitional
                 state.transitions[rule.active.name] = transitional
               end
             end

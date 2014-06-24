@@ -1,10 +1,19 @@
 Productions:
-  e → l "=" r 
-  e → r 
-  l → IDENT 
-  l → "*" r 
-  r → l 
-  $start → e $ 
+  0 $start(0) → e(0:1) $ 
+  1 e(0:1) → l(0:2) "=" r(7:10) 
+  2 e(0:1) → r(0:3) 
+  3 l(0:2) → IDENT 
+  4 l(0:2) → "*" r(5:8) 
+  5 r(0:3) → l(0:2) 
+  5 r(5:8) → l(5:9) 
+  3 l(5:9) → IDENT 
+  4 l(5:9) → "*" r(5:8) 
+  5 r(7:10) → l(7:9) 
+  3 l(7:9) → IDENT 
+  4 l(7:9) → "*" r(5:8) 
+
+Nontemrinals:
+["$start(0)", "e(0:1)", "l(0:2)", "r(0:3)", "r(5:8)", "l(5:9)", "r(7:10)", "l(7:9)"]
 
 Precedence:
   --- highest
@@ -15,18 +24,18 @@ Precedence:
   --- lowest
 
   State 0:
-    0/n0: $start(0) →  • e(0:1) $
-      {}
-    1/n1: e(0:1) →  • l(0:2) "=" r(8:10)
-      {}
-    2/n1: e(0:1) →  • r(0:3)
-      {}
-    3/n1: l(0:2) →  • IDENT
-      {}
-    4/n1: l(0:2) →  • "*" r(5:9)
-      {}
-    5/n1: r(0:3) →  • l(0:2)
-      {}
+    0/n0: $start →  • e $
+      {} ($start)
+    1/n1: e →  • l "=" r
+      {} (e)
+    2/n1: e →  • r
+      {} (e)
+    3/n1: l →  • IDENT
+      {} (l)
+    4/n1: l →  • "*" r
+      {} (l)
+    5/n1: r →  • l
+      {} (r)
     transitions:
       e: State 1
       l: State 2
@@ -36,83 +45,86 @@ Precedence:
 
   State 1:
     6/n0: $start → e • $
-      {}
+      {} ($start)
     transitions:
-      $: State 7
+      $: State 6
 
   State 2:
     7/n1: e → l • "=" r
-      {}
-    15/n1: r → l • 
-      {$}
+      {} (e)
+    8/n1: r → l • 
+      {$} (r)
     transitions:
-      EQUALS: State 8
+      EQUALS: State 7
     reductions:
       $: Rule 5
 
   State 3:
     9/n1: e → r • 
-      {$}
+      {$} (e)
     reductions:
       $: Rule 2
 
   State 4:
     10/n1: l → IDENT • 
-      {$}
+      {"=", $} (l)
     reductions:
+      EQUALS: Rule 3
       $: Rule 3
 
   State 5:
     11/n1: l → "*" • r
-      {}
-    12/n1: r(5:9) →  • l(5:6)
-      {}
-    13/n1: l(5:6) →  • IDENT
-      {}
-    14/n1: l(5:6) →  • "*" r(5:9)
-      {}
+      {} (l)
+    12/n1: r →  • l
+      {} (r)
+    13/n1: l →  • IDENT
+      {} (l)
+    14/n1: l →  • "*" r
+      {} (l)
     transitions:
-      r: State 9
-      l: State 6
+      r: State 8
+      l: State 9
       IDENT: State 4
       STAR: State 5
 
   State 6:
-    15/n1: r → l • 
-      {$}
-    reductions:
-      $: Rule 5
-
-  State 7:
-    16/n0: $start → e $ • 
-      {}
+    15/n0: $start → e $ • 
+      {} ($start)
     accepting:
       $: Rule 0
 
-  State 8:
-    17/n1: e → l "=" • r
-      {}
-    18/n1: r(8:10) →  • l(8:6)
-      {}
-    19/n1: l(8:6) →  • IDENT
-      {}
-    20/n1: l(8:6) →  • "*" r(5:9)
-      {}
+  State 7:
+    16/n1: e → l "=" • r
+      {} (e)
+    17/n1: r →  • l
+      {} (r)
+    18/n1: l →  • IDENT
+      {} (l)
+    19/n1: l →  • "*" r
+      {} (l)
     transitions:
       r: State 10
-      l: State 6
+      l: State 9
       IDENT: State 4
       STAR: State 5
 
-  State 9:
-    21/n1: l → "*" r • 
-      {$}
+  State 8:
+    20/n1: l → "*" r • 
+      {"=", $} (l)
     reductions:
+      EQUALS: Rule 4
       $: Rule 4
+
+  State 9:
+    21/n1: r → l • 
+      {"=", $} (r)
+    reductions:
+      EQUALS: Rule 5
+      $: Rule 5
 
   State 10:
     22/n1: e → l "=" r • 
-      {$}
+      {$} (e)
     reductions:
       $: Rule 1
 

@@ -18,8 +18,8 @@ module Antelope
 
         # The right-hand side of the rule.
         #
-        # @return [Ace::Token]
-        attr_reader :right
+        # @return [Array<Ace::Token>]
+        attr_accessor :right
 
         # The current position inside of the rule.
         #
@@ -28,7 +28,7 @@ module Antelope
 
         # The block to be executed on production match.
         #
-        # @deprecated Use {Ace::Grammar::Production#block} instead.
+        # @deprecated Use {Ace::Production#block} instead.
         # @return [String]
         attr_reader :block
 
@@ -52,14 +52,14 @@ module Antelope
 
         # The associated production.
         #
-        # @return [Ace::Grammar::Production]
+        # @return [Ace::Production]
         attr_reader :production
 
         include Comparable
 
         # Initialize the rule.
         #
-        # @param production [Ace::Grammar::Production] the production
+        # @param production [Ace::Production] the production
         #   that this rule is based off of.
         # @param position [Numeric] the position that this rule is in
         #   the production.
@@ -74,9 +74,9 @@ module Antelope
           @id         = SecureRandom.hex
 
           if inherited
-            @right = inherited
+            @left, @right = inherited
           else
-            @right = production.items.map(&:dup).freeze
+            @right = production.items.map(&:dup)
           end
         end
 
@@ -115,7 +115,7 @@ module Antelope
         #
         # @return [Rule]
         def succ
-          Rule.new(production, position + 1)
+          Rule.new(production, position + 1, [left, right])
         end
 
         # Checks to see if a rule can exist after this one; i.e. the
@@ -175,6 +175,15 @@ module Antelope
           end
         end
 
+        # Produces a clone of the rule; any modifications made to the
+        # contents of that rule do not reflect the contents of this
+        # rule.
+        #
+        # @return [Rule]
+        def clone
+          Rule.new(production, position)
+        end
+
         # Generates a hash for this class.
         #
         # @note This is not intended for use.  It is only defined to be
@@ -194,7 +203,7 @@ module Antelope
         # @private
         # @return [Array<(Ace::Token::Nonterminal, Array<Ace::Token>, Numeric)>]
         def to_a
-          [left, right, position]
+          [left, right, position].flatten
         end
       end
     end

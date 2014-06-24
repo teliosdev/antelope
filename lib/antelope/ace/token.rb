@@ -110,6 +110,11 @@ module Antelope
         buf
       end
 
+      def inspect
+        "#<#{self.class} from=#{from.id if from} to=#{to.id if to} " \
+          "name=#{name.inspect} value=#{@value.inspect}>"
+      end
+
       # Compares this class to any other object.  If the other object
       # is a token, it converts both this class and the other object
       # to an array and compares the array.  Otherwise, it delegates

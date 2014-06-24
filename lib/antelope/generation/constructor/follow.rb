@@ -68,16 +68,10 @@ module Antelope
         # @see Nullable#nullable?
         def generate_follow_set(token)
           # Set it to the empty set so we don't end up recursing.
-          @follows[token] = Set.new
-
-          # This is going to be the output set.
-          set = Set.new
-
-          productions = grammar.states.map(&:rules).flatten.
-            inject(Set.new, :merge)
+          set = @follows[token] = Set.new
 
           productions.each do |rule|
-            items = rule.right
+            items = rule.items
 
             # Find all of the positions within the rule that our token
             # occurs, and then increment that position by one.
@@ -95,7 +89,7 @@ module Antelope
               if pos == items.size || nullable?(items[pos..-1])
                 # Then add the FOLLOW set of the left-hand side to our
                 # set.
-                set.merge follow(rule.left)
+                set.merge follow(rule.label)
               end
             end
           end

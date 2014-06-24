@@ -5,6 +5,7 @@ require "antelope/ace/scanner"
 require "antelope/ace/compiler"
 require "antelope/ace/token"
 require "antelope/ace/precedence"
+require "antelope/ace/production"
 require "antelope/ace/grammar"
 
 module Antelope

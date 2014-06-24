@@ -87,7 +87,7 @@ module Antelope
         # @return [self]
         def <<(rule)
           if rule.is_a? State
-            rule.rules.each { |r| self << r }
+            rule.rules.map(&:clone).each { |r| self << r }
           elsif rule.is_a? Rule
             rules << rule unless rules.include? rule
           else
@@ -99,6 +99,15 @@ module Antelope
         end
 
         alias_method :push, :<<
+
+        def ===(other)
+          return super unless other.is_a? State
+
+          other_rules = other.rules.to_a
+          other.transitions == transitions and
+            rules.each_with_index.
+            all? { |rule, i| rule === other_rules[i] }
+        end
 
       end
     end

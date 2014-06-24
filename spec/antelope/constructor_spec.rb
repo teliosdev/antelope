@@ -111,6 +111,10 @@ describe Generation::Constructor do
       let(:grammar) { with_recognizer }
       let(:nonterminal) { token(:l, nil, :nonterminal) }
 
+      before do
+        subject.productions.merge grammar.productions.values.flatten
+      end
+
       it "generates a set" do
         expect(subject.follow(nonterminal)).to eq [
           token(:EQUALS, "="),

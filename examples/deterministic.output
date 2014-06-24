@@ -1,10 +1,21 @@
 Productions:
-  s → e 
-  e → t ";" 
-  e → t "+" e 
-  t → NUMBER 
-  t → "(" e ")" 
-  $start → s $ 
+  0 $start(0) → s(0:1) $ 
+  1 s(0:1) → e(0:2) 
+  2 e(0:2) → t(0:3) ";" 
+  3 e(0:2) → t(0:3) "+" e(8:10) 
+  4 t(0:3) → NUMBER 
+  5 t(0:3) → "(" e(5:9) ")" 
+  2 e(5:9) → t(5:3) ";" 
+  3 e(5:9) → t(5:3) "+" e(8:10) 
+  4 t(5:3) → NUMBER 
+  5 t(5:3) → "(" e(5:9) ")" 
+  2 e(8:10) → t(8:3) ";" 
+  3 e(8:10) → t(8:3) "+" e(8:10) 
+  4 t(8:3) → NUMBER 
+  5 t(8:3) → "(" e(5:9) ")" 
+
+Nontemrinals:
+["$start(0)", "s(0:1)", "e(0:2)", "t(0:3)", "e(5:9)", "t(5:3)", "e(8:10)", "t(8:3)"]
 
 Precedence:
   --- highest
@@ -15,122 +26,116 @@ Precedence:
   --- lowest
 
   State 0:
-    0/n0: $start(0) →  • s(0:1) $
-      {}
-    1/n1: s(0:1) →  • e(0:2)
-      {}
-    2/n1: e(0:2) →  • t(0:3) ";"
-      {}
-    3/n1: e(0:2) →  • t(0:3) "+" e(9:11)
-      {}
-    4/n1: t(0:3) →  • NUMBER
-      {}
-    5/n1: t(0:3) →  • "(" e(6:10) ")"
-      {}
+    0/n0: $start →  • s $
+      {} ($start)
+    1/n1: s →  • e
+      {} (s)
+    2/n1: e →  • t ";"
+      {} (e)
+    3/n1: e →  • t "+" e
+      {} (e)
+    4/n1: t →  • NUMBER
+      {} (t)
+    5/n1: t →  • "(" e ")"
+      {} (t)
     transitions:
       s: State 1
       e: State 2
       t: State 3
-      NUMBER: State 5
-      LPAREN: State 6
+      NUMBER: State 4
+      LPAREN: State 5
 
   State 1:
     6/n0: $start → s • $
-      {}
+      {} ($start)
     transitions:
-      $: State 7
+      $: State 6
 
   State 2:
     7/n1: s → e • 
-      {$}
+      {$} (s)
     reductions:
       $: Rule 1
 
   State 3:
     8/n1: e → t • ";"
-      {}
-    10/n1: e → t • "+" e
-      {}
+      {} (e)
+    9/n1: e → t • "+" e
+      {} (e)
     transitions:
-      SEMICOLON: State 8
-      ADD: State 9
+      SEMICOLON: State 7
+      ADD: State 8
 
   State 4:
-    10/n1: e → t • "+" e
-      {}
-    transitions:
-      ADD: State 9
-
-  State 5:
-    11/n1: t → NUMBER • 
-      {";", "+"}
+    10/n1: t → NUMBER • 
+      {";", "+"} (t)
     reductions:
       SEMICOLON: Rule 4
       ADD: Rule 4
 
-  State 6:
-    12/n1: t → "(" • e ")"
-      {}
-    13/n1: e(6:10) →  • t(6:3) ";"
-      {}
-    14/n1: e(6:10) →  • t(6:3) "+" e(9:11)
-      {}
-    15/n1: t(6:3) →  • NUMBER
-      {}
-    16/n1: t(6:3) →  • "(" e(6:10) ")"
-      {}
+  State 5:
+    11/n1: t → "(" • e ")"
+      {} (t)
+    12/n1: e →  • t ";"
+      {} (e)
+    13/n1: e →  • t "+" e
+      {} (e)
+    14/n1: t →  • NUMBER
+      {} (t)
+    15/n1: t →  • "(" e ")"
+      {} (t)
     transitions:
-      e: State 10
+      e: State 9
       t: State 3
-      NUMBER: State 5
-      LPAREN: State 6
+      NUMBER: State 4
+      LPAREN: State 5
 
-  State 7:
-    17/n0: $start → s $ • 
-      {}
+  State 6:
+    16/n0: $start → s $ • 
+      {} ($start)
     accepting:
       $: Rule 0
 
-  State 8:
-    18/n1: e → t ";" • 
-      {$, ")"}
+  State 7:
+    17/n1: e → t ";" • 
+      {$, ")"} (e)
     reductions:
       $: Rule 2
       RPAREN: Rule 2
 
-  State 9:
-    19/n1: e → t "+" • e
-      {}
-    20/n1: e(9:11) →  • t(9:3) ";"
-      {}
-    21/n1: e(9:11) →  • t(9:3) "+" e(9:11)
-      {}
-    22/n1: t(9:3) →  • NUMBER
-      {}
-    23/n1: t(9:3) →  • "(" e(6:10) ")"
-      {}
+  State 8:
+    18/n1: e → t "+" • e
+      {} (e)
+    19/n1: e →  • t ";"
+      {} (e)
+    20/n1: e →  • t "+" e
+      {} (e)
+    21/n1: t →  • NUMBER
+      {} (t)
+    22/n1: t →  • "(" e ")"
+      {} (t)
     transitions:
-      e: State 11
+      e: State 10
       t: State 3
-      NUMBER: State 5
-      LPAREN: State 6
+      NUMBER: State 4
+      LPAREN: State 5
+
+  State 9:
+    23/n1: t → "(" e • ")"
+      {} (t)
+    transitions:
+      RPAREN: State 11
 
   State 10:
-    24/n1: t → "(" e • ")"
-      {}
-    transitions:
-      RPAREN: State 12
-
-  State 11:
-    25/n1: e → t "+" e • 
-      {$, ")"}
+    24/n1: e → t "+" e • 
+      {$, ")"} (e)
     reductions:
       $: Rule 3
       RPAREN: Rule 3
 
-  State 12:
-    26/n1: t → "(" e ")" • 
-      {";", "+"}
+  State 11:
+    25/n1: t → "(" e ")" • 
+      {";", "+"} (t)
     reductions:
       SEMICOLON: Rule 5
       ADD: Rule 5
