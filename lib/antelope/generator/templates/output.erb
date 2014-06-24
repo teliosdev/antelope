@@ -33,7 +33,8 @@ Precedence:
 %     next unless value.any?
     <%= key %>:
 %     value.each do |token, (_, name)|
-      <%= token %>: <%= num_type[key] %> <%= name %>
+%     token_value = grammar.terminals.find { |_| _.name == token } || token
+      <%= token_value %>: <%= num_type[key] %> <%= name %>
 %     end
 %   end
 %   if conflicts.any?

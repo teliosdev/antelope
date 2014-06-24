@@ -32,7 +32,7 @@ Precedence:
       l: State 2
       r: State 3
       IDENT: State 4
-      STAR: State 5
+      "*": State 5
 
   State 1:
     6/n0: $start → e • $
@@ -46,7 +46,7 @@ Precedence:
     8/n1: r → l • 
       {$}
     transitions:
-      EQUALS: State 7
+      "=": State 7
     reductions:
       $: Rule 5
 
@@ -60,7 +60,7 @@ Precedence:
     10/n1: l → IDENT • 
       {"=", $}
     reductions:
-      EQUALS: Rule 3
+      "=": Rule 3
       $: Rule 3
 
   State 5:
@@ -76,7 +76,7 @@ Precedence:
       r: State 8
       l: State 9
       IDENT: State 4
-      STAR: State 5
+      "*": State 5
 
   State 6:
     15/n0: $start → e $ • 
@@ -97,20 +97,20 @@ Precedence:
       r: State 10
       l: State 9
       IDENT: State 4
-      STAR: State 5
+      "*": State 5
 
   State 8:
     20/n1: l → "*" r • 
       {"=", $}
     reductions:
-      EQUALS: Rule 4
+      "=": Rule 4
       $: Rule 4
 
   State 9:
     21/n1: r → l • 
       {"=", $}
     reductions:
-      EQUALS: Rule 5
+      "=": Rule 5
       $: Rule 5
 
   State 10:
