@@ -1,10 +1,11 @@
 Productions:
-  e → l "=" r 
-  e → r 
-  l → IDENT 
-  l → "*" r 
-  r → l 
-  $start → e $ 
+11
+  0 $start: e $ 
+  1 e: l "=" r  
+  2 e: r        
+  3 l: IDENT    
+  4 l: "*" r    
+  5 r: l        
 
 Precedence:
   --- highest

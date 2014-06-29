@@ -1,12 +1,13 @@
 Productions:
-  expression → NUMBER { |a| a[1]        }
-  expression → expression "+" expression { |a, _, b| a + b }
-  expression → expression "-" expression { |a, _, b| a - b }
-  expression → expression "*" expression { |a, _, b| a * b }
-  expression → expression "/" expression { |a, _, b| a / b }
-  expression → "(" expression ")" { |_, a, _| a     }
-  expression → "(" $error ")" 
-  $start → expression $ 
+37
+  0 $start: expression $                  
+  1 expression: NUMBER                    { |a| a[1]        }
+  2 expression: expression "+" expression { |a, _, b| a + b }
+  3 expression: expression "-" expression { |a, _, b| a - b }
+  4 expression: expression "*" expression { |a, _, b| a * b }
+  5 expression: expression "/" expression { |a, _, b| a / b }
+  6 expression: "(" expression ")"        { |_, a, _| a     }
+  7 expression: "(" $error ")"            
 
 Precedence:
   --- highest
