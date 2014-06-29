@@ -1,8 +1,11 @@
 Productions:
-% grammar.productions.each do |k, v|
-%  v.each do |prod|
-  <%= k %> → <%= prod[:items].join(" ") %> <%= prod[:block] %>
-%  end
+% len = grammar.all_productions.size.to_s.size
+% productions = grammar.all_productions.
+%   map { |x| ["#{x.label}: #{x.items.join(' ')}", x.block] }
+% body = productions.map { |_| _.first.size }.max
+<%= body %>
+% productions.each_with_index do |prod, i|
+  <%= "%#{len}s" % i %> <%= "%-#{body}s" % prod[0] %> <%= prod[1] %>
 % end
 
 Precedence:
