@@ -91,19 +91,26 @@ module Antelope
 
             terminal = grammar.precedence_for(on)
 
-            state_part = data.select { |(t, d)| t == :state }.first
-            rule_part  = data.select { |(t, d)| t == :reduce}.first
+            rule_part, other_part = data.sort_by { |(t, d)| t }
+
+            unless other_part[0] == :state
+              $stderr.puts \
+                "Could not determine move for #{on} in state " \
+                "#{state} (reduce/reduce conflict)"
+              next
+            end
 
             result = @rules[rule_part[1]].prec <=> terminal
 
             case result
             when 0
               $stderr.puts \
-                "Could not determine move for #{on} in state #{state}"
+                "Could not determine move for #{on} in state " \
+                "#{state} (shift/reduce conflict)"
             when 1
               @table[state][on] = rule_part
             when -1
-              @table[state][on] = state_part
+              @table[state][on] = other_part
             end
           end
         end

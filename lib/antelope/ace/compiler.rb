@@ -151,7 +151,7 @@ module Antelope
         require_state! :first
         name = name.intern
         case name
-        when :terminal
+        when :terminal, :token
           @options[:terminals] << [args[0].intern, args[1]]
         when :require
           compare_versions(args[0])

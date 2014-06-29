@@ -74,7 +74,9 @@ module Antelope
       src_file  = self.class.source_root + source
       src       = src_file.open("r")
       context   = instance_eval('binding')
-      content   = ERB.new(src.read, nil, "%").result(context)
+      erb       = ERB.new(src.read, nil, "%")
+      erb.filename = source
+      content   = erb.result(context)
       content   = yield content if block_given?
       dest_file = grammar.output + destination
       dest_file.open("w") do |f|
