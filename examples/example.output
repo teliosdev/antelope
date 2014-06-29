@@ -1,5 +1,4 @@
 Productions:
-37
   0 $start: expression $                  
   1 expression: NUMBER                    { |a| a[1]        }
   2 expression: expression "+" expression { |a, _, b| a + b }

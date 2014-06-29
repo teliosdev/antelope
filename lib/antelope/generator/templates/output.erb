@@ -3,7 +3,6 @@ Productions:
 % productions = grammar.all_productions.
 %   map { |x| ["#{x.label}: #{x.items.join(' ')}", x.block] }
 % body = productions.map { |_| _.first.size }.max
-<%= body %>
 % productions.each_with_index do |prod, i|
   <%= "%#{len}s" % i %> <%= "%-#{body}s" % prod[0] %> <%= prod[1] %>
 % end
