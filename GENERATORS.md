@@ -80,3 +80,25 @@ end
 %   end
 % end
 ```
+
+## Bundling
+
+If you want to bundle a few generators together such that the bundle is generated together, you can use an `Antelope::Generator::Group`.  This would be useful for something like a C language generator, which may need to generate both a header and a source file:
+
+```Ruby
+class CHeader < Antelope::Generator::Base
+  # ...
+end
+
+def CSource < Antelope::Generator::Base
+  # ...
+end
+
+
+class C < Antelope::Generator::Group
+  register_generator CHeader, "c-header"
+  register_generator CSource, "c-source"
+end
+```
+
+The `register_generator` takes a generator class and a name for the generator, and adds the generator to the list of generators on the receiver (in this case, the `C` class).  Now, when `C#generate` is run, it will run both `CHeader#generate` and `CSource#generate`.

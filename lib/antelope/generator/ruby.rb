@@ -8,7 +8,7 @@ module Antelope
     # Generates a ruby parser.
     class Ruby < Base
 
-      register_as "ruby"
+      register_as "ruby", "rubby"
 
       # Creates an action table for the parser.
       #
