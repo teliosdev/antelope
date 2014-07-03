@@ -90,7 +90,7 @@ class CHeader < Antelope::Generator::Base
   # ...
 end
 
-def CSource < Antelope::Generator::Base
+class CSource < Antelope::Generator::Base
   # ...
 end
 
