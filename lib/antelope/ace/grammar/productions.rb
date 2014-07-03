@@ -22,6 +22,33 @@ module Antelope
           productions.values.flatten.sort_by(&:id)
         end
 
+        # Finds a token based on its corresponding symbol.  First
+        # checks the productions, to see if it's a nonterminal; then,
+        # tries to find it in the terminals; otherwise, if the symbol
+        # is `error`, it returns a {Token::Error}; if the symbol is
+        # `nothing` or `ε`, it returns a {Token::Epsilon}; if it's
+        # none of those, it raises an {UndefinedTokenError}.
+        #
+        # @raise [UndefinedTokenError] if the token doesn't exist.
+        # @param value [String, Symbol, #intern] the token's symbol to
+        #   check.
+        # @return [Token]
+        def find_token(value)
+          value = value.intern
+          if productions.key?(value)
+            Token::Nonterminal.new(value)
+          elsif terminal = terminals.
+              find { |term| term.name == value }
+            terminal
+          elsif value == :error
+            Token::Error.new
+          elsif [:nothing, :ε].include?(value)
+            Token::Epsilon.new
+          else
+            raise UndefinedTokenError, "Could not find a token named #{value.inspect}"
+          end
+        end
+
         private
 
         # Actually generates the productions.  Uses the rules from the
@@ -91,33 +118,6 @@ module Antelope
               Token::Nonterminal.new(@compiler.rules.first[:label]),
               Token::Terminal.new(:"$")
             ], "", precedence.last, 0)
-        end
-
-        # Finds a token based on its corresponding symbol.  First
-        # checks the productions, to see if it's a nonterminal; then,
-        # tries to find it in the terminals; otherwise, if the symbol
-        # is `error`, it returns a {Token::Error}; if the symbol is
-        # `nothing` or `ε`, it returns a {Token::Epsilon}; if it's
-        # none of those, it raises an {UndefinedTokenError}.
-        #
-        # @raise [UndefinedTokenError] if the token doesn't exist.
-        # @param value [String, Symbol, #intern] the token's symbol to
-        #   check.
-        # @return [Token]
-        def find_token(value)
-          value = value.intern
-          if productions.key?(value)
-            Token::Nonterminal.new(value)
-          elsif terminal = terminals.
-              find { |term| term.name == value }
-            terminal
-          elsif value == :error
-            Token::Error.new
-          elsif [:nothing, :ε].include?(value)
-            Token::Epsilon.new
-          else
-            raise UndefinedTokenError, "Could not find a token named #{value.inspect}"
-          end
         end
       end
     end

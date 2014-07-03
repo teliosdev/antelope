@@ -54,16 +54,21 @@ module Antelope
       #
       # @param source [String] the source to scan.  This should be compatible
       #   with StringScanner.
+      # @param name [String] the name of the source file.  This is primarily
+      #   used in backtrace information.
       # @return [Array<Array<(Symbol, Object, ...)>>]
       # @see #tokens
-      def self.scan(source)
-        new(source).scan_file
+      def self.scan(source, name = "(ace file)")
+        new(source, name).scan_file
       end
 
       # Initialize the scanner with the input.
       #
       # @param input [String] The source to scan.
-      def initialize(input)
+      # @param source [String] the source file.  This is primarily
+      #   used in backtrace information.
+      def initialize(input, source = "(ace file)")
+        @source  = source
         @scanner = StringScanner.new(input)
         @tokens  = []
       end
@@ -78,10 +83,19 @@ module Antelope
       # @see #scan_third_part
       # @see #tokens
       def scan_file
+        @line = 1
         scan_first_part
         scan_second_part
         scan_third_part
         tokens
+      rescue SyntaxError => e
+        start = [@scanner.pos - 8, 0].max
+        stop  = [@scanner.pos + 8, @scanner.string.length].min
+        snip  = @scanner.string[start..stop].strip.inspect
+        char  = @scanner.string[@scanner.pos].inspect
+        new_line = "#{@source}:#{@line}:unexpected #{char} (near #{snip})"
+
+        raise e, e.message, [new_line, *e.backtrace]
       end
 
       # Scans for whitespace.  If the next character is whitespace, it
@@ -90,7 +104,9 @@ module Antelope
       #
       # @return [Boolean] if any whitespace was matched.
       def scan_whitespace
-        @scanner.scan(/\s+/)
+        if @scanner.scan(/(\s+)/)
+          @line += @scanner[1].count("\n")
+        end
       end
 
       private
@@ -105,7 +121,7 @@ module Antelope
         stop  = [@scanner.pos + 8, @scanner.string.length].min
         snip  = @scanner.string[start..stop].strip
         char  = @scanner.string[@scanner.pos]
-        raise SyntaxError, "invalid syntax near `#{snip.inspect}' (#{char.inspect})"
+        raise SyntaxError, "invalid syntax"# near `#{snip.inspect}' (#{char.inspect})"
       end
     end
   end

@@ -48,6 +48,10 @@ module Antelope
           0
         end
       end
+
+      def to_s
+        "#{type.to_s[0]}#{level}"
+      end
     end
   end
 end

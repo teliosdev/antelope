@@ -21,6 +21,8 @@ module Antelope
       # @return [Hash<(Numeric, Recognizer::Rule)>]
       attr_accessor :rules
 
+      attr_reader :conflicts
+
       # Initialize.
       #
       # @param grammar [Ace::Grammar]
@@ -82,6 +84,7 @@ module Antelope
       #   resolved using precedence rules.
       # @return [void]
       def conflictize
+        @conflicts = Hash.new { |h, k| h[k] = {} }
         @table.each_with_index do |v, state|
           v.each do |on, data|
             if data.size == 1
@@ -104,6 +107,9 @@ module Antelope
 
             case result
             when 0
+              conflicts[state][on] = [
+                rule_part, other_part, terminal, @rules[rule_part[1]].prec
+              ]
               $stderr.puts \
                 "Could not determine move for #{on} in state " \
                 "#{state} (shift/reduce conflict)"

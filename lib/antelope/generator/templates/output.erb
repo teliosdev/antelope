@@ -7,6 +7,13 @@ Productions:
   <%= "%#{len}s" % i %> <%= "%-#{body}s" % prod[0] %> <%= prod[1] %>
 % end
 
+% if unused_symbols.any?
+Symbols unused in grammar:
+%   unused_symbols.each do |sym|
+  <%= sym %>
+%   end
+% end
+
 Precedence:
   --- highest
 % grammar.precedence.each do |pr|
@@ -27,7 +34,7 @@ Precedence:
 %   transitions = v.each.select { |_, a| a && a[0] == :state }
 %   reductions  = v.each.select { |_, a| a && a[0] == :reduce}
 %   accepting   = v.each.select { |_, a| a && a[0] == :accept}
-%   conflicts   = v.each.select { |_, (a, b)| a.is_a?(Array) }
+%   conflicts   = tableizer.conflicts[i].each
 %   thing = [:transitions, :reductions, :accepting]
 %   num_type = {transitions: "State", reductions: "Rule", accepting: "Rule"}
 %   h = Hash[thing.zip([transitions, reductions, accepting])]
@@ -41,8 +48,8 @@ Precedence:
 %   end
 %   if conflicts.any?
     conflicts:
-%     conflicts.each do |token, (first, second)|
-      <%= token %>: <%= first.join(" ") %>/<%= second.join(" ") %>
+%     conflicts.each do |token, (first, second, rule, terminal)|
+      <%= token %>: <%= first.join(" ") %>/<%= second.join(" ") %> (<%= rule %> vs <%= terminal %>)
 %     end
 %   end
 

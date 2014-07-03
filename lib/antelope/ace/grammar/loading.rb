@@ -34,7 +34,7 @@ module Antelope
           # @see Ace::Scanner
           # @see Ace::Compiler
           def from_string(name, output, string)
-            scanner  = Ace::Scanner.scan(string)
+            scanner  = Ace::Scanner.scan(string, name)
             compiler = Ace::Compiler.compile(scanner)
             new(name, output, compiler)
           end
