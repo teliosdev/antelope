@@ -6,11 +6,11 @@ First and foremost, **thank you**! Contributing to _Antelope_ is great!  There a
 
 1. Fork the repository ([medcat/antelope])
 2. Create a new branch for your feature (something like `my-feature`)
-3. Make yo' changes
-4. Commit yo' changes
+3. Make your changes
+4. Commit your changes
 5. if(notDone) goto 3;
-6. Push yo' changes
-7. Make yo' pull request
+6. Push your changes
+7. Make a pull request
 
 Creating a new branch is a _really, really_ good idea; it keeps things neat in the world of git.  When you make the pull request, any commits you make to the merging branch are added to the pull request.  Also, _please_ make sure you describe the pull request, and what it does, and why it's needed.
 
