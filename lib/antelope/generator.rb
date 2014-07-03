@@ -1,88 +1,50 @@
 # encoding: utf-8
-
-require "antelope/generator/output"
-require "antelope/generator/ruby"
 require "erb"
 require "pathname"
 
 module Antelope
 
-  # Generates a parser.  This is normally the parent class, and the
-  # specific implementations inherit from this.  The generated
-  # parser should, ideally, be completely independent (not requiring
-  # any external source code), as well as be under a permissive
-  # license.
-  class Generator
+  # Contains the classes that generate parsers.  This contains a
+  # registery of all of the generators available to antelope.
+  module Generator
 
-    # The modifiers that were applied to the grammar.
+    # Returns a hash of all of the generators registered within this
+    # module.  If a generator is accessed that does not exist on the
+    # hash, it by default returns the {Generator::Null} class.
     #
-    # @return [Hash<(Symbol, Object)>]
-    attr_reader :mods
-
-    # The file name (not including the extension) that the grammar
-    # should output to.
-    #
-    # @return [String]
-    attr_reader :file
-
-    # The grammar that the generator is for.
-    #
-    # @return [Ace::Grammar]
-    attr_reader :grammar
-
-    # The source root directory for templates.  Overwrite to change.
-    #
-    # @return [Pathname]
-    def self.source_root
-      Pathname.new("../generator/templates").expand_path(__FILE__)
+    # @return [Hash<(Symbol, String) => Generator::Base>]
+    def generators
+      @_generators ||= Hash.new { |h, k| h[k] = Generator::Null }
     end
 
-    # Initialize the generator.
+    # Registers a generator with the given names.  If multiple names
+    # are given, they are assigned the generator as a value in the
+    # {#generators} hash; otherwise, the one name is assigned the
+    # generator as a value.
     #
-    # @param grammar [Grammar]
-    # @param mods [Hash<(Symbol, Object)>]
-    def initialize(grammar, mods)
-      @file    = grammar.name
-      @grammar = grammar
-      @mods    = mods
-    end
+    # @param generator [Generator::Base] the generator class to
+    #   associate the key with.
+    # @param name [String, Symbol] a name to associate the generator
+    #   with.
+    def register_generator(generator, *names)
+      names = [names].flatten
+      raise ArgumentError,
+        "Requires at least one name" unless names.any?
+      raise ArgumentError,
+        "All name values must be a Symbol or string" unless names.
+        all? {|_| [Symbol, String].include?(_.class) }
 
-    # Actually does the generation.  A subclass should implement this.
-    #
-    # @raise [NotImplementedError]
-    # @return [void]
-    def generate
-      raise NotImplementedError
-    end
-
-    protected
-
-    # Copies a template from the source, runs it through erb (in the
-    # context of this class), and then outputs it at the destination.
-    # If given a block, it will call the block after the template is
-    # run through erb with the content from erb; the result of the
-    # block is then used as the content instead.
-    #
-    # @param source [String] the source file.  This should be in
-    #   {.source_root}.
-    # @param destination [String] the destination file.  This will be
-    #   in {Ace::Grammar#output}.
-    # @yieldparam [String] content The content that ERB created.
-    # @yieldreturn [String] The new content to write to the output.
-    # @return [void]
-    def template(source, destination)
-      src_file  = self.class.source_root + source
-      src       = src_file.open("r")
-      context   = instance_eval('binding')
-      erb       = ERB.new(src.read, nil, "%")
-      erb.filename = source
-      content   = erb.result(context)
-      content   = yield content if block_given?
-      dest_file = grammar.output + destination
-      dest_file.open("w") do |f|
-        f.write(content)
+      names.each do |name|
+        generators[name] = generator
       end
     end
 
+    extend self
+
   end
 end
+
+require "antelope/generator/base"
+require "antelope/generator/group"
+require "antelope/generator/output"
+require "antelope/generator/ruby"

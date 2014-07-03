@@ -13,10 +13,6 @@ module Antelope
         [:tableizer,   Generation::Tableizer  ]
       ].freeze
 
-      DEFAULT_GENERATORS = {
-        "ruby" => [Generator::Ruby]
-      }
-
       # Handles the generation of output for the grammar.
       module Generation
 
@@ -44,6 +40,7 @@ module Antelope
           # This is when we'd generate
 
           find_generators(generators, options).each do |gen|
+            puts "Running generator #{gen}..."
             gen.new(self, hash).generate
           end
         end
@@ -70,7 +67,7 @@ module Antelope
           type = options[:type] || options["type"] ||
             compiler.options.fetch(:type)
 
-          generators += DEFAULT_GENERATORS.fetch(type)
+          generators << Generator.generators.fetch(type)
 
           generators
 

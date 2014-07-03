@@ -3,17 +3,19 @@
 require "pp"
 
 module Antelope
-  class Generator
+  module Generator
 
     # Generates a ruby parser.
-    class Ruby < Generator
+    class Ruby < Base
+
+      register_as "ruby"
 
       # Creates an action table for the parser.
       #
       # @return [String]
       def generate_action_table
         out = ""
-        PP.pp(mods[:tableizer].table, out)
+        PP.pp(table, out)
         out
       end
 
@@ -23,15 +25,15 @@ module Antelope
       def generate_productions_list
         out = "["
 
-        grammar.all_productions.each do |production|
-          out                              <<
-            "["                            <<
-            production.label.name.inspect  <<
-            ", "                           <<
-            production.items.size.inspect  <<
+        productions.each do |(label, size, block)|
+          out                   <<
+            "["                 <<
+            label.name.inspect  <<
+            ", "                <<
+            size.inspect        <<
             ", "
 
-          block = if production.block.empty?
+          block = if block.empty?
             "proc { |_| _ }"
           else
             "proc #{production.block}"

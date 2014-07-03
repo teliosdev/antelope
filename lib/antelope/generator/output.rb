@@ -3,11 +3,13 @@
 require "pp"
 
 module Antelope
-  class Generator
+  module Generator
 
     # Generates an output file, mainly for debugging.  Included always
     # as a generator for a grammar.
-    class Output < Generator
+    class Output < Base
+
+      register_as "output"
 
       # Defines singleton method for every mod that the grammar passed
       # to the generator.
