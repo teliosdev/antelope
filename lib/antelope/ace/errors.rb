@@ -37,5 +37,12 @@ module Antelope
     # generator to use for the generation, it raises this.
     class NoTypeError < Error
     end
+
+    # Primarily used in the {Compiler}, it is raised if it encounters
+    # a directive it cannot handle.  This is more to warn the
+    # developer that a directive they wrote may not be accepted by any
+    # generator.
+    class NoDirectiveError < Error
+    end
   end
 end

@@ -1,10 +1,12 @@
 Productions:
-  0 $start: s $  
-  1 s: e         
-  2 e: t ";"     
-  3 e: t "+" e   
-  4 t: NUMBER    
-  5 t: "(" e ")" 
+  0 $start: s $
+  1 s: e
+  2 e: t ";"
+  3 e: t "+" e
+  4 e: $error
+  5 t: NUMBER
+  6 t: "(" e ")"
+
 
 Precedence:
   --- highest
@@ -23,109 +25,125 @@ Precedence:
       {}
     3/n1: e →  • t "+" e
       {}
-    4/n1: t →  • NUMBER
+    4/n1: e →  • $error
       {}
-    5/n1: t →  • "(" e ")"
+    5/n1: t →  • NUMBER
+      {}
+    6/n1: t →  • "(" e ")"
       {}
     transitions:
       s: State 1
       e: State 2
       t: State 3
-      NUMBER: State 4
-      "(": State 5
+      $error: State 4
+      NUMBER: State 5
+      "(": State 6
 
   State 1:
-    6/n0: $start → s • $
+    7/n0: $start → s • $
       {}
     transitions:
-      $: State 6
+      $: State 7
 
   State 2:
-    7/n1: s → e • 
+    8/n1: s → e •
       {$}
     reductions:
       $: Rule 1
 
   State 3:
-    8/n1: e → t • ";"
+    9/n1: e → t • ";"
       {}
-    9/n1: e → t • "+" e
+    10/n1: e → t • "+" e
       {}
     transitions:
-      ";": State 7
-      "+": State 8
+      ";": State 8
+      "+": State 9
 
   State 4:
-    10/n1: t → NUMBER • 
-      {";", "+"}
+    11/n1: e → $error •
+      {$, ")"}
     reductions:
-      ";": Rule 4
-      "+": Rule 4
+      $: Rule 4
+      ")": Rule 4
 
   State 5:
-    11/n1: t → "(" • e ")"
-      {}
-    12/n1: e →  • t ";"
-      {}
-    13/n1: e →  • t "+" e
-      {}
-    14/n1: t →  • NUMBER
-      {}
-    15/n1: t →  • "(" e ")"
-      {}
-    transitions:
-      e: State 9
-      t: State 3
-      NUMBER: State 4
-      "(": State 5
+    12/n1: t → NUMBER •
+      {";", "+"}
+    reductions:
+      ";": Rule 5
+      "+": Rule 5
 
   State 6:
-    16/n0: $start → s $ • 
+    13/n1: t → "(" • e ")"
+      {}
+    14/n1: e →  • t ";"
+      {}
+    15/n1: e →  • t "+" e
+      {}
+    16/n1: e →  • $error
+      {}
+    17/n1: t →  • NUMBER
+      {}
+    18/n1: t →  • "(" e ")"
+      {}
+    transitions:
+      e: State 10
+      t: State 3
+      $error: State 4
+      NUMBER: State 5
+      "(": State 6
+
+  State 7:
+    19/n0: $start → s $ •
       {}
     accepting:
       $: Rule 0
 
-  State 7:
-    17/n1: e → t ";" • 
+  State 8:
+    20/n1: e → t ";" •
       {$, ")"}
     reductions:
       $: Rule 2
       ")": Rule 2
 
-  State 8:
-    18/n1: e → t "+" • e
-      {}
-    19/n1: e →  • t ";"
-      {}
-    20/n1: e →  • t "+" e
-      {}
-    21/n1: t →  • NUMBER
-      {}
-    22/n1: t →  • "(" e ")"
-      {}
-    transitions:
-      e: State 10
-      t: State 3
-      NUMBER: State 4
-      "(": State 5
-
   State 9:
-    23/n1: t → "(" e • ")"
+    21/n1: e → t "+" • e
+      {}
+    22/n1: e →  • t ";"
+      {}
+    23/n1: e →  • t "+" e
+      {}
+    24/n1: e →  • $error
+      {}
+    25/n1: t →  • NUMBER
+      {}
+    26/n1: t →  • "(" e ")"
       {}
     transitions:
-      ")": State 11
+      e: State 11
+      t: State 3
+      $error: State 4
+      NUMBER: State 5
+      "(": State 6
 
   State 10:
-    24/n1: e → t "+" e • 
+    27/n1: t → "(" e • ")"
+      {}
+    transitions:
+      ")": State 12
+
+  State 11:
+    28/n1: e → t "+" e •
       {$, ")"}
     reductions:
       $: Rule 3
       ")": Rule 3
 
-  State 11:
-    25/n1: t → "(" e ")" • 
+  State 12:
+    29/n1: t → "(" e ")" •
       {";", "+"}
     reductions:
-      ";": Rule 5
-      "+": Rule 5
+      ";": Rule 6
+      "+": Rule 6
 

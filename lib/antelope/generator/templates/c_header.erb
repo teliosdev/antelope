@@ -1,0 +1,28 @@
+#ifndef _<%= guard_name %>_H
+#define _<%= guard_name %>_H
+
+enum <%= namespace %>_token {
+% grammar.terminals.each do |terminal|
+  <%= guard_name %>_<%= terminal.name %>,
+% end
+};
+
+typedef struct <%= namespace %>_pstate {
+
+} <%= namespace %>_pstate_t;
+
+union <%= union[:type] %> <%= union[:body] %>;
+
+const char* <%= namespace %>_token_string(enum <%= namespace %>_token token);
+int <%= namespace %>_parse();
+% if push?
+int <%= namespace %>_parse_push(<%= namespace %>_pstate_t pstate,
+  enum <%= namespace %>_token type,
+  union <%= union[:type] %> v);
+% else
+typedef void (<%= namespace %>_parse_fn)(enum <%= namespace %>_token* type, union <%= union[:type] %>* v);
+int <%= namespace %>_parse_pull(<%= namespace %>_pstate_t pstate,
+  <%= namespace %>_parse_fn* cb);
+% end
+
+#endif

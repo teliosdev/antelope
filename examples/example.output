@@ -1,12 +1,13 @@
 Productions:
-  0 $start: expression $                  
+  0 $start: expression $
   1 expression: NUMBER                    { |a| a[1]        }
   2 expression: expression "+" expression { |a, _, b| a + b }
   3 expression: expression "-" expression { |a, _, b| a - b }
   4 expression: expression "*" expression { |a, _, b| a * b }
   5 expression: expression "/" expression { |a, _, b| a / b }
   6 expression: "(" expression ")"        { |_, a, _| a     }
-  7 expression: "(" $error ")"            
+  7 expression: "(" $error ")"            { |_, e, _| e[1]  }
+
 
 Precedence:
   --- highest
@@ -63,7 +64,7 @@ Precedence:
       "/": State 8
 
   State 2:
-    13/n1: expression → NUMBER • 
+    13/n1: expression → NUMBER •
       {$, "+", "-", "*", "/", ")"}
     reductions:
       $: Rule 1
@@ -99,7 +100,7 @@ Precedence:
       $error: State 10
 
   State 4:
-    23/n0: $start → expression $ • 
+    23/n0: $start → expression $ •
       {}
     accepting:
       $: Rule 0
@@ -217,7 +218,7 @@ Precedence:
       ")": State 16
 
   State 11:
-    62/l2: expression → expression "+" expression • 
+    62/l2: expression → expression "+" expression •
       {$, "+", "-", "*", "/", ")"}
     63/l2: expression → expression • "+" expression
       {}
@@ -237,7 +238,7 @@ Precedence:
       ")": Rule 2
 
   State 12:
-    67/l2: expression → expression "-" expression • 
+    67/l2: expression → expression "-" expression •
       {$, "+", "-", "*", "/", ")"}
     68/l2: expression → expression • "+" expression
       {}
@@ -257,7 +258,7 @@ Precedence:
       ")": Rule 3
 
   State 13:
-    72/l3: expression → expression "*" expression • 
+    72/l3: expression → expression "*" expression •
       {$, "+", "-", "*", "/", ")"}
     73/l2: expression → expression • "+" expression
       {}
@@ -276,7 +277,7 @@ Precedence:
       ")": Rule 4
 
   State 14:
-    77/l3: expression → expression "/" expression • 
+    77/l3: expression → expression "/" expression •
       {$, "+", "-", "*", "/", ")"}
     78/l2: expression → expression • "+" expression
       {}
@@ -295,7 +296,7 @@ Precedence:
       ")": Rule 5
 
   State 15:
-    82/n4: expression → "(" expression ")" • 
+    82/n4: expression → "(" expression ")" •
       {$, "+", "-", "*", "/", ")"}
     reductions:
       $: Rule 6
@@ -306,7 +307,7 @@ Precedence:
       ")": Rule 6
 
   State 16:
-    83/n4: expression → "(" $error ")" • 
+    83/n4: expression → "(" $error ")" •
       {$, "+", "-", "*", "/", ")"}
     reductions:
       $: Rule 7

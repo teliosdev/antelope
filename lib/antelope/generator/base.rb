@@ -1,3 +1,6 @@
+require 'hashie/rash'
+require 'hashie/mash'
+
 module Antelope
   module Generator
 
@@ -10,6 +13,7 @@ module Antelope
     # @abstract Subclass and redefine {#generate} to create a
     #   generator.
     class Base
+      Boolean = Object.new
       # The modifiers that were applied to the grammar.
       #
       # @return [Hash<(Symbol, Object)>]
@@ -37,6 +41,39 @@ module Antelope
         Generator.register_generator(self, *names)
       end
 
+      # Allows a directive for this generator.  This is checked in
+      # the compiler to allow the option.  If the compiler encounters
+      # a bad directive, it'll error (to give the developer a warning).
+      #
+      # @param directive [Symbol, Regexp]
+      # @param type [Object] used to define how the value should be
+      #   coerced.
+      # @see #directives
+      # @see #coerce_directive_value
+      # @return [void]
+      def self.has_directive(directive, type = nil)
+        # it doesn't matter if it's false, we check to see if there
+        # is a key...
+        directive = directive.to_s unless directive.is_a? Regexp
+        directives[directive] = [self, type]
+      end
+
+      # The directives in the class.
+      #
+      # @see .has_directive
+      # @return [Hash]
+      def self.directives
+        @_options ||= begin
+          options = Hashie::Rash.new
+          options.optimize_every = Float::INFINITY
+          options
+        end
+      end
+
+      class << self
+        alias_method :has_directives, :has_directive
+      end
+
       # Initialize the generator.
       #
       # @param grammar [Grammar]
@@ -56,6 +93,73 @@ module Antelope
       end
 
       protected
+
+      # Retrieves all directives from the grammar, and giving them the
+      # proper values for this instance.
+      #
+      # @see .has_directive
+      # @see #coerce_directive_value
+      # @return [Hash]
+      def directives
+        @_directives ||= begin
+          hash = Hashie::Mash.new
+
+          grammar.options.each do |key, values|
+            dict = self.class.directives[key]
+            dict = dict.last if dict
+
+            hash[key] = coerce_directive_value(values, dict)
+          end
+
+          hash
+        end
+      end
+
+      # Coerce the given directive value to the given type.  For the
+      # type `nil`, it checks the size of the values; for no values,
+      # it returns true; for one value, it returns that one value; for
+      # any other size value, it returns the values.  For the type
+      # `Boolean`, if no values were given, or if the first value isn't
+      # "false", it returns true.  For the type `:single` (or `:one`),
+      # it returns the first value.  For the type `Array`, it returns
+      # the values.  For any other type that is a class, it tries to
+      # initialize the class with the given arguments.
+      def coerce_directive_value(values, type)
+        case type
+        when nil
+          case values.size
+          when 0
+            true
+          when 1
+            values[0]
+          else
+            values
+          end
+        when :single, :one
+          values[0]
+        when Boolean
+          # For bool, if there were no arguments, then return true;
+          # otherwise, if the first argument isn't "false", return
+          # true.
+          values.empty? || values[0].to_s != "false"
+        when Array
+          values.zip(type).map do |value, t|
+            coerce_directive_value([value], t)
+          end
+        when Class
+          if type == Array
+            values
+          elsif type == String
+            values[0].to_s
+          elsif type <= Numeric
+            values[0].to_i
+          else
+            type.new(*values)
+          end
+        else
+          raise UnknownTypeError, "unknown type #{type}"
+        end
+      end
 
       # Copies a template from the source, runs it through erb (in the
       # context of this class), and then outputs it at the destination.
@@ -77,7 +181,7 @@ module Antelope
         context   = instance_eval('binding')
         erb       = ERB.new(src.read, nil, "%")
         erb.filename = source
-        content   = erb.result(context)
+        content   = erb.result(context).gsub(/[ \t]+\n/, "\n")
         content   = yield content if block_given?
         dest_file = Pathname.new(destination)
           .expand_path(grammar.output)

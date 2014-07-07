@@ -4,6 +4,8 @@ module Antelope
     # Represents a generator that does not generate anything.
     class Null < Base
 
+      register_as "null"
+
       # Does nothing.
       #
       # @return [void]

@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "hashie"
 require "antelope/ace/grammar/terminals"
 require "antelope/ace/grammar/productions"
 require "antelope/ace/grammar/precedences"
@@ -54,6 +55,14 @@ module Antelope
         @name     = name
         @output   = Pathname.new(output)
         @compiler = compiler
+      end
+
+      # Extra options from the compiler.  This can be used by
+      # generators for output information.
+      #
+      # @return [Hash]
+      def options
+        compiler.options[:extra]
       end
     end
   end

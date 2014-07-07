@@ -1,10 +1,11 @@
 Productions:
-  0 $start: e $ 
-  1 e: l "=" r  
-  2 e: r        
-  3 l: IDENT    
-  4 l: "*" r    
-  5 r: l        
+  0 $start: e $
+  1 e: l "=" r
+  2 e: r
+  3 l: IDENT
+  4 l: "*" r
+  5 r: l
+
 
 Precedence:
   --- highest
@@ -43,7 +44,7 @@ Precedence:
   State 2:
     7/n1: e → l • "=" r
       {}
-    8/n1: r → l • 
+    8/n1: r → l •
       {$}
     transitions:
       "=": State 7
@@ -51,13 +52,13 @@ Precedence:
       $: Rule 5
 
   State 3:
-    9/n1: e → r • 
+    9/n1: e → r •
       {$}
     reductions:
       $: Rule 2
 
   State 4:
-    10/n1: l → IDENT • 
+    10/n1: l → IDENT •
       {"=", $}
     reductions:
       "=": Rule 3
@@ -79,7 +80,7 @@ Precedence:
       "*": State 5
 
   State 6:
-    15/n0: $start → e $ • 
+    15/n0: $start → e $ •
       {}
     accepting:
       $: Rule 0
@@ -100,21 +101,21 @@ Precedence:
       "*": State 5
 
   State 8:
-    20/n1: l → "*" r • 
+    20/n1: l → "*" r •
       {"=", $}
     reductions:
       "=": Rule 4
       $: Rule 4
 
   State 9:
-    21/n1: r → l • 
+    21/n1: r → l •
       {"=", $}
     reductions:
       "=": Rule 5
       $: Rule 5
 
   State 10:
-    22/n1: e → l "=" r • 
+    22/n1: e → l "=" r •
       {$}
     reductions:
       $: Rule 1

@@ -18,6 +18,37 @@ module Antelope
     # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/strscan/rdoc/StringScanner.html
     class Scanner
 
+      class Argument < BasicObject
+        def initialize(type, value)
+          @type = type
+          @value = value
+        end
+
+        def block?
+          @type == :block
+        end
+
+        def text?
+          @type == :text
+        end
+
+        def to_s
+          @value
+        end
+
+        def inspect
+          @value.inspect
+        end
+
+        def method_missing(method, *args, &block)
+          begin
+            @value.public_send(method, *args, &block)
+          rescue ::NoMethodError => e
+            ::Kernel.raise e, e.message, e.backtrace[2..-1]
+          end
+        end
+      end
+
       include First
       include Second
       include Third
@@ -47,7 +78,7 @@ module Antelope
       # @return [#to_s]
       VALUE = %q{(?:
                     (?:("|')((?:\\\\|\\"|\\'|.)+?)\\1)
-                  | ([[:word:]]+)
+                  | ([A-Za-z0-9_.<>*-]+)
                 )}
 
       # Scans a file.  It returns the tokens resulting from scanning.
@@ -92,8 +123,14 @@ module Antelope
         start = [@scanner.pos - 8, 0].max
         stop  = [@scanner.pos + 8, @scanner.string.length].min
         snip  = @scanner.string[start..stop].strip.inspect
-        char  = @scanner.string[@scanner.pos].inspect
-        new_line = "#{@source}:#{@line}:unexpected #{char} (near #{snip})"
+        char  = @scanner.string[@scanner.pos]
+        char = if char
+          char.inspect
+        else
+          "EOF"
+        end
+
+        new_line = "#{@source}:#{@line}: unexpected #{char} (near #{snip})"
 
         raise e, e.message, [new_line, *e.backtrace]
       end
@@ -117,11 +154,7 @@ module Antelope
       # @raise [SyntaxError] always.
       # @return [void]
       def error!
-        start = [@scanner.pos - 8, 0].max
-        stop  = [@scanner.pos + 8, @scanner.string.length].min
-        snip  = @scanner.string[start..stop].strip
-        char  = @scanner.string[@scanner.pos]
-        raise SyntaxError, "invalid syntax"# near `#{snip.inspect}' (#{char.inspect})"
+        raise SyntaxError, "invalid syntax"
       end
     end
   end

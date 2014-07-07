@@ -10,6 +10,9 @@ module Antelope
 
       register_as "ruby", "rubby"
 
+      has_directive "panic-mode", Boolean
+      has_directive "ruby.error-class", String
+
       # Creates an action table for the parser.
       #
       # @return [String]
@@ -36,15 +39,30 @@ module Antelope
           block = if block.empty?
             "proc { |_| _ }"
           else
-            "proc #{production.block}"
+            "proc #{block}"
           end
 
           out << block << "],\n"
         end
 
-        out.chomp!(",\n")
+        out.chomp!(   ",\n")
 
         out << "]"
+      end
+
+      def define_own_handler?
+        directives["ruby.error-class"] or
+          panic_mode?
+      end
+
+      def panic_mode?
+        directives["panic-mode"] &&
+          directives["ruby.error-class"] &&
+          grammar.contains_error_token?
+      end
+
+      def error_class
+        directives["ruby.error-class"]
       end
 
       # Actually performs the generation.  Takes the template from

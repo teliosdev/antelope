@@ -16,7 +16,7 @@ Next, you'll want to define a `generate` method on your generator that takes no 
 class MyGenerator < Antelope::Generator::Base
     
   def generate
-    template "my_template", "#{file}.my_file"
+    template "my_template.erb", "#{file}.my_file"
   end
 end
 ```
@@ -31,7 +31,7 @@ class MyGenerator < Antelope::Generator::Base
   end
 
   def generate
-    template "my_template", "#{file}.my_file"
+    template "my_template.erb", "#{file}.my_file"
   end
 end
 ```
@@ -66,7 +66,7 @@ class MyGenerator < Antelope::Generator::Base
   end
 
   def generate
-    template "my_template", "#{file}.my_file"
+    template "my_template.erb", "#{file}.my_file"
   end
 end
 ```

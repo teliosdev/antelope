@@ -45,17 +45,31 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_first_directive
-          if @scanner.scan(/%([A-Za-z_-]+) ?/)
+          if @scanner.scan(/%([A-Za-z_.-]+) ?/)
             directive = @scanner[1]
-            arguments = []
-            until @scanner.check(/\n/)
-              @scanner.scan(/#{VALUE}/x) or error!
-              arguments.push(@scanner[2] || @scanner[3])
-              @scanner.scan(/ */)
-            end
+            arguments = scan_first_directive_arguments
 
             tokens << [:directive, directive, arguments]
           end
+        end
+
+        def scan_first_directive_arguments
+          arguments = []
+          until @scanner.check(/\n/)
+            if @scanner.scan(/\{/)
+              arguments.push(
+                Argument.new(:block, _scan_block[1..-2])
+              )
+            else
+              @scanner.scan(/#{VALUE}/x) or error!
+              arguments.push(
+                Argument.new(:text, @scanner[2] || @scanner[3])
+              )
+              @scanner.scan(/ */)
+            end
+          end
+
+          arguments
         end
       end
     end

@@ -92,7 +92,13 @@ module Antelope
         @rules    = []
         @current  = nil
         @current_label = nil
-        @options  = { :terminals => [], :prec => [], :extra => {} }
+        @options  = {
+          :terminals => [],
+          :prec      => [],
+          :type      => nil,
+          :extra     => Hashie::Extensions::IndifferentAccess.
+            inject!(Hash.new { |h, k| h[k] = [] })
+        }
       end
 
       # Pretty inspect.
@@ -159,10 +165,20 @@ module Antelope
           @options[:prec] << [name, *args.map(&:intern)]
         when :type
           @options[:type] = args[0]
+        when :define
+          compile_extra(args[0], args[1..-1])
         else
-          @options[:extra][name] = args
-          $stderr.puts "Unknown Directive: #{name}"
+          compile_extra(name, args)
         end
+      end
+
+      def compile_extra(name, args)
+        matching = Generator.all_directives.all(name.to_s)
+
+        raise NoDirectiveError, "no directive named #{name}" \
+          unless matching.any?
+
+        @options[:extra][name] = args
       end
 
       # Compiles a copy token.  A copy token basically copies its

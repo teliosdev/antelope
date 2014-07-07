@@ -37,6 +37,14 @@ module Antelope
         def symbols
           @_symbols ||= terminals + nonterminals
         end
+
+        # Checks to see if the grammar uses the `error` terminal
+        # anywhere.
+        #
+        # @return [Boolean]
+        def contains_error_token?
+          all_productions.any? { |_| _.items.any?(&:error?) }
+        end
       end
     end
   end

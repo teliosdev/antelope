@@ -1,6 +1,8 @@
 %require "~> 0.1"
 %type "ruby"
 
+%ruby.error-class { SyntaxError }
+%panic-mode true
 %terminal NUMBER
 %terminal MULTIPLY "*"
 %terminal DIVIDE "/"
@@ -21,7 +23,7 @@ expression: NUMBER                         { |a| a[1]        }
           | expression MULTIPLY expression { |a, _, b| a * b }
           | expression DIVIDE expression   { |a, _, b| a / b }
           | LPAREN expression RPAREN       { |_, a, _| a     }
-          | LPAREN error RPAREN
+          | LPAREN error RPAREN            { |_, e, _| e[1]  }
 
 %%
 
@@ -34,9 +36,11 @@ class ExampleParser
 end
 
 input = [
+  [:LPAREN],
   [:NUMBER, 2],
   [:ADD],
-  [:NUMBER, 2],
+  [:ADD, 2],
+  [:RPAREN],
   [:MULTIPLY],
   [:NUMBER, 3]
 ]

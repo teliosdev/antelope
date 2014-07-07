@@ -1,17 +1,27 @@
 %require "~> 0.1"
 %type "ruby"
 
-%terminal NUMBER
-%terminal SEMICOLON ";"
-%terminal ADD "+"
-%terminal LPAREN "("
-%terminal RPAREN ")"
+%define api.push-pull pull
+%define panic-mode true
+%token NUMBER
+%token SEMICOLON ";"
+%token ADD "+"
+%token LPAREN "("
+%token RPAREN ")"
+
+%namespace "antelope"
+%union{
+  struct slip_parser_node* node;
+  struct slip_lex_token* lex;
+  struct slip_parser_list* list;
+}
 
 %%
 
 s: e
 e: t SEMICOLON
  | t ADD e
+ | error
 
 t: NUMBER
  | LPAREN e RPAREN

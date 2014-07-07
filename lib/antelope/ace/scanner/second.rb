@@ -45,7 +45,7 @@ module Antelope
         # @see #scan_second_rule_body
         # @see #error!
         def scan_second_rule
-          if @scanner.check(/([a-z._-]+):/)
+          if @scanner.check(/([a-zA-Z._-]+):/)
             scan_second_rule_label or error!
             scan_second_rule_body
             true
@@ -57,7 +57,7 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_label
-          if @scanner.scan(/([a-z._-]+): ?/)
+          if @scanner.scan(/([a-zA-Z._-]+): ?/)
             tokens << [:label, @scanner[1]]
           end
         end
@@ -139,17 +139,32 @@ module Antelope
         def _scan_block
           brack = 1
           body = "{"
+          scan_for = %r{
+            (
+              (?: " ( \\\\ | \\" | [^"] )* "? )
+            | (?: ' ( \\\\ | \\' | [^'] )* '? )
+            | (?: // .*? \n )
+            | (?: \# .*? \n )
+            | (?: /\* [\s\S]+? \*/ )
+            | (?: \} )
+            | (?: \{ )
+            )
+          }x
 
           until brack.zero?
-            if part = @scanner.scan_until(/(\}|\{)/)
+            if part = @scanner.scan_until(scan_for)
               body << part
+
 
               if @scanner[1] == "}"
                 brack -= 1
-              else
+              elsif @scanner[1] == "{"
                 brack += 1
               end
             else
+              if @scanner.scan(/(.+)/m)
+                @line += @scanner[1].count("\n")
+              end
               error!
             end
           end

@@ -14,14 +14,14 @@
 # means to transition to another state.
 #
 # @return [Array<Hash<(Symbol, Array<(Symbol, Numeric)>)>>]
-ACTION_TABLE = <%= generate_action_table %>.freeze # >
+ACTION_TABLE = <%= generate_action_table %>.freeze
 
 # A list of all of the productions.  Only includes the left-hand side,
 # the number of tokens on the right-hand side, and the block to call
 # on reduction.
 #
 # @return [Array<Array<(Symbol, Numeric, Proc)>>]
-PRODUCTIONS  = <%= generate_productions_list %>.freeze # >
+PRODUCTIONS  = <%= generate_productions_list %>.freeze
 
 # Runs the parser.
 #
@@ -34,30 +34,108 @@ def parse(input)
   last  = nil
 
   until stack.empty? do
-    peek_token = if input.empty?
-      :"$"
-    else
-      type(input.first)
-    end
-
-    action = ACTION_TABLE[stack.last.last].fetch(peek_token)
-    case action.first
-    when :accept
-      production = PRODUCTIONS[action.last]
-      last       = stack.pop(production[1]).first.first
-      stack.pop
-    when :reduce
-      production = PRODUCTIONS[action.last]
-      removing   = stack.pop(production[1])
-      value = instance_exec(*removing.map(&:first), &production[2])
-      goto  = ACTION_TABLE[stack.last.last][production[0]]
-      stack.push([value, goto.last])
-    when :state
-      stack.push([input.shift, action.last])
-    else
-      raise
-    end
+    last = parse_action(stack, input)
   end
 
   last
+
 end
+
+# Actually performs the parsing action on the given stack on input.
+# If you want to implement a push parser, than messing with this
+# method is probably the way to go.
+#
+# @param stack [Array<Array<(Object, Numeric)>>] the stack of the
+#   parser.  The actual order of the stack is important.
+# @param input [Array<Object>] the input to run the parser over.
+#   The elements of this may be passed to the `type` method.
+# @return [Object] the result of the last accepting reduction.
+def parse_action(stack, input)
+  last = nil
+  peek_token = if input.empty?
+    :"$"
+  else
+    type(input.first)
+  end
+
+  action = ACTION_TABLE[stack.last.last].fetch(peek_token)
+  case action.first
+  when :accept
+    production = PRODUCTIONS[action.last]
+    last       = stack.pop(production[1]).first.first
+    stack.pop
+  when :reduce
+    production = PRODUCTIONS[action.last]
+    removing   = stack.pop(production[1])
+    value = instance_exec(*removing.map(&:first), &production[2])
+    goto  = ACTION_TABLE[stack.last.last][production[0]]
+    stack.push([value, goto.last])
+  when :state
+    stack.push([input.shift, action.last])
+  else
+    raise NotImplementedError, "Unknown action #{action.first}"
+  end
+
+  last
+
+rescue KeyError => e
+  if handle_error(
+    { :stack     => stack,
+      :peek      => peek_token,
+      :remaining => input,
+      :error     => e
+    })
+    retry
+  end
+end
+
+% if define_own_handler?
+def handle_error(data, _ = false)
+% if panic_mode?
+  if _ || data[:peek] == :"$" # we can't recover if
+                              # we're at the end
+% end
+    raise <%= error_class %>,
+      "Unexpected token #{data[:peek]}", data[:error].backtrace
+% if panic_mode?
+  end
+
+  new_peek = :$error
+  acceptable_state = false
+  state = nil
+
+  until data[:stack].empty? or acceptable_state
+    state = data[:stack].last.last
+
+    if ACTION_TABLE[state].key?(new_peek)
+      acceptable_state = true
+    else
+      data[:stack].pop # discard
+    end
+  end
+
+  return handle_error(data, true) unless acceptable_state
+
+  action = ACTION_TABLE[state][new_peek]
+  lookaheads = nil
+
+  until lookaheads
+    if action[0] == :state
+      lookaheads = ACTION_TABLE[action.last].keys
+    elsif action[0] == :reduce
+      rule   = PRODUCTIONS[action.last]
+      action = ACTION_TABLE[stack[-rule[1]].last][rule[0]]
+    end
+  end
+
+  until data[:remaining].empty? || lookaheads.
+    include?(data[:remaining][0].first)
+    data[:remaining].shift
+  end
+
+  data[:remaining].unshift([new_peek, data[:error]])
+  true
+
+% end
+end
+% end

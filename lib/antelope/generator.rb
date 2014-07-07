@@ -17,6 +17,21 @@ module Antelope
       @_generators ||= Hash.new { |h, k| h[k] = Generator::Null }
     end
 
+    def directives
+      @_directives ||= Hashie::Rash.new.
+          tap { |t| t.optimize_every = Float::INFINITY }
+    end
+
+    # Returns a hash of all of the directives that are available in
+    # the generators of this module.
+    #
+    # @see .generators
+    # @return [Hashie::Rash]
+    def all_directives
+      generators.values.map(&:directives).
+        inject(directives, :update)
+    end
+
     # Registers a generator with the given names.  If multiple names
     # are given, they are assigned the generator as a value in the
     # {#generators} hash; otherwise, the one name is assigned the
@@ -48,3 +63,7 @@ require "antelope/generator/base"
 require "antelope/generator/group"
 require "antelope/generator/output"
 require "antelope/generator/ruby"
+require "antelope/generator/null"
+require "antelope/generator/c_header"
+require "antelope/generator/c_source"
+require "antelope/generator/c"
