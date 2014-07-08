@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require "strscan"
+require "antelope/ace/scanner/argument"
 require "antelope/ace/scanner/first"
 require "antelope/ace/scanner/second"
 require "antelope/ace/scanner/third"
@@ -17,37 +18,6 @@ module Antelope
     # @see Ace
     # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/strscan/rdoc/StringScanner.html
     class Scanner
-
-      class Argument < BasicObject
-        def initialize(type, value)
-          @type = type
-          @value = value
-        end
-
-        def block?
-          @type == :block
-        end
-
-        def text?
-          @type == :text
-        end
-
-        def to_s
-          @value
-        end
-
-        def inspect
-          @value.inspect
-        end
-
-        def method_missing(method, *args, &block)
-          begin
-            @value.public_send(method, *args, &block)
-          rescue ::NoMethodError => e
-            ::Kernel.raise e, e.message, e.backtrace[2..-1]
-          end
-        end
-      end
 
       include First
       include Second
