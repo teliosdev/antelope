@@ -53,7 +53,7 @@ end
 def parse_action(stack, input)
   last = nil
   peek_token = if input.empty?
-    :"$"
+    :$end
   else
     type(input.first)
   end
@@ -93,7 +93,7 @@ end
 {{ if define_own_handler? }}
 def handle_error(data, _ = false)
 {{   if panic_mode? }}
-  if _ || data[:peek] == :"$" # we can't recover if
+  if _ || data[:peek] == :$end # we can't recover if
                               # we're at the end
 {{   end }}
     raise {{= error_class }},

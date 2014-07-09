@@ -66,7 +66,7 @@ module Antelope
       end
 
       # Actually performs the generation.  Takes the template from
-      # ruby.erb and outputs it to `<file>_parser.rb`.
+      # ruby.ant and outputs it to `<file>.rb`.
       #
       # @return [void]
       def generate

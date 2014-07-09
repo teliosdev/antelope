@@ -151,8 +151,10 @@ module Antelope
             values
           elsif type == String
             values[0].to_s
-          elsif type <= Numeric
+          elsif [Fixnum, Integer, Numeric].include?(type)
             values[0].to_i
+          elsif type == Float
+            values[0].to_f
           else
             type.new(*values)
           end

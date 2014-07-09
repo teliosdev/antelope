@@ -5,25 +5,27 @@
 %panic-mode true
 %terminal NUMBER
 %terminal MULTIPLY "*"
+%terminal EXPONENTIATE "^"
 %terminal DIVIDE "/"
 %terminal ADD "+"
 %terminal SUBTRACT "-"
 %terminal LPAREN "("
 %terminal RPAREN ")"
 
-%nonassoc LPAREN RPAREN
+%right EXPONENTIATE
 %left MULTIPLY DIVIDE
 %left ADD SUBTRACT
 
 %%
 
-expression: NUMBER                         { |a| a[1]        }
-          | expression ADD expression      { |a, _, b| a + b }
-          | expression SUBTRACT expression { |a, _, b| a - b }
-          | expression MULTIPLY expression { |a, _, b| a * b }
-          | expression DIVIDE expression   { |a, _, b| a / b }
-          | LPAREN expression RPAREN       { |_, a, _| a     }
-          | LPAREN error RPAREN            { |_, e, _| e[1]  }
+expression: NUMBER                             { |a| a[1]        }
+          | expression EXPONENTIATE expression { |a, _, b| a** b }
+          | expression ADD expression          { |a, _, b| a + b }
+          | expression SUBTRACT expression     { |a, _, b| a - b }
+          | expression MULTIPLY expression     { |a, _, b| a * b }
+          | expression DIVIDE expression       { |a, _, b| a / b }
+          | LPAREN expression RPAREN           { |_, a, _| a     }
+          | LPAREN error RPAREN                { |_, e, _| e[1]  }
 
 %%
 

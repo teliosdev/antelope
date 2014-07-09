@@ -56,7 +56,7 @@ module Antelope
           end
 
           precedence <<
-            Ace::Precedence.new(:nonassoc, [:"$"].to_set, 0) <<
+            Ace::Precedence.new(:nonassoc, [:$end].to_set, 0) <<
             Ace::Precedence.new(:nonassoc, [:_].to_set, 1)
           precedence.sort_by { |_| _.level }.reverse
         end

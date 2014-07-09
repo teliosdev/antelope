@@ -67,7 +67,8 @@ module Antelope
               end
 
               if rule.production.id.zero?
-                table[state.id][:"$"] = [[:accept, rule.production.id]]
+                table[state.id][:$end] =
+                  [[:accept, rule.production.id]]
               end
             end
           end

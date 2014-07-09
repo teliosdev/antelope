@@ -45,7 +45,8 @@ module Antelope
           elsif [:nothing, :ε].include?(value)
             Token::Epsilon.new
           else
-            raise UndefinedTokenError, "Could not find a token named #{value.inspect}"
+            raise UndefinedTokenError, "Could not find a token " \
+              "named #{value.inspect}"
           end
         end
 
@@ -96,10 +97,6 @@ module Antelope
             find_token(rule[:prec])
           end
 
-          unless rule[:prec].empty?
-            puts "PREC, #{prec.inspect}"
-          end
-
           prec  = precedence_for(prec)
 
           Production.new(Token::Nonterminal.new(left), items,
@@ -116,7 +113,7 @@ module Antelope
         def default_production
           Production.new(Token::Nonterminal.new(:$start), [
               Token::Nonterminal.new(@compiler.rules.first[:label]),
-              Token::Terminal.new(:"$")
+              Token::Terminal.new(:$end)
             ], "", precedence.last, 0)
         end
       end
