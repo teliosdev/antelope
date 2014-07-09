@@ -42,7 +42,7 @@ module Antelope
       #
       # @return [void]
       def generate
-        template "output.erb", "#{file}.output"
+        template "output", "#{file}.output"
       end
     end
   end

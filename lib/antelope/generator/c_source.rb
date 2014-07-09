@@ -18,7 +18,7 @@ module Antelope
       end
 
       def generate
-        template "c_source.erb", "#{file}.c"
+        template "c_source", "#{file}.c"
       end
     end
   end

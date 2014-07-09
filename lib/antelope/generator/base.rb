@@ -175,18 +175,22 @@ module Antelope
       # @yieldreturn [String] The new content to write to the output.
       # @return [void]
       def template(source, destination)
-        src_file  = Pathname.new(source)
-          .expand_path(self.class.source_root)
-        src       = src_file.open("r")
-        context   = instance_eval('binding')
-        erb       = ERB.new(src.read, nil, "%")
-        erb.filename = source
-        content   = erb.result(context).gsub(/[ \t]+\n/, "\n")
-        content   = yield content if block_given?
-        dest_file = Pathname.new(destination)
-          .expand_path(grammar.output)
-        dest_file.open("w") do |f|
-          f.write(content)
+        src  = Pathname.new("#{source}.ant").
+          expand_path(self.class.source_root)
+
+        template = Template.new(src)
+        content  = template.result(instance_eval('binding'))
+        content.gsub!(/[ \t]+\n/, "\n")
+
+        if block_given?
+          content = yield content
+        end
+
+        dest = Pathname.new(destination).
+          expand_path(grammar.output)
+
+        dest.open("w") do |file|
+          file.write(content)
         end
       end
 
@@ -226,6 +230,8 @@ module Antelope
            production[:block]]
         end
       end
+
+
     end
   end
 end

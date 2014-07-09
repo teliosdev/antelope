@@ -70,7 +70,7 @@ module Antelope
       #
       # @return [void]
       def generate
-        template "ruby.erb", "#{file}.rb" do |body|
+        template "ruby", "#{file}.rb" do |body|
           sprintf(grammar.compiler.body, :write => body)
         end
       end

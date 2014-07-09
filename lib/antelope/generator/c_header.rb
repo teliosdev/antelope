@@ -49,7 +49,7 @@ module Antelope
       end
 
       def generate
-        template "c_header.erb", "#{file}.h"
+        template "c_header", "#{file}.h"
       end
     end
   end

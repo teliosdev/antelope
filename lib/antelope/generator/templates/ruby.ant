@@ -14,14 +14,14 @@
 # means to transition to another state.
 #
 # @return [Array<Hash<(Symbol, Array<(Symbol, Numeric)>)>>]
-ACTION_TABLE = <%= generate_action_table %>.freeze
+ACTION_TABLE = {{= generate_action_table }}.freeze
 
 # A list of all of the productions.  Only includes the left-hand side,
 # the number of tokens on the right-hand side, and the block to call
 # on reduction.
 #
 # @return [Array<Array<(Symbol, Numeric, Proc)>>]
-PRODUCTIONS  = <%= generate_productions_list %>.freeze
+PRODUCTIONS  = {{= generate_productions_list }}.freeze
 
 # Runs the parser.
 #
@@ -83,21 +83,24 @@ rescue KeyError => e
     { :stack     => stack,
       :peek      => peek_token,
       :remaining => input,
-      :error     => e
+      :error     => e,
+      :expected  => ACTION_TABLE[stack.last.last].keys
     })
     retry
   end
 end
 
-% if define_own_handler?
+{{ if define_own_handler? }}
 def handle_error(data, _ = false)
-% if panic_mode?
+{{   if panic_mode? }}
   if _ || data[:peek] == :"$" # we can't recover if
                               # we're at the end
-% end
-    raise <%= error_class %>,
-      "Unexpected token #{data[:peek]}", data[:error].backtrace
-% if panic_mode?
+{{   end }}
+    raise {{= error_class }},
+      "Unexpected token #{data[:peek]}; " \
+      "expected one of #{data[:expected].join(', ')}",
+      data[:error].backtrace
+{{   if panic_mode? }}
   end
 
   new_peek = :$error
@@ -136,6 +139,6 @@ def handle_error(data, _ = false)
   data[:remaining].unshift([new_peek, data[:error]])
   true
 
-% end
+{{   end }}
 end
-% end
+{{ end }}

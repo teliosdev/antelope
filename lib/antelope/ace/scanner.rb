@@ -9,11 +9,12 @@ require "antelope/ace/scanner/third"
 module Antelope
   module Ace
 
-    # Scans a given input.  The input should be a properly formatted ACE file;
-    # see the Ace module for more information.  This scanner uses the
-    # StringScanner class internally; see the ruby documentation for more on
-    # that.  This scanner seperates scanning into three seperate stages:
-    # First, Second, and Third, for each section of the file, respectively.
+    # Scans a given input.  The input should be a properly formatted
+    # ACE file; see the Ace module for more information.  This scanner
+    # uses the StringScanner class internally; see the ruby
+    # documentation for more on that.  This scanner seperates scanning
+    # into three seperate stages: First, Second, and Third, for each
+    # section of the file, respectively.
     #
     # @see Ace
     # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/strscan/rdoc/StringScanner.html
@@ -33,17 +34,17 @@ module Antelope
       # @return [Array<Array<(Symbol, Object, ...)>>]
       attr_reader :tokens
 
-      # The boundry between each section.  Placed here to be easily modifiable.
-      # **MUST** be a regular expression.
+      # The boundry between each section.  Placed here to be easily.
+      # modifiable. **MUST** be a regular expression.
       #
       # @return [RegExp]
       CONTENT_BOUNDRY = /%%/
 
-      # The value regular expression.  It should match values; for example,
-      # things quoted in strings or word letters without quotes.  Must respond
-      # to #to_s, since it is embedded within other regular expressions.  The
-      # regular expression should place the contents of the value in the
-      # groups 2 or 3.
+      # The value regular expression.  It should match values; for
+      # example, things quoted in strings or word letters without
+      # quotes.  Must respond to #to_s, since it is embedded within
+      # other regular expressions.  The regular expression should
+      # place the contents of the value in the groups 2 or 3.
       #
       # @return [#to_s]
       VALUE = %q{(?:
@@ -53,10 +54,10 @@ module Antelope
 
       # Scans a file.  It returns the tokens resulting from scanning.
       #
-      # @param source [String] the source to scan.  This should be compatible
-      #   with StringScanner.
-      # @param name [String] the name of the source file.  This is primarily
-      #   used in backtrace information.
+      # @param source [String] the source to scan.  This should be
+      #   compatible with StringScanner.
+      # @param name [String] the name of the source file.  This is
+      #   primarilyused in backtrace information.
       # @return [Array<Array<(Symbol, Object, ...)>>]
       # @see #tokens
       def self.scan(source, name = "(ace file)")
@@ -100,7 +101,8 @@ module Antelope
           "EOF"
         end
 
-        new_line = "#{@source}:#{@line}: unexpected #{char} (near #{snip})"
+        new_line = "#{@source}:#{@line}: unexpected #{char} " \
+          "(near #{snip})"
 
         raise e, e.message, [new_line, *e.backtrace]
       end
@@ -118,8 +120,7 @@ module Antelope
 
       private
 
-      # Raises an error; first creates a small snippet to give the developer
-      # some context.
+      # Raises an error.
       #
       # @raise [SyntaxError] always.
       # @return [void]
