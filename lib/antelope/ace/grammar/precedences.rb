@@ -27,14 +27,12 @@ module Antelope
         def precedence_for(token)
           token = token.name if token.is_a?(Token)
 
-          set = Set.new([token, :_])
-
           prec = precedence.
-            select { |pr| set.intersection(pr.tokens).any? }.
-            first
+            select { |pr| pr.tokens.include?(token) }.first
 
-          if token == :modifier
-            p prec
+          unless prec
+            prec = precedence.
+              select { |pr| pr.tokens.include?(:_) }.first
           end
 
           prec

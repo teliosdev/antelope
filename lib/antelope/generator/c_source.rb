@@ -2,15 +2,17 @@ module Antelope
   module Generator
     class CSource < Base
 
-      has_directive "union", String
+      has_directive "union", Array[String, String]
+      has_directive "c.namespace", String
+      has_directive "api.push-pull", String
 
       def guard_name
         namespace.upcase
       end
 
       def namespace
-        if grammar.options[:namespace].any?
-          grammar.options[:namespace][0]
+        if directives["c.namespace"]
+          directives["c.namespace"]
         else
           grammar.name
         end.gsub(/[^A-Za-z]/, "_")

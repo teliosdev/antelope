@@ -49,6 +49,10 @@ module Antelope
         end
       end
 
+      # Converts the precedence into a representative string, denoting
+      # the type and the level.
+      #
+      # @return [String]
       def to_s
         "#{type.to_s[0]}#{level}"
       end

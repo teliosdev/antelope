@@ -21,7 +21,7 @@ Precedence:
   nonassoc 1:
     { _ }
   nonassoc 0:
-    { $ }
+    { $end }
   --- lowest
 
 
@@ -74,13 +74,7 @@ Precedence:
     15/n1: expression → NUMBER •
       { $end, "^", "+", "-", "*", "/", ")" }
     reductions:
-      $end: Rule 1
-      "^": Rule 1
-      "+": Rule 1
-      "-": Rule 1
-      "*": Rule 1
-      "/": Rule 1
-      ")": Rule 1
+      $default: Rule 1
 
   State 3:
     16/n1: expression → "(" • expression ")"
@@ -113,7 +107,7 @@ Precedence:
     26/n0: $start → expression $end •
       {  }
     accepting:
-      $: Rule 0
+      $end: Rule 0
 
   State 5:
     27/r4: expression → expression "^" • expression
@@ -381,23 +375,11 @@ Precedence:
     109/n1: expression → "(" expression ")" •
       { $end, "^", "+", "-", "*", "/", ")" }
     reductions:
-      $end: Rule 7
-      "^": Rule 7
-      "+": Rule 7
-      "-": Rule 7
-      "*": Rule 7
-      "/": Rule 7
-      ")": Rule 7
+      $default: Rule 7
 
   State 18:
     110/n1: expression → "(" $error ")" •
       { $end, "^", "+", "-", "*", "/", ")" }
     reductions:
-      $end: Rule 8
-      "^": Rule 8
-      "+": Rule 8
-      "-": Rule 8
-      "*": Rule 8
-      "/": Rule 8
-      ")": Rule 8
+      $default: Rule 8
 

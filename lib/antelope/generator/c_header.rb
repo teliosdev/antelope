@@ -4,14 +4,16 @@ module Antelope
 
       register_as "c-header", "c_header"
 
-      has_directive "union", String
+      has_directive "union", Array[String, String]
+      has_directive "c.namespace", String
+      has_directive "api.push-pull", String
 
       def initialize(*)
         super
       end
 
       def push?
-        grammar.options[:"api.push-pull"][0] == "push"
+        directives.api.push_pull == "push"
       end
 
       def guard_name
@@ -21,27 +23,13 @@ module Antelope
       # @return [Hash]
       def union
         @_union ||= begin
-          union = grammar.options[:union]
-          {
-            type: if union.empty? || union.one?
-              "#{namespace}_type"
-            else
-              grammar.options[:union][0]
-            end,
-            body: if union.empty?
-              "{}"
-            elsif union.one?
-              union[0]
-            else
-              union[1]
-            end
-          }.freeze
+          Hash[[:body, :type].zip(directives.union.reverse)]
         end
       end
 
       def namespace
-        if grammar.options[:namespace].any?
-          grammar.options[:namespace][0]
+        if directives["c.namespace"]
+          directives["c.namespace"]
         else
           grammar.name
         end.gsub(/[^A-Za-z]/, "_")

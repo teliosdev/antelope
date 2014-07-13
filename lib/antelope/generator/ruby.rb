@@ -51,18 +51,18 @@ module Antelope
       end
 
       def define_own_handler?
-        directives["ruby.error-class"] or
+        directives.ruby.error_class? or
           panic_mode?
       end
 
       def panic_mode?
-        directives["panic-mode"] &&
-          directives["ruby.error-class"] &&
+        directives.panic_mode &&
+          directives.ruby.error_class? &&
           grammar.contains_error_token?
       end
 
       def error_class
-        directives["ruby.error-class"]
+        directives.ruby.error_class
       end
 
       # Actually performs the generation.  Takes the template from

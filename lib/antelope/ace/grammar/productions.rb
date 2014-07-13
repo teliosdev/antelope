@@ -94,7 +94,8 @@ module Antelope
           prec  = if rule[:prec].empty?
             items.select(&:terminal?).last
           else
-            find_token(rule[:prec])
+            #find_token(rule[:prec])
+            rule[:prec].intern
           end
 
           prec  = precedence_for(prec)

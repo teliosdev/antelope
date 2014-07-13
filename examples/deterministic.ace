@@ -9,7 +9,7 @@
 %token LPAREN "("
 %token RPAREN ")"
 
-%namespace "antelope"
+%c.namespace "antelope"
 %union{
   struct slip_parser_node* node;
   struct slip_lex_token* lex;

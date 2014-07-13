@@ -100,11 +100,21 @@ module Antelope
 
         alias_method :push, :<<
 
+        # Check to see if this state is fuzzily equivalent to another
+        # state.  It does this by checking if the transitions are
+        # equivalent, and then that the rules are fuzzily equivalent.
+        # Ideally, the method is commutative; that is,
+        # `(a === b) == (b === a)`.
+        #
+        # @param other [State] the state to check.
+        # @return [Boolean]
+        # @see Rule#===
         def ===(other)
           return super unless other.is_a? State
 
           other_rules = other.rules.to_a
-          other.transitions == transitions and
+          other.transitions == transitions &&
+            rules.size == other_rules.size &&
             rules.each_with_index.
             all? { |rule, i| rule === other_rules[i] }
         end

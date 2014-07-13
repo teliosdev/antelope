@@ -58,7 +58,9 @@ def parse_action(stack, input)
     type(input.first)
   end
 
-  action = ACTION_TABLE[stack.last.last].fetch(peek_token)
+  action = ACTION_TABLE[stack.last.last].fetch(peek_token) do
+    ACTION_TABLE[stack.last.last].fetch(:$default)
+  end
   case action.first
   when :accept
     production = PRODUCTIONS[action.last]

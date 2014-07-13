@@ -1,4 +1,3 @@
-require 'hashie/rash'
 require 'hashie/mash'
 
 module Antelope
@@ -45,16 +44,14 @@ module Antelope
       # the compiler to allow the option.  If the compiler encounters
       # a bad directive, it'll error (to give the developer a warning).
       #
-      # @param directive [Symbol, Regexp]
+      # @param directive [Symbol, String]
       # @param type [Object] used to define how the value should be
       #   coerced.
       # @see #directives
       # @see #coerce_directive_value
       # @return [void]
       def self.has_directive(directive, type = nil)
-        # it doesn't matter if it's false, we check to see if there
-        # is a key...
-        directive = directive.to_s unless directive.is_a? Regexp
+        directive = directive.to_s
         directives[directive] = [self, type]
       end
 
@@ -63,11 +60,7 @@ module Antelope
       # @see .has_directive
       # @return [Hash]
       def self.directives
-        @_options ||= begin
-          options = Hashie::Rash.new
-          options.optimize_every = Float::INFINITY
-          options
-        end
+        @_directives ||= {}
       end
 
       class << self
@@ -104,15 +97,31 @@ module Antelope
         @_directives ||= begin
           hash = Hashie::Mash.new
 
-          grammar.options.each do |key, values|
-            dict = self.class.directives[key]
-            dict = dict.last if dict
-
-            hash[key] = coerce_directive_value(values, dict)
+          self.class.directives.each do |key, dict|
+            value = [grammar.options.key?(key), grammar.options[key]]
+            hash.deep_merge! coerce_nested_hash(key,
+              coerce_directive_value(*value, dict[1]))
           end
 
           hash
         end
+      end
+
+      def coerce_nested_hash(key, value)
+        parts = key.split('.').map { |p| p.gsub(/-/, "_") }
+        top   = {}
+        hash  = top
+        parts.each_with_index do |part, i|
+          hash[part] = if parts.last == part
+            value
+          else
+            {}
+          end
+          hash = hash[part]
+        end
+
+        top[key] = value
+        top
       end
 
       # Coerce the given directive value to the given type.  For the
@@ -124,7 +133,8 @@ module Antelope
       # it returns the first value.  For the type `Array`, it returns
       # the values.  For any other type that is a class, it tries to
       # initialize the class with the given arguments.
-      def coerce_directive_value(values, type)
+      def coerce_directive_value(defined, values, type)
+        return nil unless defined || Array === type
         case type
         when nil
           case values.size
@@ -141,10 +151,11 @@ module Antelope
           # For bool, if there were no arguments, then return true;
           # otherwise, if the first argument isn't "false", return
           # true.
-          values.empty? || values[0].to_s != "false"
+
+          values[0].to_s != "false"
         when Array
           values.zip(type).map do |value, t|
-            coerce_directive_value([value], t)
+            coerce_directive_value(defined, [value], t)
           end
         when Class
           if type == Array

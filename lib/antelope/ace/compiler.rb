@@ -173,10 +173,10 @@ module Antelope
       end
 
       def compile_extra(name, args)
-        matching = Generator.all_directives.all(name.to_s)
+        matching = Generator.directives[name.to_s]
 
         raise NoDirectiveError, "no directive named #{name}" \
-          unless matching.any?
+          unless matching
 
         @options[:extra][name] = args
       end

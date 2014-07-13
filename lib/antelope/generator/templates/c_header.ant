@@ -11,7 +11,9 @@ typedef struct {{= namespace }}_pstate {
 
 } {{= namespace }}_pstate_t;
 
-union {{= union[:type] }} {{= union[:body] }};
+union {{= union[:type] }} {
+{{= union[:body] }}
+};
 
 const char* {{= namespace }}_token_string(enum {{= namespace }}_token token);
 int {{= namespace }}_parse();

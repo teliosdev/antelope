@@ -11,6 +11,8 @@ module Antelope
 
       register_as "output"
 
+      has_directive "output.show-lookahead", Boolean
+
       # Defines singleton method for every mod that the grammar passed
       # to the generator.
       #

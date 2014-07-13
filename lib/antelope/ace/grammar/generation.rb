@@ -33,14 +33,14 @@ module Antelope
           mods = modifiers.map(&:last).
             map  { |x| x.new(self) }
           mods.each do |mod|
-            puts "Running mod #{mod.class}..."
+            puts "Running mod #{mod.class}..." if options[:verbose]
             mod.call
           end
           hash = Hash[modifiers.map(&:first).zip(mods)]
           # This is when we'd generate
 
           find_generators(generators, options).each do |gen|
-            puts "Running generator #{gen}..."
+            puts "Running generator #{gen}..." if options[:verbose]
             gen.new(self, hash).generate
           end
         end

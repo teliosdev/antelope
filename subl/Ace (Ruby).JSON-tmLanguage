@@ -1,0 +1,94 @@
+// [PackageDev] target_format: plist, ext: tmLanguage
+
+{
+  "name": "Ace (Ruby Host)",
+  "scopeName": "source.ace.ruby",
+  "fileTypes": [
+    "ace"
+  ],
+  "uuid": "2d7fd617-f324-4476-9380-f5108efdf88d",
+
+  "patterns": [
+    { "include": "#firstSection" }
+  ],
+
+  "repository": {
+    "firstSection": {
+      "patterns": [
+        {
+          "begin": "%%",
+          "end": "a^",
+          "name": "meta.section.third.ace.ruby",
+          "patterns": [
+            { "include": "#secondSection" }
+          ]
+        },
+        {
+          "begin": "(%[A-Za-z0-9_.-]+)",
+          "end": "\\n",
+          "name": "meta.function.ace.ruby",
+          "beginCaptures": {
+            "1": { "name": "keyword.other.ace.ruby" }
+          },
+          "patterns": [
+            {
+              "match": "(<)((?:\\\\>|[^>])*)(>)",
+              "name": "string.quoted.other.ace.ruby"
+            },
+            {
+              "match": "(\\{)((?:\\\\}|[^}])*)(\\})",
+              "name": "string.quoted.other.ace.ruby"
+            },
+            {
+              "match": "(\\')((?:\\\\'|[^'])*)(\\')",
+              "name": "string.quoted.single.ace.ruby"
+            },
+            {
+              "match": "(\\\")((?:\\\\\"|[^\"])*)(\\\")",
+              "name": "string.quoted.double.ace.ruby"
+            },
+            {
+              "match": "(?<=\\s)([A-Za-z0-9_.-]+)(?=\\s)",
+              "name": "variable.parameter.ace.ruby"
+            }
+          ]
+        }
+      ]
+
+    },
+    "secondSection": {
+      "patterns": [
+        {
+          "begin": "%%",
+          "end": "a^",
+          "name": "meta.section.last.ace.ruby",
+          "patterns": [
+            { "include": "source.ruby" }
+          ]
+        },
+        {
+          "match": "[A-Za-z0-9._-]+:",
+          "name": "constant.other.symbol.ace.ruby"
+        },
+        {
+          "match": "(?<=\\s)[A-Z]+(?=\\s)",
+          "name": "variable.other.constant.ace.ruby"
+        },
+        {
+          "match": "\\|",
+          "name": "keyword.operator.ace.ruby"
+        },
+        {
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            { "include": "source.ruby" }
+          ]
+        }
+      ]
+    },
+    "thirdSection": {
+      "patterns": []
+    }
+  }
+}

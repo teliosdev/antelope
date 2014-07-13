@@ -110,6 +110,9 @@ module Antelope
         buf
       end
 
+      # Returns a nice inspect.
+      #
+      # @return [String]
       def inspect
         "#<#{self.class} from=#{from.id if from} to=#{to.id if to} " \
           "name=#{name.inspect} value=#{@value.inspect}>"

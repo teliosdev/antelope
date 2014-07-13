@@ -1,7 +1,7 @@
 %require "~> 0.1"
 %type "ruby"
 
-%ruby.error-class { SyntaxError }
+%null.data ruby.error-class { SyntaxError }
 %panic-mode true
 %terminal NUMBER
 %terminal MULTIPLY "*"

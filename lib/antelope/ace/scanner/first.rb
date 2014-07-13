@@ -53,20 +53,32 @@ module Antelope
           end
         end
 
+        # Scan the arguments for a directive.  It keeps attempting to
+        # scan arguments until the first newline that was not in a
+        # block.  Arguments can be blocks, carets, or text; blocks are
+        # encapsulated with `{` and `}`, carets are encapsulated with
+        # `<` and `>`, and text is encapsulated with quotes or
+        # nothing.
+        #
+        # @return [Array<Argument>]
         def scan_first_directive_arguments
           arguments = []
           until @scanner.check(/\n/)
             if @scanner.scan(/\{/)
-              arguments.push(
+              argument =
                 Argument.new(:block, _scan_block[1..-2])
-              )
+            elsif @scanner.scan(/</)
+              @scanner.scan(/((?:\\>|[^>])*)\>/)
+              argument =
+                Argument.new(:caret, @scanner[1])
             else
               @scanner.scan(/#{VALUE}/x) or error!
-              arguments.push(
-                Argument.new(:text, @scanner[2] || @scanner[3])
-              )
-              @scanner.scan(/ */)
+              argument = Argument.new(:text,
+                @scanner[2] || @scanner[3])
             end
+
+            arguments.push(argument)
+            @scanner.scan(/ */)
           end
 
           arguments

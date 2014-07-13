@@ -16,7 +16,7 @@ module Antelope
         # Constructs the first set for a given token.  This is how
         # the method should behave:
         #
-        #     FIRST(ε)  == []  # if ϵ is the epsilon token
+        #     FIRST(ε)  == []  # if ε is the epsilon token
         #     FIRST(x)  == [x] # if x is a terminal
         #     FIRST(αβ) == if nullable?(α)
         #       FIRST(α) U FIRST(β)

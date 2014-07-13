@@ -6,6 +6,9 @@ module Antelope
 
       register_as "null"
 
+      has_directive "null.data"
+      has_directive "comment"
+
       # Does nothing.
       #
       # @return [void]

@@ -38,6 +38,7 @@ module Antelope
       def call
         tablize
         conflictize
+        defaultize
       end
 
       # Construct a table based on the grammar.  The table itself is
@@ -118,6 +119,32 @@ module Antelope
               @table[state][on] = rule_part
             when -1
               @table[state][on] = other_part
+            end
+          end
+        end
+      end
+
+      # Reduce many transitions into a single `$default` transition.
+      # This only works if there is no `$empty` transition; if there
+      # is an `$empty` transition, then the `$default` transition is
+      # set to be the `$empty` transition.
+      #
+      # @return [void]
+      def defaultize
+        max = @table.map { |s| s.keys.size }.max
+        @table.each_with_index do |state|
+          if state.key?(:$empty)
+            state[:$default] = state[:$empty]
+          else
+            common = state.group_by { |k, v| v }.values.
+              sort_by(&:size).first
+
+            if common.size > (max / 2)
+              action = common[0][1]
+
+              keys = common.map(&:first)
+              state.delete_if { |k, _| keys.include?(k) }
+              state[:$default] = action
             end
           end
         end

@@ -168,8 +168,9 @@ module Antelope
         # @return [Numeric]
         def ===(other)
           if other.is_a? Rule
-            left === other.left and right.each_with_index.
-              all? { |e, i| e === other.right[i] }
+            left === other.left and right.size == other.right.size and
+              right.each_with_index.
+                all? { |e, i| e === other.right[i] }
           else
             super
           end

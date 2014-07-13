@@ -13,13 +13,6 @@ module Antelope
 
       extend Generator
 
-      # Retrieves the directives defined _on_ this group.
-      #
-      # @return [Hash]
-      def self.directives
-        Base.method(:directives).unbind.bind(self).call
-      end
-
       # Initialize the group generator.  Calls {Base#initialize}, and
       # then instantizes all of the generators in the group.
       def initialize(*_)
