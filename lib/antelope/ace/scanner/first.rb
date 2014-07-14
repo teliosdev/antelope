@@ -45,7 +45,7 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_first_directive
-          if @scanner.scan(/%([A-Za-z_.-]+) ?/)
+          if @scanner.scan(/%(#{IDENTIFIER}) ?/)
             directive = @scanner[1]
             arguments = scan_first_directive_arguments
 

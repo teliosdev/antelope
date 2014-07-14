@@ -35,8 +35,10 @@ module Antelope
         # @return [Token]
         def find_token(value)
           value = value.intern
+
           if productions.key?(value)
-            Token::Nonterminal.new(value)
+            typed_nonterminals.find { |term| term.name == value } ||
+              Token::Nonterminal.new(value)
           elsif terminal = terminals.
               find { |term| term.name == value }
             terminal
@@ -89,19 +91,44 @@ module Antelope
         # @param id [Numeric] the id for the production.
         # @return [Production]
         def generate_production_for(rule, id)
-          left  = rule[:label]
-          items = rule[:set].map { |_| find_token(_) }
+          left  = Token::Nonterminal.new(rule[:label])
+          items = rule[:set].map { |_| find_token(_[0]) }
           prec  = if rule[:prec].empty?
             items.select(&:terminal?).last
           else
-            #find_token(rule[:prec])
             rule[:prec].intern
           end
 
           prec  = precedence_for(prec)
+          left.type = type_for(rule[:label])
+          left.id = rule[:label_id]
 
-          Production.new(Token::Nonterminal.new(left), items,
-               rule[:block], prec, id + 1)
+          rule[:set].each_with_index do |tok, i|
+            items[i] = items[i].dup
+            items[i].id = tok[1]
+          end
+
+          Production.new(left, items, rule[:block], prec, id + 1)
+        end
+
+        # Returns the defined type for the given token name.
+        # Uses the `%type` directive to infer the corresponding types.
+        #
+        # @param token [Symbol] the token to check for
+        #   types.
+        def type_for(token)
+          token = find_token(token) unless token.is_a?(Token)
+
+          case token
+          when Token::Nonterminal
+            token.type
+          when Token::Terminal
+            token.type
+          when Token::Epsilon
+            ""
+          when Token::Error
+            ""
+          end
         end
 
         # Creates the default production for the grammar.  The left

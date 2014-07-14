@@ -90,21 +90,7 @@ module Antelope
       def compute_states
         fixed_point(states) do
           states.dup.each do |state|
-            state.rules.each do |rule|
-              next unless rule.succ?
-              transitional = find_state_for(rule.succ) do |succ|
-                ns = State.new << succ
-                compute_closure(ns)
-                @map[succ] = ns
-              end
-
-              if state.transitions[rule.active.name]
-                state.transitions[rule.active.name].merge! transitional
-              else
-                states << transitional
-                state.transitions[rule.active.name] = transitional
-              end
-            end
+            compute_gotos(state)
           end
         end
       end
@@ -124,17 +110,26 @@ module Antelope
         end
       end
 
-      private
+      def compute_gotos(state)
+        actives = state.rules.map(&:active).select(&:name).to_set
 
-      # Find a state that include a specific rule, or yields the rule.
-      #
-      # @param rule [Rule]
-      # @yield [rule]
-      # @return [State]
-      def find_state_for(rule, &block)
-        #states.find { |state| state.include?(rule) } or yield(rule)
-        @map.fetch(rule) { block.call(rule) }
+        actives.each do |active|
+          next if state.transitions[active.name]
+          rules = state.rules.
+            select { |r| r.active == active && r.succ? }.
+            map(&:succ).to_set
+          s = states.find { |st| rules <= st.rules } || begin
+            s = State.new << rules
+            compute_closure(s)
+            states << s
+            s
+          end
+
+          state.transitions[active.name] = s
+        end
       end
+
+      private
 
       # Changes the IDs of the states into a more friendly format.
       #

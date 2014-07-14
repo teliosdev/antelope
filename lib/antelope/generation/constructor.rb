@@ -63,6 +63,7 @@ module Antelope
           production.items = []
 
           current_state = state
+          old_state = state
 
           production.label.from = state
           production.label.to   = state.transitions[rule.left.name]
@@ -78,6 +79,7 @@ module Antelope
 
             production.items << new_item
 
+            old_state = current_state
             current_state = transition
           end
 

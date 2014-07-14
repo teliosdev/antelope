@@ -45,7 +45,7 @@ module Antelope
         # @see #scan_second_rule_body
         # @see #error!
         def scan_second_rule
-          if @scanner.check(/([a-zA-Z._-]+):/)
+          if @scanner.check(/(#{IDENTIFIER})(\[#{IDENTIFIER}\])?:/)
             scan_second_rule_label or error!
             scan_second_rule_body
             true
@@ -57,8 +57,8 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_label
-          if @scanner.scan(/([a-zA-Z._-]+): ?/)
-            tokens << [:label, @scanner[1]]
+          if @scanner.scan(/(#{IDENTIFIER})(?:\[(#{IDENTIFIER})\])?: ?/)
+            tokens << [:label, @scanner[1], @scanner[2]]
           end
         end
 
@@ -88,8 +88,8 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_part
-          if @scanner.scan(/([A-Za-z._-]+)(?!\:|[A-Za-z._-])/)
-            tokens << [:part, @scanner[1]]
+          if @scanner.scan(/(#{IDENTIFIER})(?:\[(#{IDENTIFIER})\])?(?!\:|[A-Za-z._])/)
+            tokens << [:part, @scanner[1], @scanner[2]]
           end
         end
 
@@ -107,7 +107,7 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_prec
-          if @scanner.scan(/%prec ([A-Za-z._-]+)/)
+          if @scanner.scan(/%prec (#{IDENTIFIER})/)
             tokens << [:prec, @scanner[1]]
           end
         end

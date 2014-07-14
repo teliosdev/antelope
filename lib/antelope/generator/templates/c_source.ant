@@ -1,12 +1,202 @@
-#include "{{= file }}.h"
+#include "%{file}.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <limits.h>
+#include <alloca.h>
+#include <string.h>
 
-{{= namespace }}_token_string(enum {{= namespace }}_token token)
+static const unsigned int %{prefix}states[][%{upper_prefix}TERMINALS] = {
+% table.each do |state|
+  { %{action_for(state)} },
+% end
+};
+
+#ifndef %{upper_prefix}INITSTACK
+#  define %{upper_prefix}INITSTACK 64
+#endif
+
+#ifndef %{upper_prefix}ALLOC
+#  define %{upper_prefix}ALLOC malloc
+#endif
+
+#ifndef %{upper_prefix}FREE
+#  define %{upper_prefix}FREE free
+#endif
+
+struct %{prefix}stack_element {
+  %{stype}* val;
+  unsigned int state;
+};
+
+#define %{upper_prefix}PUSH_STACK(stack, v, s) do { \
+  int err; \
+  if(stack.current + 1 > stack.max) \
+  { \
+    if((err = %{prefix}resize_stack(&stack)) != 0) \
+      return err; \
+  } \
+  stack.elements[stack.current].val = val; \
+  stack.elements[stack.current].state = s; \
+} while(0)
+
+#define %{upper_prefix}POP_STACK(stack, out) do { \
+  out = stack.elements + stack.current; \
+  stack.current -= 1; \
+} while(0)
+
+const char* %{prefix}token_string(%{terminal_type} token)
 {
   switch(token)
   {
-{{ grammar.terminals.each do |terminal| }}
-  case {{= guard_name }}_{{= terminal.name }}:
-    return {{= terminal.to_s.inspect }};
-{{ end }}
+% grammar.terminals.each do |terminal|
+  case %{token_prefix}%{terminal.name}:
+    return %{terminal.to_s.inspect};
+% end
+  }
+
+  return "(unknown)";
+}
+
+%{prefix}pstate* %{prefix}state_new()
+{
+  %{prefix}pstate* stack = %{upper_prefix}ALLOC(sizeof(%{prefix}pstate));
+  if(stack != NULL)
+  {
+    stack->max = %{upper_prefix}INITSTACK;
+    stack->elements = %{upper_prefix}ALLOC(sizeof(struct %{prefix}stack_element) * stack->max);
+    stack->current = 0;
+    stack->free = 1;
+  }
+
+  return stack;
+}
+
+void %{prefix}state_delete(%{prefix}pstate* stack)
+{
+  stack->current = 0;
+  stack->max = 0;
+  stack->free = 0;
+
+  if(stack->free)
+  {
+    %{upper_prefix}FREE(stack->elements);
+    %{upper_prefix}FREE(stack);
+  }
+
+  stack->elements = 0;
+}
+
+int %{prefix}resize_stack(%{prefix}pstate* stack)
+{
+  void* body;
+  int new_max;
+
+  if(stack->current + 1 > stack->max)
+  {
+    new_max = stack->max * 2;
+  }
+  else if((stack->current / 2) < stack->max)
+  {
+    new_max = stack->max / 2;
+  }
+  else
+  {
+    return 0;
+  }
+
+
+  body = %{upper_prefix}ALLOC(sizeof(struct %{prefix}stack_element) * new_max);
+
+  if(body == NULL)
+  {
+    return ENOMEM;
+  }
+
+  memcpy(body, stack->elements, sizeof(struct %{prefix}stack_element) * stack->current);
+
+  if(stack->free)
+  {
+    %{upper_prefix}FREE(stack->elements);
+  }
+
+  stack->elements = body;
+  stack->max = new_max;
+
+  return 0;
+}
+
+int %{prefix}parse_push(%{prefix}pstate* stack int token,
+  %{upper_prefix}STYPE* val%{parse_params})
+{
+  unsigned int action;
+  %{prefix}stack_element* current_state;
+
+  current_state = stack.elements + stack.current - 1;
+
+  if(token > %{upper_prefix}TERMINALS || token < 0)
+    %{prefix}abort;
+
+get_action:
+  action = states[current_state->state][token];
+
+  if(action < %{upper_prefix}STATES)
+  {
+    %{upper_prefix}PUSH_STACK(stack, val, action - 1);
+    return %{upper_prefix}PUSH_MORE;
+  }
+
+  switch(action)
+  {
+  case 0:
+    %{prefix}error;
+    break;
+  case %{table.size + 1}:
+    stack.current = 0;
+    return 0;
+% productions.each_with_index do |(label, size, block), i|
+  case %{i + table.size + 2}: { // %{i}
+    %{upper_prefix}STYPE* %{prefix}vals[%{size}];
+    %{upper_prefix}STYPE* %{prefix}out;
+%   size.times do |e|
+    %{upper_prefix}POP_STACK(stack, %{prefix}vals[%{e}]);
+%   end
+    %{prefix}out = %{prefix}vals[0];
+    current_state = stack.elements + stack.current - 1;
+
+    do {
+      {{= cify_block(block) }}
+    } while(0);
+
+    token  = %{symbols[label.name]};
+    action = states[current_state->state][token];
+    %{upper_prefix}PUSH_STACK(stack, %{prefix}out, action);
+    break;
+  }
+% end
+  }
+
+  return %{upper_prefix}PUSH_MORE;
+}
+
+int %{prefix}parse_pull(%{parse_params})
+{
+  %{prefix}pstate stack;
+  int token;
+  unsigned int action;
+  %{upper_prefix}STYPE val;
+  %{prefix}stack_element* current_state;
+
+  stack.max      = %{upper_prefix}INITSTACK;
+  stack.elements = alloca(sizeof(struct %{prefix}stack_element) * stack.max);
+  stack.current  = 0;
+  stack.free     = 0;
+
+  %{upper_prefix}PUSH_STACK(stack, NULL, 1);
+
+  while(stack.current > 0)
+  {
+    token = %{prefix}lex(&val%{params});
+    %{prefix}parse_push(&stack, token, &val%{parse_params});
   }
 }

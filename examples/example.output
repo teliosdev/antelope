@@ -13,37 +13,37 @@ Productions:
 Precedence:
   --- highest
   right    4:
-    { EXPONENTIATE }
+    {EXPONENTIATE}
   left     3:
-    { MULTIPLY, DIVIDE }
+    {MULTIPLY, DIVIDE}
   left     2:
-    { ADD, SUBTRACT }
+    {ADD, SUBTRACT}
   nonassoc 1:
-    { _ }
+    {_}
   nonassoc 0:
-    { $end }
+    {$end}
   --- lowest
 
 
   State 0:
     0/n0: $start →  • expression $end
-      {  }
+      {}
     1/n1: expression →  • NUMBER
-      {  }
+      {}
     2/r4: expression →  • expression "^" expression
-      {  }
+      {}
     3/l2: expression →  • expression "+" expression
-      {  }
+      {}
     4/l2: expression →  • expression "-" expression
-      {  }
+      {}
     5/l3: expression →  • expression "*" expression
-      {  }
+      {}
     6/l3: expression →  • expression "/" expression
-      {  }
+      {}
     7/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     8/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 1
       NUMBER: State 2
@@ -51,17 +51,17 @@ Precedence:
 
   State 1:
     9/n0: $start → expression • $end
-      {  }
+      {}
     10/r4: expression → expression • "^" expression
-      {  }
+      {}
     11/l2: expression → expression • "+" expression
-      {  }
+      {}
     12/l2: expression → expression • "-" expression
-      {  }
+      {}
     13/l3: expression → expression • "*" expression
-      {  }
+      {}
     14/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       $end: State 4
       "^": State 5
@@ -72,62 +72,62 @@ Precedence:
 
   State 2:
     15/n1: expression → NUMBER •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     reductions:
       $default: Rule 1
 
   State 3:
     16/n1: expression → "(" • expression ")"
-      {  }
-    17/n1: expression →  • NUMBER
-      {  }
-    18/r4: expression →  • expression "^" expression
-      {  }
-    19/l2: expression →  • expression "+" expression
-      {  }
-    20/l2: expression →  • expression "-" expression
-      {  }
-    21/l3: expression →  • expression "*" expression
-      {  }
-    22/l3: expression →  • expression "/" expression
-      {  }
-    23/n1: expression →  • "(" expression ")"
-      {  }
-    24/n1: expression →  • "(" $error ")"
-      {  }
-    25/n1: expression → "(" • $error ")"
-      {  }
+      {}
+    17/n1: expression → "(" • $error ")"
+      {}
+    18/n1: expression →  • NUMBER
+      {}
+    19/r4: expression →  • expression "^" expression
+      {}
+    20/l2: expression →  • expression "+" expression
+      {}
+    21/l2: expression →  • expression "-" expression
+      {}
+    22/l3: expression →  • expression "*" expression
+      {}
+    23/l3: expression →  • expression "/" expression
+      {}
+    24/n1: expression →  • "(" expression ")"
+      {}
+    25/n1: expression →  • "(" $error ")"
+      {}
     transitions:
       expression: State 10
+      $error: State 11
       NUMBER: State 2
       "(": State 3
-      $error: State 11
 
   State 4:
     26/n0: $start → expression $end •
-      {  }
+      {}
     accepting:
       $end: Rule 0
 
   State 5:
     27/r4: expression → expression "^" • expression
-      {  }
+      {}
     28/n1: expression →  • NUMBER
-      {  }
+      {}
     29/r4: expression →  • expression "^" expression
-      {  }
+      {}
     30/l2: expression →  • expression "+" expression
-      {  }
+      {}
     31/l2: expression →  • expression "-" expression
-      {  }
+      {}
     32/l3: expression →  • expression "*" expression
-      {  }
+      {}
     33/l3: expression →  • expression "/" expression
-      {  }
+      {}
     34/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     35/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 12
       NUMBER: State 2
@@ -135,23 +135,23 @@ Precedence:
 
   State 6:
     36/l2: expression → expression "+" • expression
-      {  }
+      {}
     37/n1: expression →  • NUMBER
-      {  }
+      {}
     38/r4: expression →  • expression "^" expression
-      {  }
+      {}
     39/l2: expression →  • expression "+" expression
-      {  }
+      {}
     40/l2: expression →  • expression "-" expression
-      {  }
+      {}
     41/l3: expression →  • expression "*" expression
-      {  }
+      {}
     42/l3: expression →  • expression "/" expression
-      {  }
+      {}
     43/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     44/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 13
       NUMBER: State 2
@@ -159,23 +159,23 @@ Precedence:
 
   State 7:
     45/l2: expression → expression "-" • expression
-      {  }
+      {}
     46/n1: expression →  • NUMBER
-      {  }
+      {}
     47/r4: expression →  • expression "^" expression
-      {  }
+      {}
     48/l2: expression →  • expression "+" expression
-      {  }
+      {}
     49/l2: expression →  • expression "-" expression
-      {  }
+      {}
     50/l3: expression →  • expression "*" expression
-      {  }
+      {}
     51/l3: expression →  • expression "/" expression
-      {  }
+      {}
     52/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     53/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 14
       NUMBER: State 2
@@ -183,23 +183,23 @@ Precedence:
 
   State 8:
     54/l3: expression → expression "*" • expression
-      {  }
+      {}
     55/n1: expression →  • NUMBER
-      {  }
+      {}
     56/r4: expression →  • expression "^" expression
-      {  }
+      {}
     57/l2: expression →  • expression "+" expression
-      {  }
+      {}
     58/l2: expression →  • expression "-" expression
-      {  }
+      {}
     59/l3: expression →  • expression "*" expression
-      {  }
+      {}
     60/l3: expression →  • expression "/" expression
-      {  }
+      {}
     61/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     62/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 15
       NUMBER: State 2
@@ -207,23 +207,23 @@ Precedence:
 
   State 9:
     63/l3: expression → expression "/" • expression
-      {  }
+      {}
     64/n1: expression →  • NUMBER
-      {  }
+      {}
     65/r4: expression →  • expression "^" expression
-      {  }
+      {}
     66/l2: expression →  • expression "+" expression
-      {  }
+      {}
     67/l2: expression →  • expression "-" expression
-      {  }
+      {}
     68/l3: expression →  • expression "*" expression
-      {  }
+      {}
     69/l3: expression →  • expression "/" expression
-      {  }
+      {}
     70/n1: expression →  • "(" expression ")"
-      {  }
+      {}
     71/n1: expression →  • "(" $error ")"
-      {  }
+      {}
     transitions:
       expression: State 16
       NUMBER: State 2
@@ -231,17 +231,17 @@ Precedence:
 
   State 10:
     72/n1: expression → "(" expression • ")"
-      {  }
+      {}
     73/r4: expression → expression • "^" expression
-      {  }
+      {}
     74/l2: expression → expression • "+" expression
-      {  }
+      {}
     75/l2: expression → expression • "-" expression
-      {  }
+      {}
     76/l3: expression → expression • "*" expression
-      {  }
+      {}
     77/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       ")": State 17
       "^": State 5
@@ -252,23 +252,23 @@ Precedence:
 
   State 11:
     78/n1: expression → "(" $error • ")"
-      {  }
+      {}
     transitions:
       ")": State 18
 
   State 12:
     79/r4: expression → expression "^" expression •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     80/r4: expression → expression • "^" expression
-      {  }
+      {}
     81/l2: expression → expression • "+" expression
-      {  }
+      {}
     82/l2: expression → expression • "-" expression
-      {  }
+      {}
     83/l3: expression → expression • "*" expression
-      {  }
+      {}
     84/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       "^": State 5
     reductions:
@@ -281,17 +281,17 @@ Precedence:
 
   State 13:
     85/l2: expression → expression "+" expression •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     86/r4: expression → expression • "^" expression
-      {  }
+      {}
     87/l2: expression → expression • "+" expression
-      {  }
+      {}
     88/l2: expression → expression • "-" expression
-      {  }
+      {}
     89/l3: expression → expression • "*" expression
-      {  }
+      {}
     90/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       "^": State 5
       "*": State 8
@@ -304,17 +304,17 @@ Precedence:
 
   State 14:
     91/l2: expression → expression "-" expression •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     92/r4: expression → expression • "^" expression
-      {  }
+      {}
     93/l2: expression → expression • "+" expression
-      {  }
+      {}
     94/l2: expression → expression • "-" expression
-      {  }
+      {}
     95/l3: expression → expression • "*" expression
-      {  }
+      {}
     96/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       "^": State 5
       "*": State 8
@@ -327,17 +327,17 @@ Precedence:
 
   State 15:
     97/l3: expression → expression "*" expression •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     98/r4: expression → expression • "^" expression
-      {  }
+      {}
     99/l2: expression → expression • "+" expression
-      {  }
+      {}
     100/l2: expression → expression • "-" expression
-      {  }
+      {}
     101/l3: expression → expression • "*" expression
-      {  }
+      {}
     102/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       "^": State 5
     reductions:
@@ -350,17 +350,17 @@ Precedence:
 
   State 16:
     103/l3: expression → expression "/" expression •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     104/r4: expression → expression • "^" expression
-      {  }
+      {}
     105/l2: expression → expression • "+" expression
-      {  }
+      {}
     106/l2: expression → expression • "-" expression
-      {  }
+      {}
     107/l3: expression → expression • "*" expression
-      {  }
+      {}
     108/l3: expression → expression • "/" expression
-      {  }
+      {}
     transitions:
       "^": State 5
     reductions:
@@ -373,13 +373,13 @@ Precedence:
 
   State 17:
     109/n1: expression → "(" expression ")" •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     reductions:
       $default: Rule 7
 
   State 18:
     110/n1: expression → "(" $error ")" •
-      { $end, "^", "+", "-", "*", "/", ")" }
+      {$end, "^", "+", "-", "*", "/", ")"}
     reductions:
       $default: Rule 8
 

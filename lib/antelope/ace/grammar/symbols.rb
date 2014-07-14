@@ -4,8 +4,8 @@ module Antelope
   module Ace
     class Grammar
 
-      # Manages a list of the terminals in the grammar.
-      module Terminals
+      # Manages a list of the symbols in the grammar.
+      module Symbols
 
         # A list of all terminals in the grammar.  Checks the compiler
         # options for terminals, and then returns an array of
@@ -26,6 +26,21 @@ module Antelope
         # @see #productions
         def nonterminals
           @_nonterminals ||= productions.keys
+        end
+
+        # A list of all nonterminals, with types.
+        #
+        # @return [Array<Token::Nonterminal>>]
+        def typed_nonterminals
+          @_typed_nonterminals ||= begin
+            typed = []
+            compiler.options[:nonterminals].each do |data|
+              data[1].each do |nonterm|
+                typed << Token::Nonterminal.new(nonterm, data[0])
+              end
+            end
+            typed
+          end
         end
 
         # A list of all symbols in the grammar; includes both

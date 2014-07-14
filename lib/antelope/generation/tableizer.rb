@@ -96,7 +96,7 @@ module Antelope
 
             terminal = grammar.precedence_for(on)
 
-            rule_part, other_part = data.sort_by { |(t, d)| t }
+            rule_part, other_part = data.sort_by { |(t, _)| t }
 
             unless other_part[0] == :state
               $stderr.puts \

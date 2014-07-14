@@ -35,14 +35,30 @@ module Antelope
       # @return [Recognizer::State]
       attr_accessor :to
 
+      # The type of the token.  This is given by a caret argument to
+      # the grammar.  This is primarily used for generators.
+      #
+      # @return [String]
+      attr_accessor :type
+
+      attr_accessor :id
+
       # Initialize.
       #
       # @param name [Symbol] the name of the token.
+      # @param type [String?] the type of the token.  For definitions,
+      #   this is the given type of the token (for typed language
+      #   output).
+      # @param id [String?] the id of the token in the production.
+      #   For some languages, this allows references to the token via
+      #   the id.
       # @param value [String?] the value of the token.  This is only
       #   used in output representation to the developer.
-      def initialize(name, value = nil)
+      def initialize(name, type = nil, id = nil, value = nil)
         @name  = name
         @value = value
+        @type  = type
+        @id    = id
         @from  = nil
         @to    = nil
       end
@@ -152,7 +168,7 @@ module Antelope
       #
       # @return [Token]
       def without_transitions
-        self.class.new(name, @value)
+        self.class.new(name, @type, @id, @value)
       end
 
       # Generates a hash for this class.

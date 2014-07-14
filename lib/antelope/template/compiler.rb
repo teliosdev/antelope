@@ -54,6 +54,10 @@ module Antelope
           "#{value}\nend.to_s\n"
       end
 
+      def parse_newline(_)
+        parse_text("\n")
+      end
+
       def parse_comment_tag(_)
       end
 

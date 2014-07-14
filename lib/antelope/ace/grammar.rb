@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require "hashie"
-require "antelope/ace/grammar/terminals"
+require "antelope/ace/grammar/symbols"
 require "antelope/ace/grammar/productions"
 require "antelope/ace/grammar/precedences"
 require "antelope/ace/grammar/loading"
@@ -11,11 +11,11 @@ module Antelope
   module Ace
 
     # Defines a grammar from an Ace file.  This handles setting up
-    # productions, loading from files, terminals, precedence, and
+    # productions, loading from files, symbols, precedence, and
     # generation.
     class Grammar
 
-      include Terminals
+      include Symbols
       include Productions
       include Precedences
       include Loading

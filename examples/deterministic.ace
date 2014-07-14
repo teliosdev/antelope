@@ -1,16 +1,18 @@
 %require "~> 0.1"
-%type "ruby"
+%generator "ruby"
 
 %define api.push-pull pull
 %define panic-mode true
-%token NUMBER
-%token SEMICOLON ";"
-%token ADD "+"
-%token LPAREN "("
-%token RPAREN ")"
+%token <lex> NUMBER
+%token <lex> SEMICOLON ";"
+%token <lex> ADD "+"
+%token <lex> LPAREN "("
+%token <lex> RPAREN ")"
 
-%c.namespace "antelope"
-%union{
+%type <node> s e t
+
+%null.data api.prefix "antelope_"
+%union {
   struct slip_parser_node* node;
   struct slip_lex_token* lex;
   struct slip_parser_list* list;
@@ -19,12 +21,12 @@
 %%
 
 s: e
-e: t SEMICOLON
- | t ADD e
- | error
+e: t[a] SEMICOLON[b] { $$ = $1 }
+ | t[a] ADD[b] e[c]  { $$ = $1 + $2 }
+ | error[a]
 
 t: NUMBER
- | LPAREN e RPAREN
+ | LPAREN e RPAREN   { $$ = $2 }
 
 %%
 

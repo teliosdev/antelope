@@ -71,7 +71,7 @@ module Antelope
 
           generators
 
-        rescue KeyError => e
+        rescue KeyError
           raise NoTypeError, "Undefined type #{type}"
         end
       end

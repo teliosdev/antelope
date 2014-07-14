@@ -20,21 +20,21 @@ Precedence:
   --- highest
 {{ grammar.precedence.each do |pr| }}
   {{=  "%-8s" % pr.type }} {{=  pr.level }}:
-    { {{=  pr.tokens.to_a.join(", ") }} }
+    {{= "{" << pr.tokens.to_a.join(", ") << "}" }}
 {{ end }}
   --- lowest
 
 {{
-  len = tableizer.table.flatten.map(&:keys).flatten.map(&:size).max
+  len = table.flatten.map(&:keys).flatten.map(&:size).max
   states = grammar.states.to_a
 }}
 
-{{ tableizer.table.each_with_index do |v, i| }}
+{{ table.each_with_index do |v, i| }}
 {{   state = states[i] }}
   State {{=  i }}:
 {{   state.rules.each do |rule| }}
     {{=  rule }}
-      { {{=  rule.lookahead.to_a.join(", ") }} }
+      {{= "{" << rule.lookahead.to_a.join(", ") << "}" }}
 {{   end }}
 {{
   transitions = v.each.select { |_, a| a && a[0] == :state }

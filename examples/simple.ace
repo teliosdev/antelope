@@ -1,5 +1,5 @@
 %require "~> 0.1"
-%type "ruby"
+%generator "ruby"
 
 %terminal IDENT
 %terminal STAR "*"

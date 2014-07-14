@@ -1,30 +1,36 @@
-#ifndef _{{= guard_name }}_H
-#define _{{= guard_name }}_H
+#ifndef _%{guard_name}_H
+#define _%{guard_name}_H
 
-enum {{= namespace }}_token {
-{{ grammar.terminals.each do |terminal| }}
-  {{= guard_name }}_{{= terminal.name }},
-{{ end }}
+% if define_stype?
+typedef union {
+  %{union_body}
+} %{stype};
+% end
+
+enum %{prefix}tokentype {
+% starting = 257
+  %{token_prefix}EOF = 0,
+% grammar.terminals.each_with_index do |terminal, i|
+  %{token_prefix}%{terminal.name} = %{starting + i},
+% end
 };
 
-typedef struct {{= namespace }}_pstate {
+typedef struct {
+  struct %{prefix}stack_element* elements;
+  unsigned int current;
+  unsigned int max;
+  unsigned char free;
+} %{prefix}pstate;
 
-} {{= namespace }}_pstate_t;
+#define %{upper_prefix}PUSH_MORE -1
+#define %{upper_prefix}TERMINALS %{grammar.terminals.size}
+#define %{upper_prefix}STATES %{table.size}
 
-union {{= union[:type] }} {
-{{= union[:body] }}
-};
-
-const char* {{= namespace }}_token_string(enum {{= namespace }}_token token);
-int {{= namespace }}_parse();
-{{ if push? }}
-int {{= namespace }}_parse_push({{= namespace }}_pstate_t pstate,
-  enum {{= namespace }}_token type,
-  union {{= union[:type] }} v);
-{{ else }}
-typedef void ({{= namespace }}_parse_fn)(enum {{= namespace }}_token* type, union {{= union[:type] }}* v);
-int {{= namespace }}_parse_pull({{= namespace }}_pstate_t pstate,
-  {{= namespace }}_parse_fn* cb);
-{{ end }}
+const char* %{prefix}token_string(%{terminal_type} token);
+int %{prefix}lex(%{stype}* lval%{lex_params});
+int %{prefix}parse_push(%{parse_params});
+int %{prefix}parse_pull(%{parse_params});
+%{prefix}pstate* %{prefix}pstate_new();
+void %{prefix}pstate_delete(%{prefix}pstate* stack);
 
 #endif

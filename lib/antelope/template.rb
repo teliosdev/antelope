@@ -2,6 +2,7 @@ require "antelope/template/errors"
 require "antelope/template/scanner"
 require "antelope/template/compiler"
 
+
 module Antelope
   class Template
 
@@ -23,7 +24,7 @@ module Antelope
 
     def result(binding = TOPLEVEL_BINDING.dup)
       # sue me.
-      eval(parse, binding, "#{@source}.comp", 0)
+      eval(parse, binding, "#{@source}.rb", 0)
     end
 
     alias_method :run, :result

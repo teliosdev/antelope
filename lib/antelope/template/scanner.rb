@@ -10,18 +10,22 @@ module Antelope
       def initialize(input, source = "(template)")
         @scanner = StringScanner.new(input)
         @source  = source
-        @tokens  = []
+        @tokens  = nil
         @line    = 1
       end
 
       def scan
-        @line = 1
 
-        until @scanner.eos?
-          scan_escaped || scan_tag || scan_ending || scan_text
+        @tokens ||= begin
+          @tokens = []
+          @line   = 1
+          @scanner.pos = 0
+          until @scanner.eos?
+            scan_tag || scan_until_tag || error!
+          end
+
+          @tokens
         end
-
-        @tokens
 
       rescue SyntaxError => e
         start = [@scanner.pos - 8, 0].max
@@ -42,81 +46,64 @@ module Antelope
 
       private
 
-      def scan_escaped
-        if @scanner.scan(/\{\{\{/)
-          tokens << [:text, "{{"]
-        elsif @scanner.scan(/\}\}\}/)
-          tokens << [:text, "}}"]
+      def scan_until_tag
+        if value = @scanner.scan_until(/(\n|\%|\{|\}|\\)/)
+          @scanner.pos -= 1
+          tokens << [:text, value[0..-2]]
         end
       end
 
       def scan_tag
-        if @scanner.scan(/\{\{/)
-          scan_tag_contents
-        end
-      end
-
-      def scan_tag_contents
-        type = scan_tag_type
-        if value = @scanner.scan_until(/\}\}(?!\})/)
-          tokens << [type, value[0..-3], @in_full_line]
-          if @in_full_line
-            @scanner.scan(/\n/) # discard
-            @in_full_line = !!@scanner.check(/\{\{(?!\{)/)
-          end
-
-          true
-        else
-          error!
-        end
-      end
-
-      def scan_tag_type
         case
-        when @scanner.scan(/\=/)
-          :output_tag
-        when @scanner.scan(/\!/)
-          :comment_tag
-        else
-          :tag
-        end
-      end
-
-      def scan_ending
-        if @scanner.scan(/\}\}/)
-          error!
-        end
-      end
-
-      def scan_text
-        if value = scan_until_brace
-          tokens << [:text, value]
-        else
-          scan_everything
-        end
-      end
-
-      def scan_until_brace
-        if value = @scanner.scan_until(/\n?\{\{|\}\}/)
-          @line += value.count("\n")
-
-          if @scanner[0].length == 3
-            @in_full_line = true
-          end
-
+        when @scanner.scan(/\\(\{\{|\}\}|\%)/)
+          tokens << [:text, @scanner[1]]
+        when @scanner.scan(/\n?\%\{/)
+          update_line
+          tokens << [:newline] if @scanner[0][0] == "\n"
+          scan_tag_start(:output_tag, :_, /\}/)
+        when @scanner.scan(/\n\%/)
+          update_line
+          error! unless value = @scanner.scan_until(/\n/)
+          @scanner.pos -= 1
+          tokens << [:tag, value]
+        when @scanner.scan(/\n?\{\{=/)
+          update_line
+          scan_tag_start(:output_tag)
+        when @scanner.scan(/\n?\{\{!/)
+          update_line
+          scan_tag_start(:comment_tag)
+        when @scanner.scan(/\n?\{\{/)
+          update_line
+          scan_tag_start(:tag)
+        when @scanner.scan(/\n?\}\}/)
+          update_line
           @scanner.pos -= 2
-          value[0..-3]
+          error!
+        when @scanner.scan(/\n/)
+          update_line
+          tokens << [:newline]
+        when @scanner.scan(/\{|\}|\%|\\/)
+          tokens << [:text, @scanner[0]]
+        else
+          false
         end
       end
 
-      def scan_everything
-        if value = @scanner.scan(/.+/m)
-          tokens << [:text, value]
+      def scan_tag_start(type, online = :_, ending = /\}\}/)
+        if online == :_
+          online = @scanner[0][0] == "\n"
         end
+
+        value = @scanner.scan_until(ending) or error!
+        tokens << [type, value[0..-(@scanner[0].length + 1)]]
       end
 
       def error!
         raise SyntaxError, "invalid syntax"
+      end
+
+      def update_line
+        @line += @scanner[0].count("\n")
       end
 
     end

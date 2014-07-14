@@ -14,8 +14,8 @@ module Antelope
     # - `:directive` (2 arguments)
     # - `:copy` (1 argument)
     # - `:second` (no arguments)
-    # - `:label` (1 argument)
-    # - `:part` (1 argument)
+    # - `:label` (2 arguments)
+    # - `:part` (2 arguments)
     # - `:or` (no arguments)
     # - `:prec` (1 argument)
     # - `:block` (1 argument)
@@ -93,11 +93,12 @@ module Antelope
         @current  = nil
         @current_label = nil
         @options  = {
-          :terminals => [],
-          :prec      => [],
-          :type      => nil,
-          :extra     => Hashie::Extensions::IndifferentAccess.
-            inject!(Hash.new { |h, k| h[k] = [] })
+          :terminals    => [],
+          :nonterminals => [],
+          :prec         => [],
+          :type         => nil,
+          :extra        => Hashie::Extensions::IndifferentAccess.
+            inject!({})
         }
       end
 
@@ -105,7 +106,7 @@ module Antelope
       #
       # @return [String]
       def inspect
-        "#<#{self.class} state=#{@state.inspect} options=#{@options.inspect}>"
+        "#<#{self.class} state=#{@state.inspect} options=#{options.inspect}>"
       end
 
       # Runs the compiler on the input tokens.  For each token,
@@ -158,13 +159,19 @@ module Antelope
         name = name.intern
         case name
         when :terminal, :token
-          @options[:terminals] << [args[0].intern, args[1]]
+          handle_token(args)
         when :require
           compare_versions(args[0])
         when :left, :right, :nonassoc
-          @options[:prec] << [name, *args.map(&:intern)]
+          options[:prec] << [name, *args.map(&:intern)]
+        when :language, :generator, :"grammar.type"
+          options[:type] = args[0].downcase
         when :type
-          @options[:type] = args[0]
+          raise SyntaxError, "%type directive requires first " \
+            "argument to be caret" unless args[0].caret?
+
+          options[:nonterminals] <<
+            [args[0], args[1..-1].map(&:intern)]
         when :define
           compile_extra(args[0], args[1..-1])
         else
@@ -178,7 +185,7 @@ module Antelope
         raise NoDirectiveError, "no directive named #{name}" \
           unless matching
 
-        @options[:extra][name] = args
+        options[:extra][name] = args
       end
 
       # Compiles a copy token.  A copy token basically copies its
@@ -208,16 +215,18 @@ module Antelope
       # @param label [String] the left-hand side of the rule; it
       #   should be a nonterminal.
       # @return [void]
-      def compile_label(label)
+      def compile_label(label, val)
         require_state! :second
         if @current
           @rules << @current
         end
 
-        @current_label = label.intern
+        label = label.intern
+        @current_label = [label, val]
 
         @current = {
-          label: @current_label,
+          label: label,
+          label_id: val,
           set:   [],
           block: "",
           prec:  ""
@@ -229,9 +238,9 @@ module Antelope
       # It adds the first argument to the set of the current rule.
       #
       # @param text [String] the symbol to append to the current rule.
-      def compile_part(text)
+      def compile_part(text, val)
         require_state! :second
-        @current[:set] << text.intern
+        @current[:set] << [text.intern, val]
       end
 
       # Compiles an or.  This should only occur in a rule definition,
@@ -241,7 +250,7 @@ module Antelope
       # @return [void]
       # @see #compile_label
       def compile_or
-        compile_label(@current_label)
+        compile_label(*@current_label)
       end
 
       # Compiles the precedence operator.  This should only occur in a
@@ -280,6 +289,18 @@ module Antelope
       end
 
       private
+
+      def handle_token(args)
+        type = ""
+        if args[0].caret?
+          type = args.shift
+        end
+
+        name = args.shift
+        value = args.shift
+
+        options[:terminals] << [name.intern, type, nil, value]
+      end
 
       # Checks the current state against the given states.
       #

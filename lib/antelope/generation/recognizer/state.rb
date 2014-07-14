@@ -86,10 +86,15 @@ module Antelope
         # @param rule [State, Rule] the object to append.
         # @return [self]
         def <<(rule)
-          if rule.is_a? State
+          case rule
+          when State
             rule.rules.map(&:clone).each { |r| self << r }
-          elsif rule.is_a? Rule
+          when Rule
             rules << rule unless rules.include? rule
+          when Array, Set
+            rule.each do |part|
+              self << part
+            end
           else
             raise ArgumentError, "Expected #{State} or #{Rule}, " \
               "got #{rule.class}"

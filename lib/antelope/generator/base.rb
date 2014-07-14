@@ -40,6 +40,16 @@ module Antelope
         Generator.register_generator(self, *names)
       end
 
+      # Called by ruby on subclassing.
+      #
+      # @param subclass [Class]
+      # @return [void]
+      def self.inherited(subclass)
+        directives.each do |name, (_, type)|
+          subclass.has_directive(name, type)
+        end
+      end
+
       # Allows a directive for this generator.  This is checked in
       # the compiler to allow the option.  If the compiler encounters
       # a bad directive, it'll error (to give the developer a warning).
@@ -220,7 +230,11 @@ module Antelope
       #
       # @return [Array<Hash<Symbol => Array<(Symbol, Numeric)>>>]
       def table
-        mods[:tableizer].table
+        if mods[:tableizer].is_a? Generation::Tableizer
+          mods[:tableizer].table
+        else
+          []
+        end
       end
 
       # Returns an array of the production information of each

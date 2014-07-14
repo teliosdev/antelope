@@ -204,7 +204,7 @@ module Antelope
         # @private
         # @return [Array<(Ace::Token::Nonterminal, Array<Ace::Token>, Numeric)>]
         def to_a
-          [left, right, position].flatten
+          [left, right, position]
         end
       end
     end

@@ -20,6 +20,8 @@ module Antelope
     # @see http://ruby-doc.org/stdlib-2.1.2/libdoc/strscan/rdoc/StringScanner.html
     class Scanner
 
+      IDENTIFIER = "[a-zA-Z_.][a-zA-Z0-9_.-]*"
+
       include First
       include Second
       include Third

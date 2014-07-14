@@ -1,22 +1,34 @@
 module Antelope
   module Generator
-    class CSource < Base
+    class CSource < CHeader
 
-      has_directive "union", Array[String, String]
-      has_directive "c.namespace", String
-      has_directive "api.push-pull", String
+      def action_for(state)
+        out = ""
 
-      def guard_name
-        namespace.upcase
+        grammar.terminals.each do |terminal|
+          action = state[terminal.name]
+
+          if action.size == 2 && action[0] == :state
+            out << "#{action[1] + 1}, "
+          elsif action.size == 2 &&
+            [:reduce, :accept].include?(action[0])
+            if $DEBUG
+              out << "#{prefix.upcase}STATES + #{action[1] + 1}, "
+            else
+              out << "#{table.size + action[1] + 1}, "
+            end
+          else
+            out << "0, "
+          end
+
+        end
+
+        out.chomp(", ")
       end
 
-      def namespace
-        if directives["c.namespace"]
-          directives["c.namespace"]
-        else
-          grammar.name
-        end.gsub(/[^A-Za-z]/, "_")
-
+      def cify_block(block)
+        block.gsub(/\$([0-9]+)/, "#{prefix}vals[\\1]")
+             .gsub(/\$\$/, "#{prefix}out")
       end
 
       def generate
