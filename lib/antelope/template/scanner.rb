@@ -48,7 +48,7 @@ module Antelope
 
       def scan_until_tag
         case
-        when value = @scanner.scan_until(/(\%|\{|\}|\\)/)
+        when value = @scanner.scan_until(/(\%|\{|\}|\\|\n)/)
           @scanner.pos -= 1
           tokens << [:text, value[0..-2]]
         end
@@ -62,22 +62,25 @@ module Antelope
         case
         when @scanner.scan(/\\(\{\{|\}\}|\%)/)
           tokens << [:text, @scanner[1]]
-        when @scanner.scan(/\%\{/)
+        when @scanner.scan(/\n?\%\{/)
+          update_line
           scan_tag_start(:output_tag, :_, /\}/)
-        when @scanner.scan(/\%/)
+        when @scanner.scan(/\n?\%/)
+          update_line
           tokens << [:tag, value]
-        when @scanner.scan(/\{\{=/)
+        when @scanner.scan(/\n?\{\{=/)
           update_line
           scan_tag_start(:output_tag)
-        when @scanner.scan(/\{\{!/)
+        when @scanner.scan(/\n?\{\{!/)
           update_line
           scan_tag_start(:comment_tag)
-        when @scanner.scan(/\{\{/)
+        when @scanner.scan(/\n?\{\{/)
+          update_line
           scan_tag_start(:tag)
         when @scanner.scan(/\}\}/)
           @scanner.pos -= 2
           error!
-        when @scanner.scan(/\{|\}|\%|\\/)
+        when @scanner.scan(/\{|\}|\%|\\|\n/)
           tokens << [:text, @scanner[0]]
         else
           false

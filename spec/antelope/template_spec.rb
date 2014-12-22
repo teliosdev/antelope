@@ -25,15 +25,25 @@ TEST
     it "removes surrounding whitespace" do
       expect(subject.parse).to eq <<-TEST
 _out ||= ""
-_out << "hello\\n"
+_out << "hello"
 _out << begin
   something
 end.to_s
-_out << "\\nworld\\n\\n"
+_out << "\\nworld\\n"
 thing
 _out << "\\na\\n\\n"
 _out
 TEST
+    end
+
+    it "runs in ruby" do
+      object = Object.new
+      result = nil
+      def object.something; "-" end
+      def object.thing; end
+
+      expect { result = object.instance_eval(subject.parse) }.to_not raise_error
+      expect(result).to eq "hello-\nworld\n\na\n\n"
     end
   end
 end
