@@ -29,9 +29,9 @@ _out << "hello\\n"
 _out << begin
   something
 end.to_s
-_out << "world\\n\\n"
+_out << "\\nworld\\n\\n"
 thing
-_out << "a\\n\\n"
+_out << "\\na\\n\\n"
 _out
 TEST
     end

@@ -21,7 +21,7 @@ module Antelope
           @line   = 1
           @scanner.pos = 0
           until @scanner.eos?
-            scan_tag || scan_until_tag || error!
+            scan_tag || scan_until_tag || scan_until_end
           end
 
           @tokens
@@ -30,7 +30,7 @@ module Antelope
       rescue SyntaxError => e
         start = [@scanner.pos - 8, 0].max
         stop  = [@scanner.pos + 8, @scanner.string.length].min
-        snip  = @scanner.string[start..stop].strip.inspect
+        snip  = @scanner.string[start..stop].inspect
         char  = @scanner.string[@scanner.pos]
         char = if char
           char.inspect
@@ -38,8 +38,8 @@ module Antelope
           "EOF"
         end
 
-        new_line = "#{@source}:#{@line}: unexpected #{char} " \
-          "(near #{snip})"
+        new_line = "#{@source}:#{@line}:#{@scanner.pos}: "\
+          "unexpected #{char} (near #{snip})"
 
         raise e, e.message, [new_line, *e.backtrace]
       end
@@ -47,41 +47,36 @@ module Antelope
       private
 
       def scan_until_tag
-        if value = @scanner.scan_until(/(\n|\%|\{|\}|\\)/)
+        case
+        when value = @scanner.scan_until(/(\%|\{|\}|\\)/)
           @scanner.pos -= 1
           tokens << [:text, value[0..-2]]
         end
+      end
+
+      def scan_until_end
+        tokens << [:text, @scanner.scan(/.+/m)]
       end
 
       def scan_tag
         case
         when @scanner.scan(/\\(\{\{|\}\}|\%)/)
           tokens << [:text, @scanner[1]]
-        when @scanner.scan(/\n?\%\{/)
-          update_line
-          tokens << [:newline] if @scanner[0][0] == "\n"
+        when @scanner.scan(/\%\{/)
           scan_tag_start(:output_tag, :_, /\}/)
-        when @scanner.scan(/\n\%/)
-          update_line
-          error! unless value = @scanner.scan_until(/\n/)
-          @scanner.pos -= 1
+        when @scanner.scan(/\%/)
           tokens << [:tag, value]
-        when @scanner.scan(/\n?\{\{=/)
+        when @scanner.scan(/\{\{=/)
           update_line
           scan_tag_start(:output_tag)
-        when @scanner.scan(/\n?\{\{!/)
+        when @scanner.scan(/\{\{!/)
           update_line
           scan_tag_start(:comment_tag)
-        when @scanner.scan(/\n?\{\{/)
-          update_line
+        when @scanner.scan(/\{\{/)
           scan_tag_start(:tag)
-        when @scanner.scan(/\n?\}\}/)
-          update_line
+        when @scanner.scan(/\}\}/)
           @scanner.pos -= 2
           error!
-        when @scanner.scan(/\n/)
-          update_line
-          tokens << [:newline]
         when @scanner.scan(/\{|\}|\%|\\/)
           tokens << [:text, @scanner[0]]
         else

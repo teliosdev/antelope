@@ -1,7 +1,7 @@
 describe Generation::Constructor do
   let(:grammar)  { double("grammar") }
   let(:terminal) { token(:TERMINAL)  }
-  let(:epsilon)  { token(nil, nil, :epsilon) }
+  let(:epsilon)  { token(:epsilon) }
 
   subject { described_class.new(grammar) }
 
@@ -73,7 +73,7 @@ describe Generation::Constructor do
     end
 
     context "when given an array" do
-      let(:terminal2) { token(:TERMINAL2) }
+      let(:terminal2) { token(:terminal, :TERMINAL2) }
 
       it "generates a set" do
         expect(subject.first([epsilon, terminal])).
@@ -85,11 +85,14 @@ describe Generation::Constructor do
 
     context "when given a nonterminal" do
       let(:grammar) { with_recognizer }
-      let(:nonterminal) { token(:e, nil, :nonterminal) }
+      let(:nonterminal) { token(:nonterminal, :e) }
 
+      before do
+        p grammar.terminals
+      end
       it "generates a set" do
         expect(subject.first(nonterminal)).
-          to eq [token(:IDENT), token(:STAR, "*")].to_set
+          to eq [token(:terminal, :IDENT), token(:terminal, :STAR, "*")].to_set
       end
     end
 
@@ -109,7 +112,7 @@ describe Generation::Constructor do
 
     context "when given a nonterminal" do
       let(:grammar) { with_recognizer }
-      let(:nonterminal) { token(:l, nil, :nonterminal) }
+      let(:nonterminal) { token(:nonterminal, :l) }
 
       before do
         subject.productions.merge grammar.productions.values.flatten
@@ -117,15 +120,17 @@ describe Generation::Constructor do
 
       it "generates a set" do
         expect(subject.follow(nonterminal)).to eq [
-          token(:EQUALS, "="),
-          token(:"$")
+          token(:terminal, :EQUALS, "="),
+          token(:terminal, :"$end")
         ].to_set
       end
     end
   end
 
-  def token(name = nil, value = nil, type = :terminal)
+
+
+  def token(type, name = nil, value = nil, ttype = nil, id = nil)
     type = Ace::Token.const_get(type.to_s.capitalize)
-    type.new(name, value)
+    type.new(name, ttype, id, value)
   end
 end

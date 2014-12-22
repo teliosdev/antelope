@@ -6,7 +6,7 @@ describe Ace::Compiler do
     %}
 
     %require "#{VERSION}"
-    %type "ruby"
+    %language "ruby"
 
     %terminal NUMBER
     %terminal SEMICOLON ";"

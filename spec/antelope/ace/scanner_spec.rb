@@ -4,8 +4,8 @@ describe Ace::Scanner do
     expect(scan("%test \"a\" hi\n%%\nt: d { { } }\n%%\nhi\n")).to eq [
       [:directive, "test", ["a", "hi"]],
       [:second],
-      [:label, "t"],
-      [:part, "d"],
+      [:label, "t", nil],
+      [:part, "d", nil],
       [:block, "{ { } }"],
       [:third],
       [:copy, "\nhi\n"]
