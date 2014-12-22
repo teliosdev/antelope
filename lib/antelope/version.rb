@@ -2,5 +2,5 @@
 
 module Antelope
   # The current running version of antelope.
-  VERSION = "0.1.9".freeze
+  VERSION = "0.1.10".freeze
 end
