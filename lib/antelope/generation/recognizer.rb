@@ -118,7 +118,7 @@ module Antelope
           rules = state.rules.
             select { |r| r.active == active && r.succ? }.
             map(&:succ).to_set
-          s = states.find { |st| rules <= st.rules } || begin
+          s = states.find { |st| rules.subset? st.rules } || begin
             s = State.new << rules
             compute_closure(s)
             states << s
