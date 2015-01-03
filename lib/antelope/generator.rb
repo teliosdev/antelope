@@ -36,7 +36,8 @@ module Antelope
     # @param name [String, Symbol] a name to associate the generator
     #   with.
     def register_generator(generator, *names)
-      names = [names].flatten      raise ArgumentError,
+      names = [names].flatten
+      raise ArgumentError,
         "Requires at least one name" unless names.any?
       raise ArgumentError,
         "All name values must be a Symbol or string" unless names.

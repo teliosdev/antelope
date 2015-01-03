@@ -111,7 +111,7 @@ module Antelope
       end
 
       def compute_gotos(state)
-        actives = state.rules.map(&:active).select(&:name).to_set
+        actives = state.rules.map(&:active).select(&:name)
 
         actives.each do |active|
           next if state.transitions[active.name]

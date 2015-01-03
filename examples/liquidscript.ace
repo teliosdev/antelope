@@ -1,0 +1,162 @@
+%require "~> 0.1"
+%generator "ruby"
+
+%define api.push-pull pull
+%define panic-mode true
+%define ruby.error-class {SyntaxError}
+
+%terminal REGEX
+%terminal DIRECTIVE
+%terminal IDENTIFIER
+%terminal KEYWORD
+%terminal NUMBER
+%terminal SSTRING
+%terminal ACTION
+%terminal BINOP
+%terminal PREUNOP
+%terminal UNOP
+%terminal HEREDOC
+%terminal HEREDOC_REF
+%terminal IHEREDOC
+%terminal IHEREDOC_REF
+%terminal IHEREDOC_BEGIN
+%terminal ISTRING
+%terminal ISTRING_BEGIN
+%terminal CLASS "class"
+%terminal MODULE "module"
+%terminal IF "if"
+%terminal UNLESS "unless"
+%terminal ELSIF "elsif"
+%terminal ELSE "else"
+%terminal FOR "for"
+%terminal WHILE "while"
+%terminal TRY "try"
+%terminal CATCH "catch"
+%terminal FINALLY "finally"
+%terminal RETURN "return"
+%terminal IN "in"
+%terminal ARROW "->"
+%terminal EQUAL "="
+%terminal LBRACE "{"
+%terminal LPAREN "("
+%terminal LBRACK "["
+%terminal RBRACE "}"
+%terminal RPAREN ")"
+%terminal RBRACK "]"
+%terminal COLON ":"
+%terminal RANGE ".."
+%terminal ERANGE "..."
+%terminal PROP "."
+%terminal COMMA ","
+%terminal MINUS "-"
+%terminal PLUS "+"
+%terminal NEWLINE "\n"
+
+%null.data left LPAREN LBRACK BINOP MINUS PLUS
+%null.data right EQUAL PROP RANGE ERANGE UNOP
+
+%%
+
+main: expressions.maybe
+
+expressions.maybe: expressions
+                 | nothing
+
+expressions: expressions block
+           | block
+
+block: LBRACE expressions RBRACE
+     | expression
+
+expression: conditional
+          | class
+          | module
+          | loop
+          | action
+          | exception
+          | directive
+          | vexpression
+
+vexpression: NUMBER
+           | IDENTIFIER
+           | ISTRING
+           | SSTRING
+           | KEYWORD
+           | REGEX
+           | NEWLINE
+           | interpolation
+           | PLUS vexpression
+           | MINUS vexpression
+           | object
+           | array
+           | function
+           | PREUNOP vexpression
+           | UNOP vexpression
+           | HEREDOC_REF
+           | IHEREDOC_REF
+           | heredoc
+           | vexpression LPAREN vexpression.parameters.maybe RPAREN
+           | vexpression EQUAL vexpression
+           | vexpression PROP IDENTIFIER
+           | vexpression LBRACK vexpression RBRACK
+           | vexpression RANGE vexpression
+           | vexpression ERANGE vexpression
+           | vexpression BINOP vexpression
+           | vexpression MINUS vexpression
+           | vexpression PLUS vexpression
+           | vexpression UNOP
+
+vexpression.parameters.maybe: vexpression.parameters
+                            | nothing
+
+vexpression.parameters: vexpression.parameters COMMA vexpression
+                      | vexpression
+
+object: LBRACE RBRACE
+array: LBRACK RBRACK
+function: LPAREN RPAREN ARROW
+heredoc: HEREDOC
+       | IHEREDOC
+
+interpolation: interpolation.string
+             | interpolation.heredoc
+
+interpolation.heredoc: IHEREDOC_BEGIN vexpression interpolation.heredoc.finish
+interpolation.heredoc.finish: interpolation.heredoc
+                            | IHEREDOC
+
+interpolation.string: ISTRING_BEGIN vexpression interpolation.string.finish
+interpolation.string.finish: interpolation.string
+                           | ISTRING
+
+conditional: IF LPAREN vexpression RPAREN block conditional.continue
+  | UNLESS LPAREN vexpression RPAREN block
+
+conditional.continue: ELSIF LPAREN vexpression RPAREN block conditional.continue
+                    | ELSE block
+
+class: CLASS IDENTIFIER RBRACE LBRACE
+module: MODULE IDENTIFIER RBRACE LBRACE
+
+loop: WHILE LPAREN vexpression RPAREN block
+    | FOR LPAREN IDENTIFIER IN vexpression RPAREN block
+    | FOR LPAREN vexpression RPAREN block
+
+action: RETURN
+      | ACTION
+
+exception: TRY block exception.catch.maybe exception.finally.maybe
+exception.catch.maybe: exception.catch
+                     | nothing
+exception.finally.maybe: exception.finally
+                       | nothing
+exception.catch: CATCH exception.catch.possible block
+exception.catch.possible: LPAREN IDENTIFIER RPAREN
+                        | LPAREN RPAREN
+                        | nothing
+
+exception.finally: FINALLY block
+
+directive: COLON LBRACK expressions RBRACK
+
+%%

@@ -19,7 +19,7 @@ module Antelope
         # The right-hand side of the rule.
         #
         # @return [Array<Ace::Token>]
-        attr_accessor :right
+        attr_reader :right
 
         # The current position inside of the rule.
         #
@@ -160,6 +160,12 @@ module Antelope
           end
         end
 
+        def ==(other)
+          hash == other.hash if other.respond_to?(:hash)
+        end
+
+        alias_method :eql?, :==
+
         # Fuzzily compares this object to another object.  If the
         # other object is not a rule, it delegates the comparison.
         # Otherwise, it fuzzily compares the left and right sides.
@@ -192,10 +198,8 @@ module Antelope
         # @private
         # @return [Object]
         def hash
-          to_a.hash
+          @_hash ||= to_a.hash
         end
-
-        alias_method :eql?, :==
 
         # Creates an array representation of this class.
         #
@@ -204,7 +208,7 @@ module Antelope
         # @private
         # @return [Array<(Ace::Token::Nonterminal, Array<Ace::Token>, Numeric)>]
         def to_a
-          [left, right, position]
+          @_array ||= [left, right, position]
         end
       end
     end

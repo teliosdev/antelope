@@ -26,20 +26,20 @@ module Antelope
       # handle lookahead sets.
       #
       # @return [Recognizer::State]
-      attr_accessor :from
+      attr_reader :from
 
       # The to state that this token is transitioned to.  This is the
       # _destination_.  This is used in the constructor in order to
       # handle lookahead sets.
       #
       # @return [Recognizer::State]
-      attr_accessor :to
+      attr_reader :to
 
       # The type of the token.  This is given by a caret argument to
       # the grammar.  This is primarily used for generators.
       #
       # @return [String]
-      attr_accessor :type
+      attr_reader :type
 
       attr_accessor :id
 
@@ -97,6 +97,33 @@ module Antelope
         false
       end
 
+      # Sets the from state of the token and invalidates the cache.
+      #
+      # @param state [Recognizer::State]
+      # @return [void]
+      def from=(state)
+        invalidate_cache!
+        @from = state
+      end
+
+      # Sets the to state of the token and invalidates the cache.
+      #
+      # @param state [Recognizer::State]
+      # @return [void]
+      def to=(state)
+        invalidate_cache!
+        @to = state
+      end
+
+      # Sets the type of the token and invalidates the cache.
+      #
+      # @param type [String]
+      # @return [void]
+      def type=(type)
+        invalidate_cache!
+        @type = type
+      end
+
       # Gives a string representation of the token.  The output is
       # formatted like so: `<data>["(" [<from_id>][:<to_id>] ")"]`,
       # where `<data>` is either the value (if it's non-nil) or the
@@ -149,6 +176,12 @@ module Antelope
         end
       end
 
+      def ==(other)
+        hash == other.hash if other.respond_to?(:hash)
+      end
+
+      alias_method :eql?, :==
+
       # Compares this class and another object, fuzzily.  If the other
       # object is a token, it removes the transitions (to and from)
       # on both objects and compares them like that.  Otherwise, it
@@ -171,6 +204,14 @@ module Antelope
         self.class.new(name, @type, @id, @value)
       end
 
+      # Invalidates the cache.
+      #
+      # @return [void]
+      def invalidate_cache!
+        @_hash = nil
+        @_array = nil
+      end
+
       # Generates a hash for this class.
       #
       # @note This is not intended for use.  It is only defined to be
@@ -178,7 +219,7 @@ module Antelope
       # @private
       # @return [Object]
       def hash
-        to_a.hash
+        @_hash ||= to_a.hash
       end
 
       alias_method :eql?, :==
@@ -190,7 +231,7 @@ module Antelope
       # @private
       # @return [Array<(Recognizer::State, Recognizer::State, Class, Symbol, String?)>]
       def to_a
-        [to, from, self.class, name, @value]
+        @_array ||= [to, from, self.class, name, @value]
       end
     end
   end
