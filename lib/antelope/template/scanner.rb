@@ -65,9 +65,10 @@ module Antelope
         when @scanner.scan(/\n?\%\{/)
           update_line
           scan_tag_start(:output_tag, :_, /\}/)
-        when @scanner.scan(/\n?\%/)
+        when @scanner.scan(/\n\%/)
           update_line
-          tokens << [:tag, value]
+          #tokens << [:tag]
+          scan_tag_start(:tag, :_, /\n/)
         when @scanner.scan(/\n?\{\{=/)
           update_line
           scan_tag_start(:output_tag)

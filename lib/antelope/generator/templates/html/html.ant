@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Antelope State Data</title>
+
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="%{file}.css">
+  </head>
+
+  <body>
+
+    <div class="body">
+      <div class="section productions">
+        <h2>Productions</h2>
+        <ol class="rules section-data">
+          {{ grammar.all_productions.each do |prod| }}
+          <li>
+            <code>{{= prod.label }}: {{= prod.items.join(' ') }}</code>
+            <code class="block">{{= prod.block }}</code>
+          </li>
+          {{ end }}
+        </ol>
+      </div>
+
+      <div class="section states">
+        <h2>States</h2>
+        <ul class="section-data">
+        {{ states = grammar.states.to_a }}
+        {{ table.each_with_index do |v, i| }}
+          <li class="section state">
+          {{ state = states[i] }}
+            <h3>State %{i}</h3>
+            <div class="section-data">
+          {{ state.rules.each do |rule| }}
+              <pre>{{= rule }}
+  {{= "{" << rule.lookahead.to_a.join(", ") << "}" }}</pre>
+          {{ end }}
+{{
+  transitions = v.each.select { |_, a| a && a[0] == :state }
+  reductions  = v.each.select { |_, a| a && a[0] == :reduce}
+  accepting   = v.each.select { |_, a| a && a[0] == :accept}
+  conflicts   = tableizer.conflicts[i].each
+  thing = [:transitions, :reductions, :accepting]
+  num_type = {
+    transitions: "State",
+    reductions: "Rule",
+    accepting: "Rule"
+  }
+  h = Hash[thing.zip([transitions, reductions, accepting])]
+}}
+            {{ h.each do |key, value| }}
+            {{ next unless value.any? }}
+              <div class="part">
+                <h4>{{= key }}</h4>
+                  {{ value.each do |token, (_, name)| }}
+                  {{ token_value = grammar.terminals.find { |_| _.name == token } || token }}
+                  <div>
+                    <code>{{= token_value}}: {{= num_type[key] }} {{= name }}</code class="block"></div>
+                {{ end }}
+              </div>
+            {{ end }}
+            {{ if conflicts.any? }}
+              <div class="part">
+                <h4>Conflicts</h4>
+                {{ conflicts.each do |token, (value, first, second, rule, terminal)| }}
+                  <div class="conflict {{ if value != 0 }}resolved{{ end }}">
+                    <code>{{= token }}: {{= first.join(" ") }}/{{= second.join(" ") }} ({{= rule }} vs {{= terminal }})</code>
+                  </div>
+                {{ end }}
+              </div>
+            {{ end }}
+            </div>
+          </li>
+        {{ end }}
+        </ul>
+      </div>
+    </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="%{file}.js"></script>
+  </body>
+</html>

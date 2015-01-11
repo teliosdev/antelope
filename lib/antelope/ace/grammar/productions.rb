@@ -44,7 +44,7 @@ module Antelope
             terminal
           elsif value == :error
             Token::Error.new
-          elsif [:nothing, :ε].include?(value)
+          elsif [:nothing, :ε, :"%empty"].include?(value)
             Token::Epsilon.new
           else
             raise UndefinedTokenError, "Could not find a token " \
@@ -107,6 +107,7 @@ module Antelope
             items[i] = items[i].dup
             items[i].id = tok[1]
           end
+          items.delete_if(&:epsilon?)
 
           Production.new(left, items, rule[:block], prec, id + 1)
         end

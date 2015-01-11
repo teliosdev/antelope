@@ -56,6 +56,7 @@ end
 require "antelope/generator/base"
 require "antelope/generator/group"
 require "antelope/generator/output"
+require "antelope/generator/html"
 require "antelope/generator/ruby"
 require "antelope/generator/null"
 require "antelope/generator/c_header"

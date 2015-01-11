@@ -16,6 +16,10 @@
 # @return [Array<Hash<(Symbol, Array<(Symbol, Numeric)>)>>]
 ACTION_TABLE = {{= generate_action_table }}.freeze
 
+# The default action that is taken for most reductions.
+#
+# @return [Proc]
+DEFAULT_PROC = proc { |_| _ }
 # A list of all of the productions.  Only includes the left-hand side,
 # the number of tokens on the right-hand side, and the block to call
 # on reduction.
@@ -25,13 +29,13 @@ PRODUCTIONS  = {{= generate_productions_list }}.freeze
 
 # Runs the parser.
 #
-# @param input [Array<Object>] the input to run the parser over.
+# @param input [Array] the input to run the parser over.
 # @return [Object] the result of the accept.
 def parse(input)
   stack = []
   stack.push([nil, 0])
-  input = input.dup
   last  = nil
+  input = input.to_a.dup
 
   until stack.empty? do
     last = parse_action(stack, input)
@@ -61,6 +65,7 @@ def parse_action(stack, input)
   action = ACTION_TABLE[stack.last.last].fetch(peek_token) do
     ACTION_TABLE[stack.last.last].fetch(:$default)
   end
+
   case action.first
   when :accept
     production = PRODUCTIONS[action.last]
@@ -81,14 +86,38 @@ def parse_action(stack, input)
   last
 
 rescue KeyError => e
-  if handle_error(
-    { :stack     => stack,
+  peek = input.first
+
+  if handle_error({
+      :stack     => stack,
       :peek      => peek_token,
       :remaining => input,
       :error     => e,
+      :line      => line_of(peek),
+      :column    => column_of(peek),
       :expected  => ACTION_TABLE[stack.last.last].keys
     })
     retry
+  else
+    raise
+  end
+end
+
+private
+
+def line_of(peek)
+  if peek.respond_to?(:line)
+    peek.line
+  else
+    0
+  end
+end
+
+def column_of(peek)
+  if peek.respond_to?(:column)
+    peek.column
+  else
+    0
   end
 end
 
@@ -96,11 +125,12 @@ end
 def handle_error(data, _ = false)
 {{   if panic_mode? }}
   if _ || data[:peek] == :$end # we can't recover if
-                              # we're at the end
+                               # we're at the end
 {{   end }}
     raise {{= error_class }},
-      "Unexpected token #{data[:peek]}; " \
-      "expected one of #{data[:expected].join(', ')}",
+      "Unexpected token #{data[:peek]} on line #{data[:line]}, " \
+      "column #{data[:column]}; expected one of " \
+      "#{data[:expected].join(', ')}",
       data[:error].backtrace
 {{   if panic_mode? }}
   end
@@ -133,9 +163,11 @@ def handle_error(data, _ = false)
     end
   end
 
-  until data[:remaining].empty? || lookaheads.
-    include?(data[:remaining][0].first)
-    data[:remaining].shift
+  begin
+    until lookaheads.include?(data[:remaining][0].peek)
+      data[:remaining].next
+    end
+  rescue StopIteration
   end
 
   data[:remaining].unshift([new_peek, data[:error]])

@@ -52,6 +52,13 @@
 %terminal PLUS "+"
 %terminal NEWLINE "\n"
 
+%nonassoc FIX
+%nonassoc LBRACK LPAREN
+%right UNOP PROP
+%left RANGE ERANGE
+%left BINOP PLUS MINUS
+%right EQUAL
+
 %null.data left LPAREN LBRACK BINOP MINUS PLUS
 %null.data right EQUAL PROP RANGE ERANGE UNOP
 
@@ -60,13 +67,15 @@
 main: expressions.maybe
 
 expressions.maybe: expressions
-                 | nothing
+                 | %empty { nil }
 
-expressions: expressions block
-           | block
+expressions: expressions expression { |a, b| a << b }
+           | expression { |a| [a] }
 
-block: LBRACE expressions RBRACE
-     | expression
+block: LBRACE expressions.maybe RBRACE { |_, a, _| [:block, a] }
+
+block_or_vexpression: block
+                    | vexpression
 
 expression: conditional
           | class
@@ -76,47 +85,71 @@ expression: conditional
           | exception
           | directive
           | vexpression
+          | NEWLINE { nil }
+          | vvexpression EQUAL vexpression { |a, _, b| [:set, a, b] }
 
 vexpression: NUMBER
-           | IDENTIFIER
            | ISTRING
            | SSTRING
            | KEYWORD
            | REGEX
-           | NEWLINE
            | interpolation
-           | PLUS vexpression
-           | MINUS vexpression
+           | PLUS vexpression { |_, a| [:pos, a] }
+           | MINUS vexpression { |_, a| [:neg, a] }
            | object
            | array
            | function
-           | PREUNOP vexpression
-           | UNOP vexpression
+           | PREUNOP vexpression { |a, b| [:unop, a, b] }
+           | UNOP vexpression { |a, b| [:unop, a, b] }
            | HEREDOC_REF
            | IHEREDOC_REF
+           | LPAREN vexpression RPAREN { |_, a, _| a }
            | heredoc
            | vexpression LPAREN vexpression.parameters.maybe RPAREN
-           | vexpression EQUAL vexpression
-           | vexpression PROP IDENTIFIER
-           | vexpression LBRACK vexpression RBRACK
+             { |a, _, b, _| [:call, a, b] }
            | vexpression RANGE vexpression
+             { |a, _, b| [:range, a, b] }
            | vexpression ERANGE vexpression
+             { |a, _, b| [:erange, a, b] }
            | vexpression BINOP vexpression
+             { |a, b, c| [:binop, a, b, c] }
            | vexpression MINUS vexpression
+             { |a, b, c| [:binop, a, b, c] }
            | vexpression PLUS vexpression
+             { |a, b, c| [:plus, a, b, c] }
            | vexpression UNOP
+             { |a, b| [:unop, a, b] }
+           | vvexpression
+
+vvexpression: vexpression PROP IDENTIFIER
+              { |a, _, b| [:prop, a, b] }
+            | vexpression LBRACK vexpression RBRACK
+              { |a, _, b| [:access, a, b] }
+            | IDENTIFIER
 
 vexpression.parameters.maybe: vexpression.parameters
-                            | nothing
+                            | %empty
 
 vexpression.parameters: vexpression.parameters COMMA vexpression
-                      | vexpression
+                        { |a, _, b| a << b }
+                      | vexpression { |*a| a }
 
-object: LBRACE RBRACE
-array: LBRACK RBRACK
-function: LPAREN RPAREN ARROW
+object: LBRACE RBRACE { [:object] }
+array: LBRACK RBRACK { [:array] }
+function: ARROW function.arguments.maybe block
+          { |_, a, b| [:func, a, b] }
 heredoc: HEREDOC
        | IHEREDOC
+
+function.arguments.maybe: LPAREN function.arguments.body.maybe RPAREN
+                          { |_, a, _| a }
+                        | %empty { nil }
+
+function.arguments.body.maybe: function.arguments.body
+                             | %empty { nil }
+function.arguments.body: function.arguments.body COMMA IDENTIFIER
+                         { |a, _, b| a << b }
+                       | IDENTIFIER { |a| [a] }
 
 interpolation: interpolation.string
              | interpolation.heredoc
@@ -129,34 +162,72 @@ interpolation.string: ISTRING_BEGIN vexpression interpolation.string.finish
 interpolation.string.finish: interpolation.string
                            | ISTRING
 
-conditional: IF LPAREN vexpression RPAREN block conditional.continue
-  | UNLESS LPAREN vexpression RPAREN block
+conditional: IF LPAREN vexpression RPAREN block
+             conditional.continue.maybe
+             { |_, _, a, _, b, c| [:if, a, b, c] }
+            | UNLESS LPAREN vexpression RPAREN block
+              { |_, _, a, _, b| [:unless, a, b] }
 
-conditional.continue: ELSIF LPAREN vexpression RPAREN block conditional.continue
-                    | ELSE block
+conditional.continue.maybe: conditional.continue
+                          | %empty { nil }
 
-class: CLASS IDENTIFIER RBRACE LBRACE
-module: MODULE IDENTIFIER RBRACE LBRACE
+conditional.continue: ELSIF LPAREN vexpression RPAREN block
+                      conditional.continue.maybe
+                      { |_, _, a, _, b, c| [:elsif, a, b, c] }
+                    | ELSE block { |_, a| [:else, a] }
+
+class: CLASS IDENTIFIER LBRACE class.definition.parts.maybe RBRACE
+       { |_, a, _, b, _| [:class, a, b] }
+module: MODULE IDENTIFIER LBRACE module.definition.parts.maybe RBRACE
+       { |_, a, _, b, _| [:module, a, b] }
+
+class.definition.parts.maybe: class.definition.parts
+                            | %empty { nil }
+class.definition.parts: class.definition.parts class.definition.part
+                        { |a, b| a << b }
+                      | class.definition.part { |a| [a] }
+class.definition.part: IDENTIFIER COLON vexpression
+                       { |a, _, b| [:inst, a, b] }
+                     | IDENTIFIER PROP IDENTIFIER COLON vexpression
+                       { |a, _, b, _, c| [:class, a, b, c] }
+                     | module
+                     | class
+
+module.definition.parts.maybe: module.definition.parts
+                             | %empty { nil }
+module.definition.parts: module.definition.parts
+                         module.definition.part
+                         { |a, b| a << b }
+                       | module.definition.part { |a| [a] }
+module.definition.part: IDENTIFIER COLON vexpression
+                        { |a, _, b| [:inst, a, b] }
 
 loop: WHILE LPAREN vexpression RPAREN block
+      { |_, _, a, _, b| [:while, a, b] }
     | FOR LPAREN IDENTIFIER IN vexpression RPAREN block
+      { |_, _, a, _, b, _, c| [:forin, a, b, c] }
     | FOR LPAREN vexpression RPAREN block
+      { |_, _, a, _, b| [:for, a, b] }
 
-action: RETURN
+action: RETURN vexpression { |_, a| [:return, a] }
       | ACTION
 
-exception: TRY block exception.catch.maybe exception.finally.maybe
+exception: TRY LBRACE expressions.maybe RBRACE exception.catch.maybe
+           exception.finally.maybe
+           { |_, _, a, _, b, c| [:try, a, b, c] }
 exception.catch.maybe: exception.catch
-                     | nothing
+                     | %empty { nil }
 exception.finally.maybe: exception.finally
-                       | nothing
+                       | %empty { nil }
 exception.catch: CATCH exception.catch.possible block
-exception.catch.possible: LPAREN IDENTIFIER RPAREN
-                        | LPAREN RPAREN
-                        | nothing
+                 { |_, a, b| [:catch, a, b] }
+exception.catch.possible: LPAREN IDENTIFIER RPAREN { |_, a, _| a }
+                        | LPAREN RPAREN { nil }
+                        | %empty { nil }
 
-exception.finally: FINALLY block
+exception.finally: FINALLY block { |_, a| [:finally, a ] }
 
 directive: COLON LBRACK expressions RBRACK
+           { |_, _, a, _| [:directive, a] }
 
 %%

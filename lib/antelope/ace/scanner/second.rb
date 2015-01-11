@@ -75,8 +75,8 @@ module Antelope
         def scan_second_rule_body
           body = true
           while body
-            scan_second_rule_part || scan_second_rule_or ||
-            scan_second_rule_prec || scan_second_rule_block ||
+            scan_second_rule_prec || scan_second_rule_part ||
+            scan_second_rule_or ||  scan_second_rule_block ||
             scan_whitespace || (body = false)
           end
           @scanner.scan(/;/)
@@ -88,7 +88,7 @@ module Antelope
         #
         # @return [Boolean] if it matched.
         def scan_second_rule_part
-          if @scanner.scan(/(#{IDENTIFIER})(?:\[(#{IDENTIFIER})\])?(?!\:|[A-Za-z._])/)
+          if @scanner.scan(/(%?#{IDENTIFIER})(?:\[(#{IDENTIFIER})\])?(?!\:|[A-Za-z._])/)
             tokens << [:part, @scanner[1], @scanner[2]]
           end
         end

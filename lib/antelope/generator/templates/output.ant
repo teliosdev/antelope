@@ -24,11 +24,7 @@ Precedence:
 {{ end }}
   --- lowest
 
-{{
-  len = table.flatten.map(&:keys).flatten.map(&:size).max
-  states = grammar.states.to_a
-}}
-
+{{ states = grammar.states.to_a }}
 {{ table.each_with_index do |v, i| }}
 {{   state = states[i] }}
   State {{=  i }}:
@@ -60,8 +56,8 @@ Precedence:
 {{   end }}
 {{   if conflicts.any? }}
     conflicts:
-{{     conflicts.each do |token, (first, second, rule, terminal)| }}
-      {{=  token }}: {{=  first.join(" ") }}/{{=  second.join(" ") }} ({{=  rule }} vs {{=  terminal }})
+{{     conflicts.each do |token, (value, first, second, rule, terminal)| }}
+      {{=  token }}: {{=  first.join(" ") }}/{{=  second.join(" ") }} ({{=  rule }} vs {{=  terminal }}{{ if value != 0 }}, resolved{{ end }})
 {{     end }}
 {{   end }}
 

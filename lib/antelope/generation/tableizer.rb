@@ -98,7 +98,12 @@ module Antelope
 
             rule_part, other_part = data.sort_by { |(t, _)| t }
 
+            conflict = proc { |result|
+              conflicts[state][on] = [result, rule_part, other_part,
+                terminal, @rules[rule_part[1]].prec] }
+
             unless other_part[0] == :state
+              conflict.call(0)
               $stderr.puts \
                 "Could not determine move for #{on} in state " \
                 "#{state} (reduce/reduce conflict)"
@@ -106,12 +111,10 @@ module Antelope
             end
 
             result = @rules[rule_part[1]].prec <=> terminal
+            conflict.call(result)
 
             case result
             when 0
-              conflicts[state][on] = [
-                rule_part, other_part, terminal, @rules[rule_part[1]].prec
-              ]
               $stderr.puts \
                 "Could not determine move for #{on} in state " \
                 "#{state} (shift/reduce conflict)"
@@ -133,19 +136,15 @@ module Antelope
       def defaultize
         max = @table.map { |s| s.keys.size }.max
         @table.each_with_index do |state|
-          if state.key?(:$empty)
-            state[:$default] = state[:$empty]
-          else
-            common = state.group_by { |k, v| v }.values.
-              sort_by(&:size).first
+          common = state.group_by { |k, v| v }.values.
+            sort_by(&:size).first
 
-            if common.size > (max / 2)
-              action = common[0][1]
+          if common.size > (max / 2)
+            action = common[0][1]
 
-              keys = common.map(&:first)
-              state.delete_if { |k, _| keys.include?(k) }
-              state[:$default] = action
-            end
+            keys = common.map(&:first)
+            state.delete_if { |k, _| keys.include?(k) }
+            state[:$default] = action
           end
         end
       end

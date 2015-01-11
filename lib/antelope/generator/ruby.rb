@@ -37,7 +37,7 @@ module Antelope
             ", "
 
           block = if block.empty?
-            "proc { |_| _ }"
+            "DEFAULT_PROC"
           else
             "proc #{block}"
           end

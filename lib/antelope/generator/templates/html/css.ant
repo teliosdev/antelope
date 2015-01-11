@@ -1,0 +1,53 @@
+body {
+  font-family: sans-serif;
+  color: #696265;
+  background-color: #fefefe;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: serif;
+  color: #327CCB;
+  margin: 0;
+}
+
+code, kbd, pre {
+  font-family: monospace;
+}
+
+.body .section {
+  background-color: #f9f9f9;
+  padding: 0.5em;
+}
+
+.body .section h2 {
+  font-size: 1.5em;
+}
+
+.body .section h2, .body .section h3, .body .section h4,
+.body .section h5, .body .section h6 {
+  padding: 0;
+  cursor: pointer;
+
+}
+
+.body .section .section-data {
+  display: none;
+  padding: 0.3em 2em;
+}
+
+.body .section .section-data.display {
+  display: block;
+}
+
+.body .section ul {
+  list-style-type: none;
+}
+
+.body .section ul, .body .section ol {
+  margin: 0;
+  padding: 0;
+}
+
+.conflict.resolved { color: #d9d9d9; }
+.conflict.resolved:before { content: "resolved: "; color: #00B057; }
+code.block { display: block; }

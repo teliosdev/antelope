@@ -24,7 +24,7 @@ module Antelope
 
     def result(binding = TOPLEVEL_BINDING.dup)
       # sue me.
-      eval(parse, binding, "#{@source}.rb", 0)
+      eval(parse, binding, "_#{@source}.rb", 0)
     end
 
     alias_method :run, :result

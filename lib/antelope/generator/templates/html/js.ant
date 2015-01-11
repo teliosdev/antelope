@@ -1,0 +1,9 @@
+$(function() {
+  $(".section").each(function(i, element) {
+    var $element = $(element);
+
+    $(element).children("h2, h3, h4, h5, h6").on("click", function() {
+      $(element).children(".section-data").toggleClass("display");
+    });
+  });
+});
