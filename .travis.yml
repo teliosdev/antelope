@@ -7,3 +7,4 @@ rvm:
   - jruby-19mode
 script: bundle exec rspec -f d spec
 sudo: false
+cache: bundler
