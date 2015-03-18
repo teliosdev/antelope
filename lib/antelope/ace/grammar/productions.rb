@@ -65,12 +65,16 @@ module Antelope
         # @return [Hash<(Symbol, Array<Production>)>]
         def generate_productions
           @_productions = {}
+          index = 0
 
-          @compiler.rules.each do |rule|
+          rules = @compiler.rules.each do |rule|
             productions[rule[:label]] = []
-          end.each_with_index do |rule, id|
+          end
+
+          while index < rules.size
+            rule = rules[index]
             productions[rule[:label]] <<
-              generate_production_for(rule, id)
+              generate_production_for(rule, index)
           end
 
           productions[:$start] = [default_production]

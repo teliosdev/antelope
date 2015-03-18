@@ -14,7 +14,7 @@ module Antelope
         # @return [Array<Token::Terminal>]
         def terminals
           @_terminals ||= begin
-            @compiler.options.fetch(:terminals, []).map do |v|
+            @compiler.options.fetch(:terminals) { [] }.map do |v|
               Token::Terminal.new(*v)
             end
           end

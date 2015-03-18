@@ -28,12 +28,9 @@ module Antelope
           token = token.name if token.is_a?(Token)
 
           prec = precedence.
-            select { |pr| pr.tokens.include?(token) }.first
-
-          unless prec
-            prec = precedence.
-              select { |pr| pr.tokens.include?(:_) }.first
-          end
+            detect { |pr| pr.tokens.include?(token) } ||
+          precedence.
+            detect { |pr| pr.tokens.include?(:_) }
 
           prec
         end
@@ -48,15 +45,20 @@ module Antelope
         # @return [Array<Ace::Precedence>]
         def generate_precedence
           size = @compiler.options[:prec].size + 1
-          precedence = @compiler.options[:prec].
-            each_with_index.map do |prec, i|
-            Ace::Precedence.new(prec[0], prec[1..-1].to_set, size - i)
+          index = 0
+          precedence = []
+
+          while index < @compiler.options[:prec]
+            prec = @compiler.options[:prec][index]
+            precedence <<
+              Ace::Precedence.new(prec[0], prec[1..-1].to_set,
+              size - index)
           end
 
           precedence <<
             Ace::Precedence.new(:nonassoc, [:$end].to_set, 0) <<
             Ace::Precedence.new(:nonassoc, [:_].to_set, 1)
-          precedence.sort_by { |_| _.level }.reverse
+          precedence.sort_by(&:level).reverse
         end
 
       end

@@ -1,0 +1,42 @@
+[0;31;49mlib/antelope/ace/grammar/precedences.rb[0m
+Array#select.first is slower than Array#detect. Occured at lines: 31, 35.
+Using each_with_index is slower than while loop. Occured at lines: 51.
+
+[0;31;49mlib/antelope/ace/grammar/productions.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 71, 106.
+
+[0;31;49mlib/antelope/ace/grammar/symbols.rb[0m
+Hash#fetch with second argument is slower than Hash#fetch with block. Occured at lines: 17.
+
+[0;31;49mlib/antelope/generation/constructor/first.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 63.
+
+[0;31;49mlib/antelope/generation/constructor/follow.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 78.
+
+[0;31;49mlib/antelope/generation/constructor.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 71.
+
+[0;31;49mlib/antelope/generation/recognizer/rule.rb[0m
+Parallel assignment is slower than sequential assignment. Occured at lines: 77.
+Using each_with_index is slower than while loop. Occured at lines: 178.
+
+[0;31;49mlib/antelope/generation/recognizer/state.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 123.
+
+[0;31;49mlib/antelope/generation/recognizer.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 138.
+
+[0;31;49mlib/antelope/generation/tableizer.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 90, 138.
+Parallel assignment is slower than sequential assignment. Occured at lines: 99.
+
+[0;31;49mlib/antelope/generator/base.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 124.
+
+[0;31;49mlib/antelope/generator/c_header.rb[0m
+Using each_with_index is slower than while loop. Occured at lines: 91.
+
+[0;31;49mlib/antelope/template/compiler.rb[0m
+Don't rescue NoMethodError, rather check with respond_to?. Occured at lines: 40.
+
