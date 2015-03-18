@@ -21,3 +21,5 @@ tmp
 *.o
 *.a
 mkmf.log
+*.ant.rb
+*.output

@@ -9,7 +9,7 @@ module Antelope
 
       register_as "error"
 
-      has_directive "output.show-lookahead", Boolean
+      has_directive "output.verbose", Boolean
 
       # Defines singleton method for every mod that the grammar passed
       # to the generator.

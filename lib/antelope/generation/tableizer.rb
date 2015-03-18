@@ -86,6 +86,7 @@ module Antelope
       #   resolved using precedence rules.
       # @return [void]
       def conflictize
+        states = grammar.states.to_a.sort_by(&:id)
         @conflicts = Hash.new { |h, k| h[k] = {} }
         @table.each_with_index do |v, state|
           v.each do |on, data|
@@ -95,12 +96,32 @@ module Antelope
             end
 
             terminal = grammar.precedence_for(on)
-
             rule_part, other_part = data.sort_by { |(t, _)| t }
 
-            conflict = proc { |result|
-              conflicts[state][on] = [result, rule_part, other_part,
-                terminal, @rules[rule_part[1]].prec] }
+            conflict = proc do |result|
+              hash = { result: result,
+                       terminal: terminal,
+                       prec: @rules[rule_part[1]].prec,
+                       data: data,
+                       rules: [], transitions: [] }
+
+              hash[:rules].concat(data.select { |part|
+                  part[0] == :reduce || part[0] == :accept
+                }.map { |(_, id)|
+                  states[state].rules.select(&:final?).
+                    detect { |rule| rule.production.id == id }
+                })
+              hash[:transitions].concat(data.select { |part|
+                  part[0] == :state
+                }.map { |_|
+                  states[state].rules.
+                    detect { |rule| rule.active.name == on }
+                })
+
+              #conflicts[state][on] = [result, rule_part, other_part,
+              #  terminal, @rules[rule_part[1]].prec]
+              conflicts[state][on] = hash
+            end
 
             unless other_part[0] == :state
               conflict.call(0)
@@ -115,6 +136,7 @@ module Antelope
 
             case result
             when 0
+              @table[state][on] = nil
               $stderr.puts \
                 "Could not determine move for #{on} in state " \
                 "#{state} (shift/reduce conflict)"

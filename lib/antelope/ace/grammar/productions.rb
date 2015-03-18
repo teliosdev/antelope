@@ -75,6 +75,7 @@ module Antelope
             rule = rules[index]
             productions[rule[:label]] <<
               generate_production_for(rule, index)
+            index += 1
           end
 
           productions[:$start] = [default_production]

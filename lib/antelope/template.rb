@@ -24,9 +24,7 @@ module Antelope
 
     def result(binding = TOPLEVEL_BINDING.dup)
       # sue me.
-      data = parse
-      File.open("#{@source}.rb", "w") { |f| f.write(data) } 
-      eval(parse, binding, "_#{@source}.rb", 0)
+      eval(parse, binding, fake_name, 0)
     end
 
     alias_method :run, :result
@@ -57,6 +55,11 @@ module Antelope
       else
         "(template)"
       end
+    end
+
+    def fake_name
+      File.join(File.dirname(@source),
+        "_#{File.basename(@source, '.*')}.rb")
     end
   end
 end

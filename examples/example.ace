@@ -3,6 +3,7 @@
 
 %null.data ruby.error-class { SyntaxError }
 %panic-mode true
+%output.verbose true
 %terminal NUMBER
 %terminal MULTIPLY "*"
 %terminal EXPONENTIATE "^"

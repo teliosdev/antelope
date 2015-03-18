@@ -1,13 +1,13 @@
 Productions:
-  0 $start: expression $end
-  1 expression: NUMBER                    { |a| a[1]        }
-  2 expression: expression "^" expression { |a, _, b| a** b }
-  3 expression: expression "+" expression { |a, _, b| a + b }
-  4 expression: expression "-" expression { |a, _, b| a - b }
-  5 expression: expression "*" expression { |a, _, b| a * b }
-  6 expression: expression "/" expression { |a, _, b| a / b }
-  7 expression: "(" expression ")"        { |_, a, _| a     }
-  8 expression: "(" $error ")"            { |_, e, _| e[1]  }
+  0 $start → expression $end
+  1 expression → NUMBER                    { |a| a[1]        }
+  2 expression → expression "^" expression { |a, _, b| a** b }
+  3 expression → expression "+" expression { |a, _, b| a + b }
+  4 expression → expression "-" expression { |a, _, b| a - b }
+  5 expression → expression "*" expression { |a, _, b| a * b }
+  6 expression → expression "/" expression { |a, _, b| a / b }
+  7 expression → "(" expression ")"        { |_, a, _| a     }
+  8 expression → "(" $error ")"            { |_, e, _| e[1]  }
 
 
 Precedence:
@@ -23,7 +23,6 @@ Precedence:
   nonassoc 0:
     {$end}
   --- lowest
-
 
   State 0:
     0/n0: $start →  • expression $end

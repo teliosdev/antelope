@@ -12,21 +12,22 @@ No errors :)
 %else
 Error:
 %  table.each_with_index do |v, i|
-%    conflicts = tableizer.conflicts[i].each
+%    conflicts = tableizer.conflicts[i].each.
+%      select { |(_, v)| v[:result] == 0 || directives.output.verbose }
 %    next unless conflicts.any?
-%    conflicts.each do |token, (value, first, second, rule, terminal)|
-%      both = [first, second]
-  Conflict in State %{i}:
-    {{= [token, value, first, second, rule, terminal] }}
-%#    On %{token} {{= '(resolved)' if value != 0 }}:
-%#      %{first.join(' ')}/%{second.join(' ')} (%{rule} vs %{terminal})
-%#    Rule:
-%#     both.select { |_| _[0] == :reduce }.each do |(_, rule)|
-%#        %{productions[rule][0]}
-%#     end
-%#    State:
-%#      both.select { |_| _[0] == :state }.each do |(_, state)|
-%#
+  Conflicts in State %{i}:
+%    conflicts.each do |token, value|
+    On %{token}{{= ' (resolved)' if value[:result] != 0 }}:
+      %{value[:data][0].join(' ')}/%{value[:data][1].join(' ')} (%{value[:prec]} vs %{value[:terminal]}, %{value[:result]})
+      Rules:
+%     value[:rules].each do |rule|
+        %{rule}
+          {%{rule.lookahead.to_a.join(', ')}}
+%     end
+      Transitions:
+%     value[:transitions].each do |transition|
+        %{transition}
+%     end
 %    end
 %  end
 %end

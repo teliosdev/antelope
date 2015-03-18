@@ -71,7 +71,7 @@ module Antelope
           @precedence = production.prec
           @production = production
           @block      = production.block
-          @id         = SecureRandom.hex
+          @id         = "%10x" % object_id
 
           if inherited
             @left, @right = inherited

@@ -37,7 +37,7 @@ module Antelope
         def initialize
           @rules = Set.new
           @transitions = {}
-          @id = SecureRandom.hex
+          @id = "%10x" % object_id
         end
 
         # Gives a nice string representation of the state.

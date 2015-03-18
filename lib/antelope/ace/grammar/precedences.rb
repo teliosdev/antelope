@@ -48,11 +48,12 @@ module Antelope
           index = 0
           precedence = []
 
-          while index < @compiler.options[:prec]
+          while index < size - 1
             prec = @compiler.options[:prec][index]
             precedence <<
               Ace::Precedence.new(prec[0], prec[1..-1].to_set,
               size - index)
+            index += 1
           end
 
           precedence <<
