@@ -87,9 +87,6 @@ describe Generation::Constructor do
       let(:grammar) { with_recognizer }
       let(:nonterminal) { token(:nonterminal, :e) }
 
-      before do
-        p grammar.terminals
-      end
       it "generates a set" do
         expect(subject.first(nonterminal)).
           to eq [token(:terminal, :IDENT), token(:terminal, :STAR, "*")].to_set

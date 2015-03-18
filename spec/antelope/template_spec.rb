@@ -5,7 +5,7 @@ describe Template do
   subject { Template.new(content) }
 
   it "generates ruby code" do
-    expect(subject.parse).to eq %Q(_out ||= ""\n_out << "hello "\nworld\n_out << " test"\n_out\n)
+    expect(subject.parse).to eq %Q(# encoding: utf-8\n_out ||= ""\n_out << "hello "\n world\n_out << " test"\n_out\n)
   end
 
   context "when the tag is on its own line" do
@@ -24,13 +24,14 @@ TEST
 
     it "removes surrounding whitespace" do
       expect(subject.parse).to eq <<-TEST
+# encoding: utf-8
 _out ||= ""
 _out << "hello"
 _out << begin
   something
 end.to_s
 _out << "\\nworld\\n"
-thing
+ thing
 _out << "\\na\\n\\n"
 _out
 TEST
