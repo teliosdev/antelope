@@ -1,0 +1,32 @@
+Productions:
+%len = grammar.all_productions.size.to_s.size
+%productions = grammar.all_productions.
+%  map { |x| ["#{x.label} → #{x.items.join(' ')}", x.block] }
+%body = productions.map { |_| _.first.size }.max
+%productions.each_with_index do |prod, i|
+  {{= sprintf("%#{len}s", i)}} {{= sprintf("%-#{body}s", prod[0])}} %{prod[1]}
+%end
+
+%if table.any? { |_, i| tableizer.conflicts[i].any? }
+No errors :)
+%else
+Error:
+%  table.each_with_index do |v, i|
+%    conflicts = tableizer.conflicts[i].each
+%    next unless conflicts.any?
+%    conflicts.each do |token, (value, first, second, rule, terminal)|
+%      both = [first, second]
+  Conflict in State %{i}:
+    {{= [token, value, first, second, rule, terminal] }}
+%#    On %{token} {{= '(resolved)' if value != 0 }}:
+%#      %{first.join(' ')}/%{second.join(' ')} (%{rule} vs %{terminal})
+%#    Rule:
+%#     both.select { |_| _[0] == :reduce }.each do |(_, rule)|
+%#        %{productions[rule][0]}
+%#     end
+%#    State:
+%#      both.select { |_| _[0] == :state }.each do |(_, state)|
+%#
+%    end
+%  end
+%end

@@ -15,7 +15,7 @@ module Antelope
       def compile
         merge_text_tokens
 
-        @buffer = "#{@buffer_variable} ||= \"\"\n"
+        @buffer = "\# encoding: utf-8\n#{@buffer_variable} ||= \"\"\n"
 
         until @tokens.empty?
           token = @tokens.shift
@@ -44,7 +44,7 @@ module Antelope
       end
 
       def parse_tag(value)
-        value.gsub!(/\A\s*([\s\S]*?)\s*\Z/, "\\1")
+        value.gsub!(/\A([\s\S]*?)\s*\Z/, "\\1")
         buffer << "#{value}\n"
       end
 

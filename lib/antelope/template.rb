@@ -24,6 +24,8 @@ module Antelope
 
     def result(binding = TOPLEVEL_BINDING.dup)
       # sue me.
+      data = parse
+      File.open("#{@source}.rb", "w") { |f| f.write(data) } 
       eval(parse, binding, "_#{@source}.rb", 0)
     end
 

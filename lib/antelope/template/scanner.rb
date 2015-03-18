@@ -62,13 +62,16 @@ module Antelope
         case
         when @scanner.scan(/\\(\{\{|\}\}|\%)/)
           tokens << [:text, @scanner[1]]
+        when @scanner.scan(/\%\%/)
+          tokens << [:text, "%"]
         when @scanner.scan(/\n?\%\{/)
           update_line
-          scan_tag_start(:output_tag, :_, /\}/)
-        when @scanner.scan(/\n\%/)
+          scan_tag_start(:output_tag, /\}/)
+        when @scanner.scan(/(\n|\A)\%/)
           update_line
           #tokens << [:tag]
-          scan_tag_start(:tag, :_, /\n/)
+          scan_tag_start(:tag, /\n/)
+          @scanner.pos -= 1
         when @scanner.scan(/\n?\{\{=/)
           update_line
           scan_tag_start(:output_tag)
@@ -88,11 +91,7 @@ module Antelope
         end
       end
 
-      def scan_tag_start(type, online = :_, ending = /\}\}/)
-        if online == :_
-          online = @scanner[0][0] == "\n"
-        end
-
+      def scan_tag_start(type, ending = /\}\}/)
         value = @scanner.scan_until(ending) or error!
         tokens << [type, value[0..-(@scanner[0].length + 1)]]
       end

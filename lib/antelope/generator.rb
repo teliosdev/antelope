@@ -55,6 +55,8 @@ end
 
 require "antelope/generator/base"
 require "antelope/generator/group"
+require "antelope/generator/info"
+require "antelope/generator/error"
 require "antelope/generator/output"
 require "antelope/generator/html"
 require "antelope/generator/ruby"
