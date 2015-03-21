@@ -99,7 +99,7 @@ module Antelope
           left  = Token::Nonterminal.new(rule[:label])
           items = rule[:set].map { |_| find_token(_[0]) }
           prec  = if rule[:prec].empty?
-            items.select(&:terminal?).last
+            items.select(&:terminal?).first
           else
             rule[:prec].intern
           end

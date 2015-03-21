@@ -22,7 +22,7 @@ module Antelope
         def scan_first_part
           until @scanner.check(CONTENT_BOUNDRY)
             scan_first_copy || scan_first_directive ||
-            scan_whitespace || error!
+            scan_whitespace || scan_comment || error!
           end
         end
 

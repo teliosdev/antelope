@@ -29,6 +29,11 @@ module Antelope
       end
     end
 
+    desc "version", "Displays the running version of antelope"
+    def version
+      puts "Antelope version #{Antelope::VERSION}"
+    end
+
     private
 
     # Compiles the given file, and then generates.  If an error

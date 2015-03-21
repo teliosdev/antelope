@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "pry"
+
 module Antelope
   module Generation
 
@@ -95,7 +97,10 @@ module Antelope
               next
             end
 
-            terminal = grammar.precedence_for(on)
+            terminal = if states[state].transitions.key?(on)
+              states[state].rules.
+                detect { |rule| rule.active.name == on }.precedence
+            end
             rule_part, other_part = data.sort_by { |(t, _)| t }
 
             conflict = proc do |result|
@@ -118,8 +123,6 @@ module Antelope
                     detect { |rule| rule.active.name == on }
                 })
 
-              #conflicts[state][on] = [result, rule_part, other_part,
-              #  terminal, @rules[rule_part[1]].prec]
               conflicts[state][on] = hash
             end
 

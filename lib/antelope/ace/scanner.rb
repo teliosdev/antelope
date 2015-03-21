@@ -120,6 +120,16 @@ module Antelope
         end
       end
 
+      # Scans for a comment.  If the next token is a number sign (#),
+      # it will consume all characters until the next newline.
+      #
+      # @return [Boolean] if a comment was matched.
+      def scan_comment
+        if @scanner.scan(/\#(.*)\n/)
+          @line += 1
+        end
+      end
+
       private
 
       # Raises an error.

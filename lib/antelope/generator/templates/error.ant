@@ -1,17 +1,16 @@
 Productions:
 %len = grammar.all_productions.size.to_s.size
-%productions = grammar.all_productions.
-%  map { |x| ["#{x.label} → #{x.items.join(' ')}", x.block] }
-%body = productions.map { |_| _.first.size }.max
-%productions.each_with_index do |prod, i|
-  {{= sprintf("%#{len}s", i)}} {{= sprintf("%-#{body}s", prod[0])}} %{prod[1]}
+%productions = recognizer.states.map(&:rules).inject(:merge).
+%  select(&:final?).map { |x| [x.to_s(false), x.production.block] }
+%body = productions.map { |_| _[0].size }.max
+%productions.each do |prod|
+  {{= sprintf("%-#{body}s", prod[0]) }} %{prod[1]}
 %end
 
-%if table.any? { |_, i| tableizer.conflicts[i].any? }
-No errors :)
-%else
+% if table.each_with_index.any? { |_, i| tableizer.conflicts[i].each.
+%   select { |(_, v)| v[:result] == 0 || directives.output.verbose }.any? }
 Error:
-%  table.each_with_index do |v, i|
+%  table.each_with_index do |_, i|
 %    conflicts = tableizer.conflicts[i].each.
 %      select { |(_, v)| v[:result] == 0 || directives.output.verbose }
 %    next unless conflicts.any?
@@ -30,4 +29,6 @@ Error:
 %     end
 %    end
 %  end
+%else
+No errors :)
 %end

@@ -32,7 +32,8 @@ module Antelope
           tokens << [:second]
 
           until @scanner.check(CONTENT_BOUNDRY)
-            scan_second_rule || scan_whitespace || error!
+            scan_second_rule || scan_whitespace || scan_comment ||
+            error!
           end
         end
 
@@ -77,7 +78,7 @@ module Antelope
           while body
             scan_second_rule_prec || scan_second_rule_part ||
             scan_second_rule_or ||  scan_second_rule_block ||
-            scan_whitespace || (body = false)
+            scan_whitespace || scan_comment || (body = false)
           end
           @scanner.scan(/;/)
         end

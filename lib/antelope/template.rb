@@ -23,7 +23,6 @@ module Antelope
     end
 
     def result(binding = TOPLEVEL_BINDING.dup)
-      # sue me.
       eval(parse, binding, fake_name, 0)
     end
 
