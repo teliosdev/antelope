@@ -3,10 +3,5 @@
 $: << File.expand_path("../../lib", __FILE__)
 require "antelope"
 require "antelope/cli"
-require "ruby-prof"
 
-RubyProf.start
 Antelope::CLI.start
-result = RubyProf.stop
-
-RubyProf::MultiPrinter.new(result).print(path: "profile", profile: "prof")

@@ -97,7 +97,8 @@ module Antelope
       # @return [void]
       # @see Follow#follow
       def augment_rules(state)
-        state.rules.select { |x| x.position.zero? }.each do |rule|
+        state.rules.each do |rule|
+          next unless rule.position.zero?
           current_state = state
 
           label = rule.left.dup

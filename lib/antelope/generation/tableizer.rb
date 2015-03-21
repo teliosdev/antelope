@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-require "pry"
-
 module Antelope
   module Generation
 

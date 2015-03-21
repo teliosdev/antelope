@@ -68,29 +68,31 @@ module Antelope
         # @see Nullable#nullable?
         def generate_follow_set(token)
           # Set it to the empty set so we don't end up recursing.
-          set = @follows[token] = Set.new
+          @follows[token] = Set.new
+          set = Set.new
 
           productions.each do |rule|
             items = rule.items
+            i = 0
 
             # Find all of the positions within the rule that our token
             # occurs, and then increment that position by one.
-            positions = items.each_with_index.
-              find_all { |t, _| t == token }.
-              map(&:last).map(&:succ)
+            while i < items.size
+              next i += 1 unless items[i] == token
+              position = i.succ
 
-            # Find the FIRST set of every item after our token, and
-            # put that in our set.
-            positions.map { |pos| first(items[pos..-1]) }.
-              inject(set, :merge)
+              # Find the FIRST set of every item after our token, and
+              # put that in our set.
+              set.merge first(items[position..-1])
 
-            positions.each do |pos|
               # If we're at the end of the rule...
-              if pos == items.size || nullable?(items[pos..-1])
+              if position == items.size || nullable?(items[position..-1])
                 # Then add the FOLLOW set of the left-hand side to our
                 # set.
                 set.merge follow(rule.label)
               end
+
+              i += 1
             end
           end
 

@@ -176,10 +176,6 @@ module Antelope
         end
       end
 
-      def ==(other)
-        hash == other.hash if other.respond_to?(:hash)
-      end
-
       alias_method :eql?, :==
 
       # Compares this class and another object, fuzzily.  If the other
