@@ -3,10 +3,8 @@
 module Antelope
   module Generation
     class Constructor
-
       # Contains the methods to construct first sets for tokens.
       module First
-
         # Initialize.
         def initialize
           @firstifying = []
@@ -27,12 +25,12 @@ module Antelope
         #       # if A is a nonterminal and a_1, a_2, ..., a_3 are all
         #       # of the right-hand sides of its productions.
         #
-        # @param token [Ace::Token, Array<Ace::Token>]
-        # @return [Set<Ace::Token::Terminal>]
+        # @param token [Grammar::Token, Array<Grammar::Token>]
+        # @return [Set<Grammar::Token::Terminal>]
         # @see #first_array
         def first(token)
           case token
-          when Ace::Token::Nonterminal
+          when Grammar::Token::Nonterminal
             firstifying(token) do
               productions = grammar.productions[token.name]
               productions.map { |prod|
@@ -40,12 +38,12 @@ module Antelope
             end
           when Array
             first_array(token)
-          when Ace::Token::Epsilon
+          when Grammar::Token::Epsilon
             Set.new
-          when Ace::Token::Terminal
+          when Grammar::Token::Terminal
             Set.new([token])
           else
-            incorrect_argument! token, Ace::Token, Array
+            incorrect_argument! token, Grammar::Token, Array
           end
         end
 
@@ -57,8 +55,8 @@ module Antelope
         # sets for (since some tokens may be nullable).  We then add
         # those sets to our set.
         #
-        # @param tokens [Array<Ace::Token>]
-        # @return [Set<Ace::Token>]
+        # @param tokens [Array<Grammar::Token>]
+        # @return [Set<Grammar::Token>]
         def first_array(tokens)
           tokens.dup.delete_if { |_| @firstifying.include?(_) }.
           each_with_index.take_while do |token, i|
@@ -73,9 +71,9 @@ module Antelope
         # Helps keep track of the nonterminals we're finding FIRST
         # sets for. This helps prevent recursion.
         #
-        # @param tok [Ace::Token::Nonterminal]
+        # @param tok [Grammar::Token::Nonterminal]
         # @yield once.
-        # @return [Set<Ace::Token>]
+        # @return [Set<Grammar::Token>]
         def firstifying(tok)
           @firstifying << tok
           out = yield

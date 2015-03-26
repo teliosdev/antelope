@@ -1,21 +1,18 @@
 # encoding: utf-8
 
-require "antelope/ace/token/nonterminal"
-require "antelope/ace/token/terminal"
-require "antelope/ace/token/epsilon"
-require "antelope/ace/token/error"
-
+require 'antelope/grammar/token/nonterminal'
+require 'antelope/grammar/token/terminal'
+require 'antelope/grammar/token/epsilon'
+require 'antelope/grammar/token/error'
 
 module Antelope
-  module Ace
-
+  class Grammar
     # Defines a token type for productions/rules.
     #
     # @abstract This class should be inherited to define a real token.
     #   A base class does not match any token; however, any token can
     #   match the base class.
     class Token
-
       # The name of the token.
       #
       # @return [Symbol]
@@ -138,16 +135,16 @@ module Antelope
       # @see #name
       def to_s
         buf = if @value
-          @value.inspect
-        else
-          @name.to_s
-        end
+                @value.inspect
+              else
+                @name.to_s
+              end
 
-        if from or to
-          buf << "("
+        if from || to
+          buf << '('
           buf << "#{from.id}" if from
           buf << ":#{to.id}"  if to
-          buf << ")"
+          buf << ')'
         end
 
         buf

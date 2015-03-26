@@ -53,7 +53,7 @@ module Antelope
 
       # Options defined by directives in the first part of the file.
       #
-      # - **`:terminals`** (`Array<Symbol, String?)>)` &mdash; A list
+      # - **`:terminals`** (`Array<Symbol, String?>)` &mdash; A list
       #   of all of the terminals in the language.  If this is not
       #   properly defined, the grammar will throw an error saying
       #   that a symbol used in the grammar is not defined.
@@ -105,9 +105,9 @@ module Antelope
       # Pretty inspect.
       #
       # @return [String]
-      def inspect
-        "#<#{self.class} state=#{@state.inspect} options=#{options.inspect}>"
-      end
+      # def inspect
+      #   "#<#{self.class} state=#{@state.inspect} options=#{options.inspect}>"
+      # end
 
       # Runs the compiler on the input tokens.  For each token,
       # it calls `compile_<type>` with `<type>` being the first

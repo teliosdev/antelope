@@ -1,12 +1,10 @@
 # encoding: utf-8
 
 module Antelope
-  module Ace
-
+  class Grammar
     # Defines a precedence.  A precedence has a type, tokens, and a
     # level.
-    class Precedence < Struct.new(:type, :tokens, :level)
-
+    Precedence = Struct.new(:type, :tokens, :level) do
       # @!attribute [rw] type
       #   The type of precedence level.  This should be one of
       #   `:left`, `:right`, or `:nonassoc`.

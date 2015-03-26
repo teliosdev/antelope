@@ -13,12 +13,12 @@ module Antelope
 
         # The left-hand side of the rule.
         #
-        # @return [Ace::Token::Nonterminal]
+        # @return [Grammar::Token::Nonterminal]
         attr_reader :left
 
         # The right-hand side of the rule.
         #
-        # @return [Array<Ace::Token>]
+        # @return [Array<Grammar::Token>]
         attr_reader :right
 
         # The current position inside of the rule.
@@ -28,7 +28,7 @@ module Antelope
 
         # The block to be executed on production match.
         #
-        # @deprecated Use {Ace::Production#block} instead.
+        # @deprecated Use {Grammar::Production#block} instead.
         # @return [String]
         attr_reader :block
 
@@ -47,19 +47,19 @@ module Antelope
 
         # The precedence for this rule.
         #
-        # @return [Ace::Precedence]
+        # @return [Grammar::Precedence]
         attr_accessor :precedence
 
         # The associated production.
         #
-        # @return [Ace::Production]
+        # @return [Grammar::Production]
         attr_reader :production
 
         include Comparable
 
         # Initialize the rule.
         #
-        # @param production [Ace::Production] the production
+        # @param production [Grammar::Production] the production
         #   that this rule is based off of.
         # @param position [Numeric] the position that this rule is in
         #   the production.
@@ -71,7 +71,7 @@ module Antelope
           @precedence = production.prec
           @production = production
           @block      = production.block
-          @id         = "%10x" % object_id
+          @id         = format('%10x', object_id)
 
           if inherited
             @left, @right = inherited
@@ -85,7 +85,7 @@ module Antelope
         # @return [String]
         def inspect
           "#<#{self.class} id=#{id} left=#{left} " \
-            "right=[#{right.join(" ")}] position=#{position}>"
+            "right=[#{right.join(' ')}] position=#{position}>"
         end
 
         # Give a nicer representation of the rule as a string.  Shows
@@ -97,16 +97,16 @@ module Antelope
         # @return [String]
         def to_s(dot = true)
           "#{id}/#{precedence.type.to_s[0]}#{precedence.level}: " \
-            "#{left} → #{right[0, position].join(" ")}" \
-            "#{" • " if dot}#{right[position..-1].join(" ")}"
+            "#{left} → #{right[0, position].join(' ')}" \
+            "#{' • ' if dot}#{right[position..-1].join(' ')}"
         end
 
         # Returns the active token.  If there is no active token, it
-        # returns a blank {Ace::Token}.
+        # returns a blank {Grammar::Token}.
         #
-        # @return [Ace::Token]
+        # @return [Grammar::Token]
         def active
-          right[position] or Ace::Token.new(nil)
+          right[position] || Grammar::Token.new(nil)
         end
 
         # Creates the rule after this one by incrementing the position
@@ -174,9 +174,9 @@ module Antelope
         # @return [Numeric]
         def ===(other)
           if other.is_a? Rule
-            left === other.left and right.size == other.right.size and
-              right.each_with_index.
-                all? { |e, i| e === other.right[i] }
+            left === other.left && right.size == other.right.size &&
+              right.each_with_index
+                .all? { |e, i| e === other.right[i] }
           else
             super
           end
@@ -206,7 +206,7 @@ module Antelope
         # @note This is not intended for use.  It is only defined to
         #   make equality checking easier, and to create a hash.
         # @private
-        # @return [Array<(Ace::Token::Nonterminal, Array<Ace::Token>, Numeric)>]
+        # @return [Array<(Grammar::Token::Nonterminal, Array<Grammar::Token>, Numeric)>]
         def to_a
           @_array ||= [left, right, position]
         end

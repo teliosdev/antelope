@@ -118,15 +118,15 @@ module Antelope
       end
 
       def coerce_nested_hash(key, value)
-        parts = key.split('.').map { |p| p.gsub(/-/, "_") }
+        parts = key.split('.').map { |p| p.gsub(/-/, '_') }
         top   = {}
         hash  = top
-        parts.each_with_index do |part, i|
+        parts.each_with_index do |part, _|
           hash[part] = if parts.last == part
-            value
-          else
-            {}
-          end
+                         value
+                       else
+                         {}
+                       end
           hash = hash[part]
         end
 
@@ -162,7 +162,7 @@ module Antelope
           # otherwise, if the first argument isn't "false", return
           # true.
 
-          values[0].to_s != "false"
+          values[0].to_s != 'false'
         when Array
           values.zip(type).map do |value, t|
             coerce_directive_value(defined, [value], t)

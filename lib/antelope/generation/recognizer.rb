@@ -1,16 +1,14 @@
 # encoding: utf-8
 
-require "antelope/generation/recognizer/rule"
-require "antelope/generation/recognizer/state"
+require 'antelope/generation/recognizer/rule'
+require 'antelope/generation/recognizer/state'
 
 module Antelope
   module Generation
-
     # Recognizes all of the states in the grammar.
     #
     # @see http://redjazz96.tumblr.com/post/88446352960
     class Recognizer
-
       # A list of all of the states in the grammar.
       #
       # @return [Set<State>]
@@ -24,12 +22,12 @@ module Antelope
 
       # The grammar that the recognizer is running off of.
       #
-      # @return [Ace::Grammar]
+      # @return [Grammar]
       attr_reader :grammar
 
       # Initialize the recognizer.
       #
-      # @param grammar [Ace::Grammar]
+      # @param grammar [Grammar]
       def initialize(grammar)
         @grammar = grammar
         @states = Set.new
@@ -102,7 +100,7 @@ module Antelope
       # @return [void]
       def compute_closure(state)
         fixed_point(state.rules) do
-          state.rules.select { |_| _.active.nonterminal? }.each do |rule|
+          state.rules.select { |r| r.active.nonterminal? }.each do |rule|
             grammar.productions[rule.active.name].each do |prod|
               state << Rule.new(prod, 0)
             end
@@ -115,9 +113,9 @@ module Antelope
 
         actives.each do |active|
           next if state.transitions[active.name]
-          rules = state.rules.
-            select { |r| r.active == active && r.succ? }.
-            map(&:succ).to_set
+          rules = state.rules
+                  .select { |r| r.active == active && r.succ? }
+                  .map(&:succ).to_set
           s = states.find { |st| rules.subset? st.rules } || begin
             s = State.new << rules
             compute_closure(s)
@@ -174,7 +172,6 @@ module Antelope
           added = enum.size - added
         end
       end
-
     end
   end
 end

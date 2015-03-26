@@ -1,12 +1,10 @@
 # encoding: utf-8
 
 module Antelope
-  module Ace
+  class Grammar
     class Token
-
       # Defines a terminal token.
       class Terminal < Token
-
         # (see Token#terminal?)
         def terminal?
           true

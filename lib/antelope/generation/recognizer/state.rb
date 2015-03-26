@@ -1,7 +1,7 @@
 # encoding: utf-8
 
-require "forwardable"
-require "securerandom"
+require 'forwardable'
+require 'securerandom'
 
 module Antelope
   module Generation
@@ -37,7 +37,7 @@ module Antelope
         def initialize
           @rules = Set.new
           @transitions = {}
-          @id = "%10x" % object_id
+          @id = format('%10x', object_id)
         end
 
         # Gives a nice string representation of the state.
@@ -45,8 +45,8 @@ module Antelope
         # @return [String]
         def inspect
           "#<#{self.class} id=#{id} " \
-            "transitions=[#{transitions.keys.join(", ")}] " \
-            "rules=[{#{rules.to_a.join("} {")}}]>"
+            "transitions=[#{transitions.keys.join(', ')}] " \
+            "rules=[{#{rules.to_a.join('} {')}}]>"
         end
 
         # Merges another state with this state.  It copies all of the
@@ -61,7 +61,7 @@ module Antelope
             "got #{other.class}" unless other.is_a? State
 
           self << other
-          self.transitions.merge! other.transitions
+          transitions.merge! other.transitions
 
           self
         end
@@ -90,7 +90,7 @@ module Antelope
           when State
             rule.rules.map(&:clone).each { |r| self << r }
           when Rule
-            rules << rule #unless rules.include? rule
+            rules << rule
           when Array, Set
             rule.each do |part|
               self << part
@@ -120,10 +120,9 @@ module Antelope
           other_rules = other.rules.to_a
           other.transitions == transitions &&
             rules.size == other_rules.size &&
-            rules.each_with_index.
-            all? { |rule, i| rule === other_rules[i] }
+            rules.each_with_index
+            .all? { |rule, i| rule === other_rules[i] }
         end
-
       end
     end
   end

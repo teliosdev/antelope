@@ -1,0 +1,11 @@
+require: rubocop-rspec
+
+AllCops:
+  Exclude:
+    - 'lib/salt/parser.rb'
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/SignalException:
+  EnforcedStyle: only_raise

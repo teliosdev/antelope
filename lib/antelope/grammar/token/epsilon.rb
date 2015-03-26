@@ -1,9 +1,8 @@
 # encoding: utf-8
 
 module Antelope
-  module Ace
+  class Grammar
     class Token
-
       # Defines an epsilon token.  An epsilon token represents
       # nothing.  This is used to say that a nonterminal can
       # reduce to nothing.

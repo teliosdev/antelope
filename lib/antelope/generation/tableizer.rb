@@ -8,7 +8,7 @@ module Antelope
 
       # The grammar that the table is based off of.
       #
-      # @return [Ace::Grammar]
+      # @return [Grammar]
       attr_accessor :grammar
 
       # The table itself.
@@ -25,7 +25,7 @@ module Antelope
 
       # Initialize.
       #
-      # @param grammar [Ace::Grammar]
+      # @param grammar [Grammar]
       def initialize(grammar)
         @grammar = grammar
       end

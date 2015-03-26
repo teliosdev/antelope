@@ -18,12 +18,12 @@ module Antelope
         # generates the FOLLOW set for the given token, and then
         # caches it.
         #
-        # @return [Set<Ace::Token>]
+        # @return [Set<Grammar::Token>]
         # @see Constructor#incorrect_argument!
         # @see #generate_follow_set
         def follow(token)
-          unless token.is_a? Ace::Token::Nonterminal
-            incorrect_argument! token, Ace::Token::Nonterminal
+          unless token.is_a? Grammar::Token::Nonterminal
+            incorrect_argument! token, Grammar::Token::Nonterminal
           end
 
           @follows.fetch(token) { generate_follow_set(token) }
@@ -62,8 +62,8 @@ module Antelope
         # cache the result of a FOLLOW set, the empty set will be
         # returned).
         #
-        # @param token [Ace::Token::Nonterminal]
-        # @return [Set<Ace::Token>]
+        # @param token [Grammar::Token::Nonterminal]
+        # @return [Set<Grammar::Token>]
         # @see First#first
         # @see Nullable#nullable?
         def generate_follow_set(token)
@@ -96,7 +96,7 @@ module Antelope
             end
           end
 
-          # Replace the cached empty set with our filled set.
+          # ReplGrammar the cached empty set with our filled set.
           @follows[token] = set
         end
       end

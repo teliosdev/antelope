@@ -22,12 +22,12 @@ module Antelope
         #       # if A is a nonterminal and a_1, a_2, ..., a_n are all
         #       # of the right-hand sides of its productions
         #
-        # @param token [Ace::Token, Array<Ace::Token>] the token to
+        # @param token [Grammar::Token, Array<Grammar::Token>] the token to
         #    check.
         # @return [Boolean] if the token can reduce to ϵ.
         def nullable?(token)
           case token
-          when Ace::Token::Nonterminal
+          when Grammar::Token::Nonterminal
             nullifying(token) do
               productions = grammar.productions[token.name]
               !!productions.any? { |prod| nullable?(prod[:items]) }
@@ -35,12 +35,12 @@ module Antelope
           when Array
             token.dup.delete_if { |tok|
               @nullifying.include?(tok) }.all? { |tok| nullable?(tok) }
-          when Ace::Token::Epsilon
+          when Grammar::Token::Epsilon
             true
-          when Ace::Token::Terminal
+          when Grammar::Token::Terminal
             false
           else
-            incorrect_argument! token, Ace::Token, Array
+            incorrect_argument! token, Grammar::Token, Array
           end
         end
 
@@ -49,7 +49,7 @@ module Antelope
         # Helps keep track of the nonterminals we're checking for
         # nullability.  This helps prevent recursion.
         #
-        # @param tok [Ace::Token::Nonterminal]
+        # @param tok [Grammar::Token::Nonterminal]
         # @yield once.
         # @return [Boolean]
         def nullifying(tok)

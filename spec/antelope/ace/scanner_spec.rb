@@ -1,20 +1,20 @@
 describe Ace::Scanner do
 
-  it "properly scans" do
+  it 'properly scans' do
     expect(scan("%test \"a\" hi\n%%\nt: d { { } }\n%%\nhi\n")).to eq [
-      [:directive, "test", ["a", "hi"]],
+      [:directive, 'test', %w(a hi)],
       [:second],
-      [:label, "t", nil],
-      [:part, "d", nil],
-      [:block, "{ { } }"],
+      [:label, 't', nil],
+      [:part, 'd', nil],
+      [:block, '{ { } }'],
       [:third],
       [:copy, "\nhi\n"]
     ]
   end
 
-  it "throws an error" do
+  it 'throws an error' do
     expect {
-      scan("% %% %% ")
+      scan('% %% %% ')
     }.to raise_error(Ace::SyntaxError)
   end
 

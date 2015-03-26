@@ -1,10 +1,9 @@
 # encoding: utf-8
 
 module Antelope
-  module Ace
-
+  class Grammar
     # Defines a production.
-    class Production < Struct.new(:label, :items, :block, :prec, :id)
+    Production = Struct.new(:label, :items, :block, :prec, :id) do
       # @!attribute [rw] label
       #   The label (or left-hand side) of the production.  This
       #   should be a nonterminal.
@@ -35,11 +34,11 @@ module Antelope
       #
       # @param hash [Hash<(Symbol, Object)>]
       def self.from_hash(hash)
-        new(hash[:label] || hash["label"],
-            hash[:items] || hash["items"],
-            hash[:block] || hash["block"],
-            hash[:prec]  || hash["prec"],
-            hash[:id]    || hash["id"])
+        new(hash[:label] || hash['label'],
+            hash[:items] || hash['items'],
+            hash[:block] || hash['block'],
+            hash[:prec]  || hash['prec'],
+            hash[:id]    || hash['id'])
       end
 
       # Create a new version of the production with duplicated values.
@@ -47,10 +46,10 @@ module Antelope
       # @return [Production]
       def clone
         Production.new(label.dup,
-            items.map(&:dup),
-            block.dup,
-            prec.dup,
-            id)
+          items.map(&:dup),
+          block.dup,
+          prec.dup,
+          id)
       end
     end
   end

@@ -46,7 +46,7 @@ module Antelope
     def compile_file(file, gen = :guess)
       puts "Compiling #{file}... "
 
-      grammar = Ace::Grammar.from_file(file)
+      grammar = Grammar.from_file(file)
       grammar.generate(options, gen)
 
     rescue => e

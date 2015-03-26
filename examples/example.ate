@@ -1,0 +1,70 @@
+Antelope.define :example, version: "0.0.1", require: "~> 0.3",
+                          output: :ruby do
+  define "output.verbose"    => true,
+         "output.panic-mode" => true,
+         "ruby.error-class"  => "SyntaxError",
+         "ruby.indent"       => 2,
+         "salt.variant"      => "normal"
+
+  terminals do
+    # We set the value to true, because the default value in a hash
+    # is nil.
+    terminal NUMBER: true,
+             MULTIPLY: "*",
+             EXPONENTIATE: "^",
+             DIVIDE: "/",
+             ADD: "+",
+             SUBTRACT: "-",
+             LPAREN: "(",
+             RPAREN: ")"
+  end
+
+  precedences do
+    precedence :right, [:EXPONENTIATE]
+    precedence :left,  [:MULTIPLY, :DIVIDE]
+    precedence :left,  [:ADD, :SUBTRACT]
+  end
+
+  productions do
+    production :expression do
+      match body:   [:NUMBER],
+            action: %{ match[0][1] }
+      match body:   [:expression, :EXPONENTIATE, :expression],
+            action: %{ match[0] ** match[2] }
+      match body:   [:expression, :ADD, :expression],
+            action: %{ match[0] + match[2] }
+      match body:   [:expression, :SUBTRACT, :expression],
+            action: %{ match[0] - match[2] }
+      match body:   [:expression, :MULTIPLY, :expression],
+            action: %{ match[0] * match[2] }
+      match body:   [:expression, :DIVIDE, :expression],
+            action: %{ match[0] / match[2] }
+      match body:   [:LPAREN, :expression, :RPAREN],
+            action: %{ match[1] }
+      match body:   [:LPAREN, :$error, :RPAREN],
+            action: %{ match[1] }
+    end
+  end
+
+  template <<-RUBY
+    class ExampleParser
+      %{write}
+
+      def type(token)
+        token[0]
+      end
+    end
+
+    input = [
+      [:LPAREN],
+      [:NUMBER, 2],
+      [:ADD],
+      [:ADD, 2],
+      [:RPAREN],
+      [:MULTIPLY],
+      [:NUMBER, 3]
+    ]
+
+    p ExampleParser.new.parse(input)
+  RUBY
+end
