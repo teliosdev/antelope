@@ -39,7 +39,7 @@ module Antelope
           block = if block.empty?
             "DEFAULT_PROC"
           else
-            "proc #{block}"
+            "proc { |match| #{block[1..-2]} }"
           end
 
           out << block << "],\n"

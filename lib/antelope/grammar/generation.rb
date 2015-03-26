@@ -27,7 +27,6 @@ module Antelope
       def generate(options    = {},
                    generators = :guess,
                    modifiers  = DEFAULT_MODIFIERS)
-        pp self
         mods = modifiers.map(&:last)
                .map  { |x| x.new(self) }
         mods.each do |mod|
