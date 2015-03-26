@@ -74,7 +74,7 @@ def parse_action(stack, input)
   when :reduce
     production = PRODUCTIONS[action.last]
     removing   = stack.pop(production[1])
-    value = instance_exec(*removing.map(&:first), &production[2])
+    value = instance_exec(removing.map(&:first), &production[2])
     goto  = ACTION_TABLE[stack.last.last][production[0]]
     stack.push([value, goto.last])
   when :state
