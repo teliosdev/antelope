@@ -1,8 +1,9 @@
+require 'antelope/generator/base/coerce'
+require 'antelope/generator/base/extra'
 require 'hashie/mash'
 
 module Antelope
   module Generator
-
     # Generates a parser.  This is normally the parent class, and the
     # specific implementations inherit from this.  The generated
     # parser should, ideally, be completely independent (not requiring
@@ -12,6 +13,9 @@ module Antelope
     # @abstract Subclass and redefine {#generate} to create a
     #   generator.
     class Base
+      include Coerce
+      include Extra
+
       Boolean = Object.new
       # The modifiers that were applied to the grammar.
       #
@@ -33,7 +37,7 @@ module Antelope
       #
       # @return [Pathname]
       def self.source_root
-        Pathname.new("../templates").expand_path(__FILE__)
+        Pathname.new('../templates').expand_path(__FILE__)
       end
 
       def self.register_as(*names)
@@ -46,7 +50,7 @@ module Antelope
       # @return [void]
       def self.inherited(subclass)
         directives.each do |name, (_, type)|
-          subclass.has_directive(name, type)
+          subclass.directive(name, type)
         end
       end
 
@@ -60,7 +64,7 @@ module Antelope
       # @see #directives
       # @see #coerce_directive_value
       # @return [void]
-      def self.has_directive(directive, type = nil)
+      def self.directive(directive, type = nil)
         directive = directive.to_s
         directives[directive] = [self, type]
       end
@@ -74,7 +78,8 @@ module Antelope
       end
 
       class << self
-        alias_method :has_directives, :has_directive
+        alias_method :has_directives, :directive
+        alias_method :has_directive,  :directive
       end
 
       # Initialize the generator.
@@ -87,7 +92,8 @@ module Antelope
         @mods    = mods
       end
 
-      # Actually does the generation.  A subclass should implement this.
+      # Actually does the generation.  A subclass should implement
+      # this.
       #
       # @raise [NotImplementedError]
       # @return [void]
@@ -95,96 +101,7 @@ module Antelope
         raise NotImplementedError
       end
 
-      protected
-
-      # Retrieves all directives from the grammar, and giving them the
-      # proper values for this instance.
-      #
-      # @see .has_directive
-      # @see #coerce_directive_value
-      # @return [Hash]
-      def directives
-        @_directives ||= begin
-          hash = Hashie::Mash.new
-
-          self.class.directives.each do |key, dict|
-            value = [grammar.options.key?(key), grammar.options[key]]
-            hash.deep_merge! coerce_nested_hash(key,
-              coerce_directive_value(*value, dict[1]))
-          end
-
-          hash
-        end
-      end
-
-      def coerce_nested_hash(key, value)
-        parts = key.split('.').map { |p| p.gsub(/-/, '_') }
-        top   = {}
-        hash  = top
-        parts.each_with_index do |part, _|
-          hash[part] = if parts.last == part
-                         value
-                       else
-                         {}
-                       end
-          hash = hash[part]
-        end
-
-        top[key] = value
-        top
-      end
-
-      # Coerce the given directive value to the given type.  For the
-      # type `nil`, it checks the size of the values; for no values,
-      # it returns true; for one value, it returns that one value; for
-      # any other size value, it returns the values.  For the type
-      # `Boolean`, if no values were given, or if the first value isn't
-      # "false", it returns true.  For the type `:single` (or `:one`),
-      # it returns the first value.  For the type `Array`, it returns
-      # the values.  For any other type that is a class, it tries to
-      # initialize the class with the given arguments.
-      def coerce_directive_value(defined, values, type)
-        return nil unless defined || Array === type
-        case type
-        when nil
-          case values.size
-          when 0
-            true
-          when 1
-            values[0]
-          else
-            values
-          end
-        when :single, :one
-          values[0]
-        when Boolean
-          # For bool, if there were no arguments, then return true;
-          # otherwise, if the first argument isn't "false", return
-          # true.
-
-          values[0].to_s != 'false'
-        when Array
-          values.zip(type).map do |value, t|
-            coerce_directive_value(defined, [value], t)
-          end
-        when Class
-          if type == Array
-            values
-          elsif type == String
-            values[0].to_s
-          elsif [Fixnum, Integer, Numeric].include?(type)
-            values[0].to_i
-          elsif type == Float
-            values[0].to_f
-          else
-            type.new(*values)
-          end
-        else
-          raise UnknownTypeError, "unknown type #{type}"
-        end
-      end
-
-      # Copies a template from the source, runs it through erb (in the
+      # Copies a template from the source, runs it through mote (in the
       # context of this class), and then outputs it at the destination.
       # If given a block, it will call the block after the template is
       # run through erb with the content from erb; the result of the
@@ -198,67 +115,20 @@ module Antelope
       # @yieldreturn [String] The new content to write to the output.
       # @return [void]
       def template(source, destination)
-        src  = Pathname.new("#{source}.ant").
-          expand_path(self.class.source_root)
+        src  = Pathname.new("#{source}.erb")
+               .expand_path(self.class.source_root)
 
-        template = Template.new(src)
+        template = ERB.new(src.read, nil, '-')
         content  = template.result(instance_eval('binding'))
-        content.gsub!(/[ \t]+\n/, "\n")
 
-        if block_given?
-          content = yield content
-        end
+        block_given? && content = yield(content)
 
-        dest = Pathname.new(destination).
-          expand_path(grammar.output)
+        dest = Pathname.new(destination).expand_path(grammar.output)
 
-        dest.open("w") do |file|
+        dest.open('w') do |file|
           file.write(content)
         end
       end
-
-      # The actual table that is used for parsing.  This returns an
-      # array of hashes; the array index corresponds to the state
-      # number, and the hash keys correspond to the lookahead tokens.
-      # The hash values are an array; the first element of that array
-      # is the action to be taken, and the second element of the
-      # array is the argument for that action.  Possible actions
-      # include `:accept`, `:reduce`, and `:state`; `:accept` means
-      # to accept the string; `:reduce` means to perform the given
-      # reduction; and `:state` means to transition to the given
-      # state.
-      #
-      # @return [Array<Hash<Symbol => Array<(Symbol, Numeric)>>>]
-      def table
-        if mods[:tableizer].is_a? Generation::Tableizer
-          mods[:tableizer].table
-        else
-          []
-        end
-      end
-
-      # Returns an array of the production information of each
-      # production needed by the parser.  The first element of any
-      # element in the array is an {Ace::Token::Nonterminal} that
-      # that specific production reduces to; the second element
-      # is a number describing the number of items in the right hand
-      # side of the production; the string represents the action
-      # that should be taken on reduction.
-      #
-      # This information is used for `:reduce` actions in the parser;
-      # the value of the `:reduce` action corresponds to the array
-      # index of the production in this array.
-      #
-      # @return [Array<Array<(Ace::Token::Nonterminal, Numeric, String)>]
-      def productions
-        grammar.all_productions.map do |production|
-          [production[:label],
-           production[:items].size,
-           production[:block]]
-        end
-      end
-
-
     end
   end
 end

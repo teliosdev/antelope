@@ -2,8 +2,9 @@
 %generator "ruby"
 
 %null.data ruby.error-class { SyntaxError }
-%panic-mode true
+%output.panic-mode true
 %output.verbose true
+%ruby.indent 1
 %terminal NUMBER
 %terminal MULTIPLY "*"
 %terminal EXPONENTIATE "^"
@@ -19,14 +20,14 @@
 
 %%
 
-expression: NUMBER                             { |match| match[0][1]         }
-          | expression EXPONENTIATE expression { |match| match[0]** match[2] }
-          | expression ADD expression          { |match| match[0] + match[2] }
-          | expression SUBTRACT expression     { |match| match[0] - match[2] }
-          | expression MULTIPLY expression     { |match| match[0] * match[2] }
-          | expression DIVIDE expression       { |match| match[0] / match[2] }
-          | LPAREN expression RPAREN           { |match| match[1]            }
-          | LPAREN error RPAREN                { |match| match[1]            }
+expression: NUMBER                             { match[0][1]         }
+          | expression EXPONENTIATE expression { match[0]** match[2] }
+          | expression ADD expression          { match[0] + match[2] }
+          | expression SUBTRACT expression     { match[0] - match[2] }
+          | expression MULTIPLY expression     { match[0] * match[2] }
+          | expression DIVIDE expression       { match[0] / match[2] }
+          | LPAREN expression RPAREN           { match[1]            }
+          | LPAREN error RPAREN                { match[1]            }
 
 %%
 

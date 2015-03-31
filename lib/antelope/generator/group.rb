@@ -35,7 +35,10 @@ module Antelope
           begin
             gen.generate
           rescue => e
-            $stderr.puts "Error running #{gen.class}: #{e.message}"
+            puts "Error running #{gen.class}: #{e.message}"
+            error = e
+          rescue SyntaxError => e
+            puts "Error running #{gen.class}: #{e.message}"
             error = e
           end
         end

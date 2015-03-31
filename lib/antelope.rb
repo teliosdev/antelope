@@ -7,7 +7,6 @@ require 'antelope/version'
 require 'antelope/grammar'
 require 'antelope/ace'
 require 'antelope/dsl'
-require 'antelope/template'
 
 # Antelope, the compiler compiler.
 module Antelope

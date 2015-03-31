@@ -1,48 +1,48 @@
 Productions:
-  15/n1: expression → NUMBER                     { |a| a[1]        }
-  26/n0: $start → expression $end
-  79/r4: expression → expression "^" expression  { |a, _, b| a** b }
-  85/l2: expression → expression "+" expression  { |a, _, b| a + b }
-  91/l2: expression → expression "-" expression  { |a, _, b| a - b }
-  97/l3: expression → expression "*" expression  { |a, _, b| a * b }
-  103/l3: expression → expression "/" expression { |a, _, b| a / b }
-  109/n1: expression → "(" expression ")"        { |_, a, _| a     }
-  110/n1: expression → "(" $error ")"            { |_, e, _| e[1]  }
+  15/n1: expression → NUMBER                     { match[0][1]         }
+  26/n0: $start → expression $end                
+  79/r4: expression → expression "^" expression  { match[0]** match[2] }
+  85/l2: expression → expression "+" expression  { match[0] + match[2] }
+  91/l2: expression → expression "-" expression  { match[0] - match[2] }
+  97/l3: expression → expression "*" expression  { match[0] * match[2] }
+  103/l3: expression → expression "/" expression { match[0] / match[2] }
+  109/n1: expression → "(" expression ")"        { match[1]            }
+  110/n1: expression → "(" $error ")"            { match[1]            }
 
 Error:
   Conflicts in State 12:
     On EXPONENTIATE (resolved):
       state 5/reduce 2 (r4 vs r4, -1)
       Rules:
-        79/r4: expression → expression "^" expression •
+        79/r4: expression → expression "^" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         80/r4: expression → expression • "^" expression
     On ADD (resolved):
       state 6/reduce 2 (r4 vs l2, 1)
       Rules:
-        79/r4: expression → expression "^" expression •
+        79/r4: expression → expression "^" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         81/l2: expression → expression • "+" expression
     On SUBTRACT (resolved):
       state 7/reduce 2 (r4 vs l2, 1)
       Rules:
-        79/r4: expression → expression "^" expression •
+        79/r4: expression → expression "^" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         82/l2: expression → expression • "-" expression
     On MULTIPLY (resolved):
       state 8/reduce 2 (r4 vs l3, 1)
       Rules:
-        79/r4: expression → expression "^" expression •
+        79/r4: expression → expression "^" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         83/l3: expression → expression • "*" expression
     On DIVIDE (resolved):
       state 9/reduce 2 (r4 vs l3, 1)
       Rules:
-        79/r4: expression → expression "^" expression •
+        79/r4: expression → expression "^" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         84/l3: expression → expression • "/" expression
@@ -50,35 +50,35 @@ Error:
     On EXPONENTIATE (resolved):
       state 5/reduce 3 (l2 vs r4, -1)
       Rules:
-        85/l2: expression → expression "+" expression •
+        85/l2: expression → expression "+" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         86/r4: expression → expression • "^" expression
     On ADD (resolved):
       state 6/reduce 3 (l2 vs l2, 1)
       Rules:
-        85/l2: expression → expression "+" expression •
+        85/l2: expression → expression "+" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         87/l2: expression → expression • "+" expression
     On SUBTRACT (resolved):
       state 7/reduce 3 (l2 vs l2, 1)
       Rules:
-        85/l2: expression → expression "+" expression •
+        85/l2: expression → expression "+" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         88/l2: expression → expression • "-" expression
     On MULTIPLY (resolved):
       state 8/reduce 3 (l2 vs l3, -1)
       Rules:
-        85/l2: expression → expression "+" expression •
+        85/l2: expression → expression "+" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         89/l3: expression → expression • "*" expression
     On DIVIDE (resolved):
       state 9/reduce 3 (l2 vs l3, -1)
       Rules:
-        85/l2: expression → expression "+" expression •
+        85/l2: expression → expression "+" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         90/l3: expression → expression • "/" expression
@@ -86,35 +86,35 @@ Error:
     On EXPONENTIATE (resolved):
       state 5/reduce 4 (l2 vs r4, -1)
       Rules:
-        91/l2: expression → expression "-" expression •
+        91/l2: expression → expression "-" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         92/r4: expression → expression • "^" expression
     On ADD (resolved):
       state 6/reduce 4 (l2 vs l2, 1)
       Rules:
-        91/l2: expression → expression "-" expression •
+        91/l2: expression → expression "-" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         93/l2: expression → expression • "+" expression
     On SUBTRACT (resolved):
       state 7/reduce 4 (l2 vs l2, 1)
       Rules:
-        91/l2: expression → expression "-" expression •
+        91/l2: expression → expression "-" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         94/l2: expression → expression • "-" expression
     On MULTIPLY (resolved):
       state 8/reduce 4 (l2 vs l3, -1)
       Rules:
-        91/l2: expression → expression "-" expression •
+        91/l2: expression → expression "-" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         95/l3: expression → expression • "*" expression
     On DIVIDE (resolved):
       state 9/reduce 4 (l2 vs l3, -1)
       Rules:
-        91/l2: expression → expression "-" expression •
+        91/l2: expression → expression "-" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         96/l3: expression → expression • "/" expression
@@ -122,35 +122,35 @@ Error:
     On EXPONENTIATE (resolved):
       state 5/reduce 5 (l3 vs r4, -1)
       Rules:
-        97/l3: expression → expression "*" expression •
+        97/l3: expression → expression "*" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         98/r4: expression → expression • "^" expression
     On ADD (resolved):
       state 6/reduce 5 (l3 vs l2, 1)
       Rules:
-        97/l3: expression → expression "*" expression •
+        97/l3: expression → expression "*" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         99/l2: expression → expression • "+" expression
     On SUBTRACT (resolved):
       state 7/reduce 5 (l3 vs l2, 1)
       Rules:
-        97/l3: expression → expression "*" expression •
+        97/l3: expression → expression "*" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         100/l2: expression → expression • "-" expression
     On MULTIPLY (resolved):
       state 8/reduce 5 (l3 vs l3, 1)
       Rules:
-        97/l3: expression → expression "*" expression •
+        97/l3: expression → expression "*" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         101/l3: expression → expression • "*" expression
     On DIVIDE (resolved):
       state 9/reduce 5 (l3 vs l3, 1)
       Rules:
-        97/l3: expression → expression "*" expression •
+        97/l3: expression → expression "*" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         102/l3: expression → expression • "/" expression
@@ -158,35 +158,35 @@ Error:
     On EXPONENTIATE (resolved):
       state 5/reduce 6 (l3 vs r4, -1)
       Rules:
-        103/l3: expression → expression "/" expression •
+        103/l3: expression → expression "/" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         104/r4: expression → expression • "^" expression
     On ADD (resolved):
       state 6/reduce 6 (l3 vs l2, 1)
       Rules:
-        103/l3: expression → expression "/" expression •
+        103/l3: expression → expression "/" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         105/l2: expression → expression • "+" expression
     On SUBTRACT (resolved):
       state 7/reduce 6 (l3 vs l2, 1)
       Rules:
-        103/l3: expression → expression "/" expression •
+        103/l3: expression → expression "/" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         106/l2: expression → expression • "-" expression
     On MULTIPLY (resolved):
       state 8/reduce 6 (l3 vs l3, 1)
       Rules:
-        103/l3: expression → expression "/" expression •
+        103/l3: expression → expression "/" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         107/l3: expression → expression • "*" expression
     On DIVIDE (resolved):
       state 9/reduce 6 (l3 vs l3, 1)
       Rules:
-        103/l3: expression → expression "/" expression •
+        103/l3: expression → expression "/" expression • 
           {$end, "^", "+", "-", "*", "/", ")"}
       Transitions:
         108/l3: expression → expression • "/" expression
