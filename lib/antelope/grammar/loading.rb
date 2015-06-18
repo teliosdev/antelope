@@ -27,14 +27,14 @@ module Antelope
 
         def from_dsl_file(file_name)
           body   = File.read(file_name)
-          output = File.dirname(file_name)
+          output = File.dirname(file_name, File.extname(file_name))
           from_dsl_string(file_name, output, body)
         end
 
         def from_ace_file(file_name)
           body   = File.read(file_name)
           output = File.dirname(file_name)
-          name   = File.basename(file_name)
+          name   = File.basename(file_name, ".ace")
           from_ace_string(name, output, body)
         end
 
